@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/products.service';
-import { Product } from 'src/app/models/productModel';
+import { Product } from 'src/app/models/Product';
 import {
   FormGroup,
   FormBuilder,
@@ -12,10 +12,10 @@ import {
 
 @Component({
   selector: 'app-products',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -34,20 +34,21 @@ export class ProductsComponent implements OnInit {
       .subscribe((data) => (this.products = data));
   }
 
-  // createProduct(): void {
-  //   this.productService.create(this.form.value).subscribe(() => {
-  //     console.log('Produto Criado!');
-  //   });
-  // }
-
   createForm(): void {
     this.form = this.fb.group({
       id: [''],
       nome: ['', [Validators.required]],
       type: [],
-      price: ['', [Validators.required]],
+      value: ['', [Validators.required]],
+      supplier: [''],
       amount: ['', [Validators.required]],
       description: ['', [Validators.required]],
+    });
+  }
+
+  createProduct(): void {
+    this.productsService.create(this.form.value).subscribe(() => {
+      console.log('Produto Criado!');
     });
   }
 }
