@@ -32,7 +32,6 @@ export class ProductsComponent implements OnInit {
     this.productsService
       .getProducts()
       .subscribe((data) => (this.products = data));
-    console.log(this.products);
   }
 
   // createProduct(): void {

@@ -16,6 +16,7 @@ import { TypesComponent } from './components/types/types.component';
     ProductsComponent,
     TypesComponent,
     DashboardComponent,
+    HttpClientModule,
   ],
   providers: [importProvidersFrom(HttpClientModule)],
   bootstrap: [AppComponent],

@@ -7,16 +7,16 @@ import { Product } from '../models/productModel';
   providedIn: 'root',
 })
 export class ProductsService {
-  private API_STOCK = 'http://localhost:8080/products';
+  private API_STOCK_PRODUCTS = 'http://localhost:8080/products';
 
   http = inject(HttpClient);
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.API_STOCK);
+    return this.http.get<Product[]>(this.API_STOCK_PRODUCTS);
   }
 
   create(data: Product) {
-    return this.http.post<Product>(this.API_STOCK, data);
+    return this.http.post<Product>(this.API_STOCK_PRODUCTS, data);
   }
 
   // update(data: Product) {
