@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/products.service';
-import { Product } from 'src/app/models/Product';
+import { Product } from 'src/app/models/product';
 import {
   FormGroup,
   FormBuilder,

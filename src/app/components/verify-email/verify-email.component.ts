@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-verify-email',
+  templateUrl: './verify-email.component.html',
+  styleUrls: ['./verify-email.component.scss'],
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class VerifyEmailComponent implements OnInit {
   authService = inject(AuthService);
 
   ngOnInit(): void {}
