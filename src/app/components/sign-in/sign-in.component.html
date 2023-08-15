@@ -1,61 +1,29 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
-        <input
-          type="text"
-          class="formControl"
-          placeholder="Username"
-          #userName
-          required
-        />
-      </div>
-      <div class="formGroup">
-        <input
-          type="password"
-          class="formControl"
-          placeholder="Password"
-          #userPassword
-          required
-        />
-      </div>
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input
-          type="button"
-          class="btn btnPrimary"
-          value="Log in"
-          (click)="authService.signIn(userName.value, userPassword.value)"
-        />
-      </div>
-      <div class="formGroup">
-        <span class="or"><span class="orInner">Or</span></span>
-      </div>
-      <!-- Calling GoogleAuth Api from AuthService -->
-      <div class="formGroup">
-        <button
-          type="button"
-          class="btn googleBtn"
-          (click)="authService.googleAuth()"
-        >
-          <i class="fab fa-google-plus-g"></i>
-          Log in with Google
-        </button>
-      </div>
-      <div class="forgotPassword">
-        <span routerLink="/forgot-password">Forgot Password?</span>
+<div class="card">
+  <div class="grid">
+    <div class="col-5 flex align-items-center justify-content-center">
+      <div class="p-fluid">
+        <div class="field">
+          <label for="username">E-mail :</label>
+          <input pInputText id="username" type="text" />
+        </div>
+        <div class="field">
+          <label for="password">Password :</label>
+          <input pInputText id="password" type="password" />
+        </div>
+        <p-button label="Login"></p-button>
       </div>
     </div>
-    <div class="redirectToLogin">
-      <span
-        >Don't have an account?<span
-          class="redirect"
-          routerLink="/register-user"
-        >
-          Sign Up</span
-        ></span
-      >
+    <div class="col-5">
+      <p-divider layout="horizontal">
+        <b class="or">OR</b>
+      </p-divider>
+    </div>
+    <div class="SignUp">
+      <p-button
+        label="Sign Up"
+        icon="pi pi-user-plus"
+        styleClass="p-button-success"
+      ></p-button>
     </div>
   </div>
 </div>
