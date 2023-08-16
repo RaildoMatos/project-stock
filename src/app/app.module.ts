@@ -15,14 +15,13 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AuthService } from './shared/services/auth.service';
-<<<<<<< HEAD
 import { HeaderComponent } from './views/header/header.component';
-=======
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { MessagesModule } from 'primeng/messages';
->>>>>>> dff4740f6fa17089e72a603ac96fa9a7aa4f003d
+import { TabMenuModule } from 'primeng/tabmenu';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,6 +43,7 @@ import { MessagesModule } from 'primeng/messages';
     InputTextModule,
     CardModule,
     MessagesModule,
+    TabMenuModule,
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],
