@@ -18,6 +18,8 @@ import { AuthService } from './shared/services/auth.service';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { MessagesModule } from 'primeng/messages';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,6 +38,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     InputTextModule,
     CardModule,
+    MessagesModule,
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],

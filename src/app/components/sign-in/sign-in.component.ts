@@ -5,6 +5,7 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,6 +18,7 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     CardModule,
     InputTextModule,
+    MessagesModule,
   ],
 })
 export class SignInComponent implements OnInit {

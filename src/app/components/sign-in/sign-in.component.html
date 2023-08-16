@@ -3,27 +3,26 @@
     <div class="col-5 flex align-items-center justify-content-center">
       <div class="p-fluid">
         <div class="field">
-          <label for="username">E-mail :</label>
-          <input pInputText id="username" type="text" />
+          <label>E-mail :</label>
+          <input type="text" pInputText placeholder="Email" #userName />
         </div>
         <div class="field">
-          <label for="password">Password :</label>
-          <input pInputText id="password" type="password" />
+          <label>Password :</label>
+          <input
+            type="password"
+            pInputText
+            placeholder="Password"
+            #userPassword
+          />
         </div>
-        <p-button label="Login"></p-button>
+        <div>
+          <p-button
+            label="Login"
+            (click)="authService.signIn(userName.value, userPassword.value)"
+          >
+          </p-button>
+        </div>
       </div>
-    </div>
-    <div class="col-5">
-      <p-divider layout="horizontal">
-        <b class="or">OR</b>
-      </p-divider>
-    </div>
-    <div class="SignUp">
-      <p-button
-        label="Sign Up"
-        icon="pi pi-user-plus"
-        styleClass="p-button-success"
-      ></p-button>
     </div>
   </div>
 </div>
