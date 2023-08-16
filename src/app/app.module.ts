@@ -14,21 +14,21 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductsComponent } from './components/products/products.component';
 import { TypesComponent } from './components/types/types.component';
 import { AuthService } from './shared/services/auth.service';
-<<<<<<< HEAD
 import { HeaderComponent } from './views/header/header.component';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { MessagesModule } from 'primeng/messages';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { SharedModule } from './shared/shared.module';
+import { InputTextModule } from 'primeng/inputtext';
 
-=======
->>>>>>> 0d3c04e7894662094b39abe0e2b40e09f0e76297
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
     HeaderComponent,
     ProductsComponent,
@@ -40,15 +40,12 @@ import { TabMenuModule } from 'primeng/tabmenu';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-<<<<<<< HEAD
     DividerModule,
     ButtonModule,
     InputTextModule,
     CardModule,
     MessagesModule,
     TabMenuModule,
-=======
->>>>>>> 0d3c04e7894662094b39abe0e2b40e09f0e76297
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],

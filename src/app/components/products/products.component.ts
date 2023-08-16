@@ -1,14 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Product } from 'src/app/models/Product';
 import { ProductsService } from 'src/app/services/products.service';
-<<<<<<< HEAD
-=======
-import { Product } from 'src/app/models/product';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
->>>>>>> 0d3c04e7894662094b39abe0e2b40e09f0e76297
 
 @Component({
   selector: 'app-products',
