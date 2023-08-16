@@ -1,13 +1,25 @@
 import { AuthService } from './../../shared/services/auth.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    DividerModule,
+    ButtonModule,
+    CardModule,
+    InputTextModule,
+    MessagesModule,
+  ],
 })
 export class SignInComponent implements OnInit {
   authService = inject(AuthService);

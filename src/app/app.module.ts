@@ -1,3 +1,4 @@
+import { InputTextModule } from 'primeng/inputtext';
 import { NgModule, importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +15,14 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AuthService } from './shared/services/auth.service';
+<<<<<<< HEAD
 import { HeaderComponent } from './views/header/header.component';
+=======
+import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessagesModule } from 'primeng/messages';
+>>>>>>> dff4740f6fa17089e72a603ac96fa9a7aa4f003d
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +39,11 @@ import { HeaderComponent } from './views/header/header.component';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    DividerModule,
+    ButtonModule,
+    InputTextModule,
+    CardModule,
+    MessagesModule,
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],
