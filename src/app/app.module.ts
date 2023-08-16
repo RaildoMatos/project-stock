@@ -19,7 +19,7 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { MessagesModule } from 'primeng/messages';
-
+import { ChartModule } from 'primeng/chart';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -39,6 +39,7 @@ import { MessagesModule } from 'primeng/messages';
     InputTextModule,
     CardModule,
     MessagesModule,
+    ChartModule,
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],
