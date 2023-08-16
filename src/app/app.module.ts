@@ -14,6 +14,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AuthService } from './shared/services/auth.service';
+import { FooterComponent } from './views/footer/footer.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,7 @@ import { AuthService } from './shared/services/auth.service';
     BrowserModule,
     AppRoutingModule,
     ProductsComponent,
-    TypesComponent,
+    TypesComponent, FooterComponent,
     DashboardComponent,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
