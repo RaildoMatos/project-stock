@@ -24,9 +24,3 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {}
 }
-
-export class ContentDoc {}
-export class ButtonIconOnlyDemo {}
-export class InputTextBasicDemo {
-  value!: string;
-}
