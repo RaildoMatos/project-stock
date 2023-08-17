@@ -71,6 +71,19 @@
 </div>
 
 <div class="container">
+  <p-card>
+    <div class="graphicValuesByType">
+      VALORES:
+      <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+    </div>
+  </p-card>
+
+  <p-card>
+    <div class="graphicAmountByType">
+      QUANTIDADE:
+      <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+    </div>
+  </p-card>
   <div class="graphicAmountByType">
     <p-chart
       type="doughnut"
