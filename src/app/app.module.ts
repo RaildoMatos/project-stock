@@ -16,6 +16,7 @@ import { TypesComponent } from './components/types/types.component';
 import { AuthService } from './shared/services/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { HeaderComponent } from './views/header/header.component';
+import { FooterComponent } from './views/footer/footer.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { HeaderComponent } from './views/header/header.component';
     HeaderComponent,
     ProductsComponent,
     TypesComponent,
+    FooterComponent,
     DashboardComponent,
     HeaderComponent,
     HttpClientModule,
