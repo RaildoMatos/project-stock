@@ -46,6 +46,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
 
 import { ImageModule } from 'primeng/image';
 @NgModule({
@@ -98,6 +99,7 @@ import { ImageModule } from 'primeng/image';
     DataViewModule,
     InputTextareaModule,
     ChartModule,
+    CardModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -147,6 +149,7 @@ import { ImageModule } from 'primeng/image';
     SidebarModule,
     ConfirmPopupModule,
     ChartModule,
+    CardModule,
   ],
   providers: [MessageService, ConfirmationService, DialogService],
 })
