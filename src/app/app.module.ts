@@ -31,6 +31,7 @@ import { SharedModule } from './shared/shared.module';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     SharedModule,
+    HttpClientModule,
   ],
   providers: [importProvidersFrom(HttpClientModule), AuthService],
   bootstrap: [AppComponent],

@@ -50,7 +50,7 @@
               "primeng/resources/themes/saga-orange/theme.css",
               "src/styles.scss"
             ],
-            "scripts": ["../node_modules/chart.js/dist/chart.js"]
+            "scripts": []
           },
           "configurations": {
             "production": {
