@@ -21,7 +21,9 @@ import { HeaderComponent } from './views/header/header.component';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    SharedModule,
     AppRoutingModule,
+    HeaderComponent,
     ProductsComponent,
     TypesComponent,
     DashboardComponent,
