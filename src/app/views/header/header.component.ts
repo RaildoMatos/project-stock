@@ -2,11 +2,12 @@ import { Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, TabMenuModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -20,7 +21,8 @@ export class HeaderComponent implements OnInit {
             { label: 'Fornecedores', icon: 'pi pi-fw pi-calendar' },
             { label: 'Marcas', icon: 'pi pi-fw pi-pencil' },
             { label: 'Produtos', icon: 'pi pi-fw pi-file' },
-            { label: 'Login', icon: 'pi pi-fw pi-cog' }
+            { label: 'Login', icon: 'pi pi-fw pi-cog'},
+            
         ];
     }
 }
