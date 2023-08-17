@@ -15,6 +15,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { TypesComponent } from './components/types/types.component';
 import { AuthService } from './shared/services/auth.service';
 import { SharedModule } from './shared/shared.module';
+import { HeaderComponent } from './views/header/header.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { SharedModule } from './shared/shared.module';
     ProductsComponent,
     TypesComponent,
     DashboardComponent,
+    HeaderComponent,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

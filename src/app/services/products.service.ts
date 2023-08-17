@@ -64,7 +64,7 @@ export class ProductsService {
     );
   }
 
-  getGraphProductValue(id: string | number): Observable<number> {
+  findProductValue(id: string | number): Observable<number> {
     const url = `${this.API_STOCK_PRODUCTS}/product-value/${id}`;
     return this.http.get<number>(url);
   }
