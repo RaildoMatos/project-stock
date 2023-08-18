@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
         labels: res.map((item: { typeName: string }) => item.typeName),
         datasets: [
           {
+            label: 'Quantidade em estoque',
             data: res.map((item: { amount: number }) => item.amount),
             backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
             hoverBackgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
@@ -72,7 +73,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Valor por Tipo do Produto',
+            label: 'Valor (R$) em estoque',
             data: data,
             backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
 
