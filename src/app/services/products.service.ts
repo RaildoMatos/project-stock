@@ -12,11 +12,11 @@ export class ProductsService {
 
   http = inject(HttpClient);
 
-  getProducts(): Observable<Product[]> {
+  getCombinationProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.API_STOCK_PRODUCTS);
   }
 
-  getPaginatedListProduct(
+  getPaginatedListProducts(
     page: number,
     size: number
   ): Observable<Page<Product>> {
@@ -26,11 +26,11 @@ export class ProductsService {
     return this.http.get<Page<Product>>(url, { params });
   }
 
-  filterProduct(id: string): Observable<Product> {
+  filterProduct(id: string | number): Observable<Product> {
     return this.http.get<Product>(`${this.API_STOCK_PRODUCTS}/${id}`);
   }
 
-  filterProductsByType(id: string): Observable<Product[]> {
+  filterProductsByType(id: string | number): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.API_STOCK_PRODUCTS}/type/${id}`);
   }
 
