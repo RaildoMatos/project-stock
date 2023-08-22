@@ -11,7 +11,7 @@
 
 <div class="container">
   <p-card>
-    <div class="graphicValuesByType">
+    <div class="graphic1">
       <h3>Quantidade por Tipo de Produto</h3>
       <p-chart
         type="bar"
@@ -21,7 +21,7 @@
     </div>
   </p-card>
   <p-card>
-    <div class="graphicAmountByType">
+    <div class="graphic2">
       <h3>Valor por Tipo de Produto</h3>
       <p-chart
         type="doughnut"
@@ -30,4 +30,16 @@
       ></p-chart>
     </div>
   </p-card>
+  <div>
+    <p-card>
+      <div class="graphic3">
+        <h3>Valor por Tipo de Produto</h3>
+        <p-chart
+          type="doughnut"
+          [data]="dataGraphValuesByType"
+          [options]="optionsGraphValuesByType"
+        ></p-chart>
+      </div>
+    </p-card>
+  </div>
 </div>
