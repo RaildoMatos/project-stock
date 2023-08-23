@@ -2,30 +2,30 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 5rem;
+  align-items: center;
 }
 
 .p-card {
   flex-basis: calc(50% - 20px);
   margin-bottom: 20px;
-}
-
-.p-card {
   flex-basis: 100%;
-}
-.graph1 {
-  width: 400px;
-  height: 300px;
-}
-.graph2 {
-  width: 400px;
-  height: 300px;
+  margin: 50%;
 }
 
+.graph1,
+.graph2,
 .graph3 {
-  width: 400px;
-  height: 300px;
+  width: 25rem;
+  height: 25rem;
 }
+.graph4,
+.graph5,
+.graph6 {
+  width: 25rem;
+  height: 15rem;
+}
+
 .sair {
   margin-left: 95%;
 }
