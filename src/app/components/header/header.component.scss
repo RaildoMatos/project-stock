@@ -1,0 +1,39 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffc107;
+  color: #6c757d;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.logo-image {
+  max-width: 90px;
+  padding: 5px;
+  height: auto;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  text-decoration: none;
+  margin-right: 20px;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #eaeaea;
+}
+
+.active {
+  font-weight: bold;
+}

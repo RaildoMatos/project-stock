@@ -1,3 +1,22 @@
-<div class="card">
+<!-- <div class="card">
   <p-tabMenu [model]="items"></p-tabMenu>
-</div>
+</div> -->
+<nav class="navbar">
+  <div class="logo">
+    <img src="assets/img/1.png" alt="Logo" class="logo-image" />
+  </div>
+  <div class="menu">
+    <a routerLink="/dashboard" routerLinkActive="active">
+      <span class="pi pi-chart-bar"></span> Dashboard
+    </a>
+    <a routerLink="/products" routerLinkActive="active">
+      <span class="pi pi-box"></span> Produtos
+    </a>
+    <a routerLink="/suppliers" routerLinkActive="active">
+      <span class="pi pi-truck"></span> Fornecedores
+    </a>
+    <a (click)="this.authService.signOut()">
+      <span class="pi pi-power-off"></span> Sair
+    </a>
+  </div>
+</nav>
