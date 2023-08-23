@@ -1,15 +1,31 @@
 .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 30px;
 }
 
-.graphicAmountByType {
-  width: 400px;
-  height: 400px;
-  margin-right: 200px;
+.p-card {
+  flex-basis: calc(50% - 20px);
+  margin-bottom: 20px;
 }
-.graphicValuesByType {
-  width: 600px;
-  height: 400px;
-  margin-right: 200px;
+
+.p-card {
+  flex-basis: 100%;
+}
+.graph1 {
+  width: 400px;
+  height: 300px;
+}
+.graph2 {
+  width: 400px;
+  height: 300px;
+}
+
+.graph3 {
+  width: 400px;
+  height: 300px;
+}
+.sair {
+  margin-left: 95%;
 }
