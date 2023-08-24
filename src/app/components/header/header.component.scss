@@ -1,11 +1,11 @@
 .navbar {
   display: flex;
   flex-wrap: wrap;
-
   align-items: center;
   background-color: #ffc107;
   color: #6c757d;
   border: 2px solid #6c757d;
+  padding: 10px 20px;
 }
 
 .logo {
@@ -31,14 +31,11 @@
   text-decoration: none;
   margin-right: 20px;
   transition: color 0.3s;
+  font-size: 20px;
 }
 
 .element-header {
   padding-right: 3%;
-}
-
-a {
-  font-size: 20px;
 }
 
 span {
@@ -49,13 +46,12 @@ span {
 .menu a:hover {
   color: #eaeaea;
   transition: color 0.3s, transform 0.3s;
-  transition: color 0.3s;
   transform: scale(1.2);
 }
 
 .container {
   display: flex;
-  justify-content: flex-start; /* Alinha os itens à esquerda */
+  justify-content: flex-start;
 }
 
 .active {
@@ -69,15 +65,10 @@ button {
   text-decoration: none;
   margin-right: 20px;
   transition: color 0.3s, transform 0.3s;
-  transition: color 0.3s;
   font-size: 20px;
 }
 
 button:hover {
   color: #eaeaea;
   transform: scale(1.2);
-}
-.sair {
-  margin-left: 40rem;
-  display: flex;
 }

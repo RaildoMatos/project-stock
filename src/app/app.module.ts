@@ -18,9 +18,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SuppliersComponent } from './views/suppliers/suppliers.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BaseLayoutComponent } from './components/base-layout/base-layout.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, BaseLayoutComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,

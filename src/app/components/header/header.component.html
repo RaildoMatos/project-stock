@@ -1,31 +1,29 @@
-<div *ngIf="isAuthenticated">
-  <nav class="navbar">
-    <div class="logo">
-      <img src="assets/img/1.png" alt="Logo" class="logo-image" />
+<nav class="navbar">
+  <div class="logo">
+    <img src="assets/img/1.png" alt="Logo" class="logo-image" />
+  </div>
+  <div class="menu">
+    <div class="element-header">
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span class="pi pi-chart-bar"></span> Dashboard
+      </a>
     </div>
-    <div class="menu">
-      <div class="element-header">
-        <a routerLink="/dashboard" routerLinkActive="active">
-          <span class="pi pi-chart-bar"></span> Dashboard
-        </a>
-      </div>
-      <div class="element-header">
-        <a routerLink="/products" routerLinkActive="active">
-          <span class="pi pi-box"></span> Produtos
-        </a>
-      </div>
-      <div>
-        <a routerLink="/suppliers" routerLinkActive="active">
-          <span class="pi pi-truck"></span> Fornecedores
-        </a>
-      </div>
-      <div>
-        <p-toast></p-toast>
-        <p-menu #menu [model]="items" [popup]="true"></p-menu>
-        <button pButton type="button" (click)="menu.toggle($event)">
-          <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>
-        </button>
-      </div>
+    <div class="element-header">
+      <a routerLink="/products" routerLinkActive="active">
+        <span class="pi pi-box"></span> Produtos
+      </a>
     </div>
-  </nav>
-</div>
+    <div>
+      <a routerLink="/suppliers" routerLinkActive="active">
+        <span class="pi pi-truck"></span> Fornecedores
+      </a>
+    </div>
+    <div class="teste">
+      <p-toast></p-toast>
+      <p-menu #menu [model]="items" [popup]="true"></p-menu>
+      <button pButton type="button" (click)="menu.toggle($event)">
+        <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>
+      </button>
+    </div>
+  </div>
+</nav>

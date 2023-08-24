@@ -17,14 +17,10 @@ import { trigger, state, style } from '@angular/animations';
 })
 export class HeaderComponent implements OnInit {
   items: MenuItem[] | undefined;
-  isAuthenticated: boolean = false;
 
   authService = inject(AuthService);
 
   ngOnInit() {
-    this.authService.isAuthenticated.subscribe((authenticated) => {
-      this.isAuthenticated = authenticated;
-    });
     this.items = [
       {
         label: 'Sair',

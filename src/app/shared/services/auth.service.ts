@@ -13,9 +13,6 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   userData: any;
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
-
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
@@ -27,11 +24,9 @@ export class AuthService {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
-        this.isAuthenticatedSubject.next(true);
       } else {
         localStorage.setItem('user', 'null');
         JSON.parse(localStorage.getItem('user')!);
-        this.isAuthenticatedSubject.next(false);
       }
     });
   }
@@ -39,9 +34,9 @@ export class AuthService {
   signIn(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((result) => {
+      .then((result: any) => {
+        localStorage.setItem('uid', result.user.uid);
         this.setUserData(result.user);
-        this.isAuthenticatedSubject.next(true);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -96,8 +91,7 @@ export class AuthService {
 
   signOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.isAuthenticatedSubject.next(false);
+      localStorage.clear();
       this.router.navigate(['sign-in']);
     });
   }

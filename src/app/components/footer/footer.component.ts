@@ -10,13 +10,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
-  isAuthenticated: boolean = false;
-
   authService = inject(AuthService);
 
-  ngOnInit(): void {
-    this.authService.isAuthenticated.subscribe((authenticated) => {
-      this.isAuthenticated = authenticated;
-    });
-  }
+  ngOnInit(): void {}
 }

@@ -17,18 +17,10 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authService.isAuthenticated.pipe(
-      take(1), // Pegue apenas um valor do Observable
-      map((authenticated) => {
-        if (authenticated) {
-          return true;
-        } else {
-          this.router.navigate(['sign-in'], {
-            queryParams: { returnUrl: state.url }, // Passa a URL atual como parâmetro
-          });
-          return false;
-        }
-      })
-    );
+    if (localStorage.getItem('uid')) {
+      return true;
+    }
+    this.router.navigate(['sign-in']);
+    return false;
   }
 }
