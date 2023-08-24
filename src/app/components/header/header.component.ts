@@ -5,13 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
+import { trigger, state, style } from '@angular/animations';
 
 @Component({
   selector: 'app-header',
@@ -23,10 +17,14 @@ import {
 })
 export class HeaderComponent implements OnInit {
   items: MenuItem[] | undefined;
+  isAuthenticated: boolean = false;
 
   authService = inject(AuthService);
 
   ngOnInit() {
+    this.authService.isAuthenticated.subscribe((authenticated) => {
+      this.isAuthenticated = authenticated;
+    });
     this.items = [
       {
         label: 'Sair',

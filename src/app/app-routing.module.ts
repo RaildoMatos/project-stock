@@ -9,10 +9,8 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   {
     path: 'dashboard',
-    loadComponent: () =>
-      import('./views/dashboard/dashboard.component').then(
-        (x) => x.DashboardComponent
-      ),
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'products',
@@ -27,11 +25,6 @@ const routes: Routes = [
       import('./views/suppliers/suppliers.component').then(
         (x) => x.SuppliersComponent
       ),
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
   },
 ];
 @NgModule({

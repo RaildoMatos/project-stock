@@ -12,7 +12,7 @@ export class SuppliersService {
 
   http = inject(HttpClient);
 
-  getCombinationSuppliers(): Observable<Supplier[]> {
+  getListSuppliers(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(this.API_STOCK_SUPPLIERS);
   }
 
@@ -30,9 +30,9 @@ export class SuppliersService {
     return this.http.get<Supplier>(`${this.API_STOCK_SUPPLIERS}/${id}`);
   }
 
-  filterSuppliersByCategory(id: string | number): Observable<Supplier[]> {
+  filterSuppliersByCategory(category: string): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(
-      `${this.API_STOCK_SUPPLIERS}/category/${id}`
+      `${this.API_STOCK_SUPPLIERS}/category/${category}`
     );
   }
 
