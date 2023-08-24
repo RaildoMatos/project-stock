@@ -22,48 +22,13 @@ export class DashboardComponent implements OnInit {
   dataGraphValuesByType: any;
   optionsGraphValuesByType: any;
 
-  optionsGraphProductsValues: any;
   dataGraphProductsValues: any;
+  optionsGraphProductsValues: any;
 
   ngOnInit(): void {
     this.generateGraphAmountByType();
     this.generateGraphValuesByType();
     this.generateGraphProductsValues();
-  }
-  generateGraphProductsValues() {
-    this.productService.getGraphProductsValues().subscribe((res) => {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--text-color');
-
-      this.dataGraphProductsValues = {
-        labels: res.map((item: { productName: string }) => item.productName),
-        datasets: [
-          {
-            label: 'Valor Total',
-            backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
-            borderColor: [
-              textColor,
-              'rgba(255,255,255,0.8)',
-              'rgba(255,255,255,0.8)',
-              'rgba(255,255,255,0.8)',
-            ],
-            data: res.map((item: { value: number }) => item.value), // Usando os valores do objeto como dados
-            hoverBackgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
-          },
-        ],
-      };
-
-      this.optionsGraphProductsValues = {
-        plugins: {
-          legend: {
-            labels: {
-              usePointStyle: true,
-              color: textColor,
-            },
-          },
-        },
-      };
-    });
   }
 
   generateGraphAmountByType() {
@@ -148,6 +113,42 @@ export class DashboardComponent implements OnInit {
             grid: {
               color: surfaceBorder,
               drawBorder: false,
+            },
+          },
+        },
+      };
+    });
+  }
+
+  generateGraphProductsValues() {
+    this.productService.getGraphProductsValues().subscribe((res) => {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--text-color');
+
+      const labels = res.map(
+        (item: { productName: string }) => item.productName
+      );
+      const data = res.map((item: { value: number }) => item.value);
+
+      this.dataGraphProductsValues = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Valor (R$) em estoque',
+            backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+            borderColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+            data: data,
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      this.optionsGraphProductsValues = {
+        plugins: {
+          legend: {
+            labels: {
+              usePointStyle: true,
+              color: textColor,
             },
           },
         },
