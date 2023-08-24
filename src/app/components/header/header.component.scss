@@ -1,8 +1,11 @@
 .navbar {
   display: flex;
+  flex-wrap: wrap;
+
   align-items: center;
   background-color: #ffc107;
   color: #6c757d;
+  border: 2px solid #6c757d;
 }
 
 .logo {
@@ -73,4 +76,8 @@ button {
 button:hover {
   color: #eaeaea;
   transform: scale(1.2);
+}
+.sair {
+  margin-left: 40rem;
+  display: flex;
 }
