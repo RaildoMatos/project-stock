@@ -11,12 +11,11 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  border: 2px solid #6c757d;
 }
 
 .content {
   flex: 1;
-  padding: 0; /* Ajuste o espaçamento do conteúdo principal */
+  padding: 0;
 }
 
 .footer {
@@ -24,7 +23,7 @@ body {
 }
 
 .footer-content {
-  background-color: #ffc107; /* Cor de fundo */
-  color: #6c757d; /* Cor do texto */
+  background-color: #2b243b;
+  color: rgb(194, 191, 191);
   padding: 15px;
 }
