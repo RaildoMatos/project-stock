@@ -25,10 +25,22 @@ export class DashboardComponent implements OnInit {
   dataGraphProductsValues: any;
   optionsGraphProductsValues: any;
 
+  optionsGraphAmountByStates: any;
+  dataGraphAmountByStates: any;
+
+  dataGraphAmountByCategory: any;
+  optionsGraphAmountByCategory: any;
+
+  dataGraphAmountByProduct: any;
+  optionsGraphAmountByProduct: any;
+
   ngOnInit(): void {
     this.generateGraphAmountByType();
     this.generateGraphValuesByType();
     this.generateGraphProductsValues();
+    this.generateGraphAmountByStates();
+    this.generateGraphAmountByCategory();
+    this.generateGraphAmountByProduct();
   }
 
   generateGraphAmountByType() {
@@ -154,5 +166,113 @@ export class DashboardComponent implements OnInit {
         },
       };
     });
+  }
+  generateGraphAmountByStates() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    this.dataGraphAmountByStates = {
+      labels: ['Quantidade por Estado'],
+      datasets: [
+        {
+          data: '/amount-state',
+          backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+          borderColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    this.optionsGraphAmountByStates = {
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
+      },
+      cutout: '80%',
+    };
+  }
+  generateGraphAmountByCategory() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    this.dataGraphAmountByCategory = {
+      labels: ['A', 'B', 'C'],
+      datasets: [
+        {
+          data: [540, 325, 702],
+          backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+          borderColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+        },
+      ],
+    };
+
+    this.optionsGraphAmountByCategory = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor,
+          },
+        },
+      },
+    };
+  }
+  generateGraphAmountByProduct() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--text-color-secondary'
+    );
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    this.dataGraphAmountByProduct = {
+      labels: [],
+      datasets: [
+        {
+          label: 'Quantidade de Produto por Fornecedor',
+          backgroundColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+          borderColor: ['#9933ff', '#0066ff', '#cc99cc', '#99cc66'],
+          data: [65, 59, 80, 81, 56, 55, 40],
+        },
+      ],
+    };
+
+    this.optionsGraphAmountByProduct = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
+            },
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
+    };
   }
 }

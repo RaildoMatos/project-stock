@@ -14,8 +14,8 @@
       <h3>Quantidade por Estado</h3>
       <p-chart
         type="doughnut"
-        [data]="dataGraphValuesByType"
-        [options]="optionsGraphValuesByType"
+        [data]="dataGraphAmountByStates"
+        [options]="optionsGraphAmountByStates"
       ></p-chart>
     </div>
   </p-card>
@@ -59,8 +59,8 @@
         <h3>Quantidade de Produto por Fornecedor</h3>
         <p-chart
           type="bar"
-          [data]="dataGraphValuesByType"
-          [options]="optionsGraphValuesByType"
+          [data]="dataGraphAmountByProduct"
+          [options]="optionsGraphAmountByProduct"
         ></p-chart>
       </div>
     </p-card>
