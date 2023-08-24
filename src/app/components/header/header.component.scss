@@ -1,6 +1,5 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: #ffc107;
   color: #6c757d;
@@ -8,10 +7,11 @@
 
 .logo {
   font-size: 24px;
+  padding-right: 3%;
 }
 
 .logo-image {
-  max-width: 90px;
+  max-width: 80px;
   padding: 5px;
   height: auto;
 }
@@ -30,10 +30,47 @@
   transition: color 0.3s;
 }
 
+.element-header {
+  padding-right: 3%;
+}
+
+a {
+  font-size: 20px;
+}
+
+span {
+  font-size: 2rem;
+  padding-right: 1rem;
+}
+
 .menu a:hover {
   color: #eaeaea;
+  transition: color 0.3s, transform 0.3s;
+  transition: color 0.3s;
+  transform: scale(1.2);
+}
+
+.container {
+  display: flex;
+  justify-content: flex-start; /* Alinha os itens à esquerda */
 }
 
 .active {
   font-weight: bold;
+}
+
+button {
+  display: flex;
+  align-items: flex-end;
+  color: #6c757d;
+  text-decoration: none;
+  margin-right: 20px;
+  transition: color 0.3s, transform 0.3s;
+  transition: color 0.3s;
+  font-size: 20px;
+}
+
+button:hover {
+  color: #eaeaea;
+  transform: scale(1.2);
 }
