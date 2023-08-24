@@ -50,21 +50,15 @@ export class SuppliersService {
     });
   }
 
-  getGraphAmountByStates(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(
-      `${this.API_STOCK_SUPPLIERS}/amount-state`
-    );
+  getGraphAmountByStates(): Observable<any> {
+    return this.http.get<any>(`${this.API_STOCK_SUPPLIERS}/amount-state`);
   }
 
-  getGraphAmountByCategory(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(
-      `${this.API_STOCK_SUPPLIERS}/amount-category`
-    );
+  getGraphAmountByCategory(): Observable<any> {
+    return this.http.get<any>(`${this.API_STOCK_SUPPLIERS}/amount-category`);
   }
 
-  getGraphAmountByProducts(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(
-      `${this.API_STOCK_SUPPLIERS}/amount-products`
-    );
+  getGraphAmountByProducts(): Observable<any> {
+    return this.http.get<any>(`${this.API_STOCK_SUPPLIERS}/amount-products`);
   }
 }

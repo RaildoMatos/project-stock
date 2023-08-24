@@ -56,10 +56,8 @@ export class ProductsService {
     return this.http.get<any>(`${this.API_STOCK_PRODUCTS}/types-amount`);
   }
 
-  getGraphValuesByType(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(
-      `${this.API_STOCK_PRODUCTS}/types-values`
-    );
+  getGraphValuesByType(): Observable<any> {
+    return this.http.get<any>(`${this.API_STOCK_PRODUCTS}/types-values`);
   }
 
   getGraphProductsValues(): Observable<any> {
