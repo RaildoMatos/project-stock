@@ -2,30 +2,21 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 2rem;
-  align-items: center;
-}
-
-.p-card {
-  flex-basis: calc(50% - 20px);
-  margin-bottom: 20px;
-  flex-basis: 100%;
-  margin: 50%;
 }
 
 .graph1,
 .graph2,
 .graph3 {
-  width: 25rem;
-  height: 25rem;
+  width: 26rem;
+  height: 29rem;
+  align-items: center;
 }
 .graph4,
 .graph5,
 .graph6 {
-  width: 25rem;
+  width: 26rem;
   height: 15rem;
 }
-
-.sair {
-  margin-left: 95%;
+.bar {
+  margin-top: 1%;
 }
