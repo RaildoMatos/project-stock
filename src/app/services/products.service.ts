@@ -20,18 +20,12 @@ export class ProductsService {
     return this.http.get<Product[]>(this.API_STOCK_PRODUCTS);
   }
 
-  getPaginatedListProducts(
-    page: number,
-    size: number
-  ): Observable<Page<Product>> {
-    const url = `${this.API_STOCK_PRODUCTS}/products`;
-    const params = { page: page.toString(), size: size.toString() };
-
-    return this.http.get<Page<Product>>(url, { params });
+  getPaginatedListProducts() {
+    return this.http.get<Product[]>(`${this.API_STOCK_PRODUCTS}/products`);
   }
 
-  filterProduct(id: string | number): Observable<Product> {
-    return this.http.get<Product>(`${this.API_STOCK_PRODUCTS}/${id}`);
+  filterProduct(id: string | number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.API_STOCK_PRODUCTS}/${id}`);
   }
 
   filterProductsByType(id: string | number): Observable<Product[]> {
@@ -75,11 +69,8 @@ export class ProductsService {
     return this.http.get<Type[]>(this.API_STOCK_TYPES);
   }
 
-  getPaginatedListTypes(page: number, size: number): Observable<Page<Type>> {
-    const url = `${this.API_STOCK_TYPES}/types`;
-    const params = { page: page.toString(), size: size.toString() };
-
-    return this.http.get<Page<Type>>(url, { params });
+  getPaginatedListTypes() {
+    return this.http.get<Type[]>(`${this.API_STOCK_TYPES}/types`);
   }
 
   filterType(id: string | number): Observable<Type> {

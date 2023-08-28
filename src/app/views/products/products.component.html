@@ -1,1 +1,197 @@
-<h3>Tela de products</h3>
+<div class="card flex justify-content-center">
+  <p-autoComplete
+    [(ngModel)]="selectedProduct"
+    [dropdown]="true"
+    [suggestions]="filteredProducts"
+    (completeMethod)="filterProduct($event)"
+    field="name"
+  ></p-autoComplete>
+  <p-autoComplete
+    [(ngModel)]="selectedType"
+    [dropdown]="true"
+    [suggestions]="filteredTypes"
+    (completeMethod)="filterTypes($event)"
+    field="name"
+  ></p-autoComplete>
+
+  <p-button
+    label="Pesquisar"
+    icon="pi pi-search"
+    styleClass="p-button-info"
+    (click)="findAll()"
+  ></p-button>
+
+  <p-toast></p-toast>
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="Novo"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
+        (click)="createForm()"
+      ></button>
+      <p-dialog
+        header="Header"
+        [(visible)]="visible"
+        [style]="{ width: '50vw' }"
+        [maximizable]="true"
+      >
+        <form [formGroup]="form">
+          <div class="card flex justify-content-center">
+            <input type="text" pInputText formControlName="name" />
+          </div>
+
+          <p-inputNumber
+            formControlName="amount"
+            [showButtons]="true"
+            inputId="minmax-buttons"
+            [min]="0"
+            [max]="10000"
+          >
+          </p-inputNumber>
+          <p-inputNumber
+            formControlName="value"
+            mode="currency"
+            currency="BRL"
+            [showButtons]="true"
+            inputId="stacked"
+          >
+          </p-inputNumber>
+          <p-dropdown
+            formControlName="type"
+            [options]="types"
+            optionLabel="name"
+          ></p-dropdown>
+          <p-dropdown
+            formControlName="supplier"
+            [options]="suppliers"
+            optionLabel="name"
+          ></p-dropdown>
+          <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            formControlName="description"
+          ></textarea>
+        </form>
+        <button
+          pButton
+          pRipple
+          label="Save"
+          icon="pi pi-check"
+          (click)="createProduct()"
+        ></button>
+      </p-dialog>
+    </ng-template>
+  </p-toolbar>
+  <div class="table-container">
+    <div class="table-item">
+      <p-table
+        class="custom-table"
+        #dt
+        [value]="products"
+        [rows]="5"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '50%' }"
+        [rowHover]="true"
+        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        [showCurrentPageReport]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" style="min-width: 15rem">
+              Nome <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="value">
+              Valor <p-sortIcon field="value"></p-sortIcon>
+            </th>
+            <th pSortableColumn="type.name" style="min-width: 10rem">
+              Tipo <p-sortIcon field="type.name"></p-sortIcon>
+            </th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.value }}</td>
+            <td>{{ product.type.name }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="editProduct(product)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteProduct(product.id)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            {{ products ? products.length : 0 }} Produtos em Estoque.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="table-item">
+      <p-table
+        #dt
+        [value]="types"
+        [rows]="5"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '30%' }"
+        [(selection)]="selectedTypes"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        [showCurrentPageReport]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" style="min-width: 15rem">
+              Nome <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-type>
+          <tr>
+            <td>{{ type.name }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="editType(type)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger"
+                (click)="deleteType(type)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            {{ types ? types.length : 0 }} Tipos de Produto Cadastrados.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

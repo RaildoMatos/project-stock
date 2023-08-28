@@ -16,14 +16,10 @@ export class SuppliersService {
     return this.http.get<Supplier[]>(this.API_STOCK_SUPPLIERS);
   }
 
-  getPaginatedListSuppliers(
-    page: number,
-    size: number
-  ): Observable<Page<Supplier>> {
-    const url = `${this.API_STOCK_SUPPLIERS}/suppliers`;
-    const params = { page: page.toString(), size: size.toString() };
-
-    return this.http.get<Page<Supplier>>(url, { params });
+  getPaginatedListSuppliers(page: Page) {
+    return this.http.get<any>(
+      `${this.API_STOCK_SUPPLIERS}/suppliers?page=${page.page}&size=${page.size}`
+    );
   }
 
   filterSupplier(id: string | number): Observable<Supplier> {

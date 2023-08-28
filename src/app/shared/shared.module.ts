@@ -48,6 +48,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { ImageModule } from 'primeng/image';
 @NgModule({
@@ -102,6 +104,8 @@ import { ImageModule } from 'primeng/image';
     ChartModule,
     CardModule,
     TieredMenuModule,
+    TagModule,
+    PaginatorModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -153,6 +157,8 @@ import { ImageModule } from 'primeng/image';
     ChartModule,
     CardModule,
     TieredMenuModule,
+    TagModule,
+    PaginatorModule,
   ],
   providers: [MessageService, ConfirmationService, DialogService],
 })

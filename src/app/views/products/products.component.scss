@@ -1,0 +1,17 @@
+.table-container {
+  display: flex;
+  width: 100%;
+}
+
+.table-item {
+  display: flex;
+  width: 100%;
+}
+
+.custom-table {
+  width: 90%;
+}
+
+.table-item:first-child {
+  flex: 0 0 70%; /* 70% do espaço para a tabela de produtos */
+}
