@@ -2,21 +2,28 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  max-height: calc(100% - 40px);
 }
 
 .graph1,
 .graph2,
 .graph3 {
-  width: 26rem;
+  width: 22rem;
   height: 29rem;
   align-items: center;
 }
 .graph4,
 .graph5,
 .graph6 {
-  width: 26rem;
+  width: 22rem;
   height: 15rem;
 }
 .bar {
   margin-top: 1%;
+}
+
+@media screen and (max-width: 768px) {
+  p-card {
+    margin-left: 1%;
+  }
 }
