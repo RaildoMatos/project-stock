@@ -3,14 +3,14 @@
     [(ngModel)]="selectedProduct"
     [dropdown]="true"
     [suggestions]="filteredProducts"
-    (completeMethod)="filterProduct($event)"
+    (completeMethod)="loadFilterProduct($event)"
     field="name"
   ></p-autoComplete>
   <p-autoComplete
-    [(ngModel)]="selectedType"
+    [(ngModel)]="selectedTypeByProduct"
     [dropdown]="true"
     [suggestions]="filteredTypes"
-    (completeMethod)="filterTypes($event)"
+    (completeMethod)="loadFilterTypes($event)"
     field="name"
   ></p-autoComplete>
 
@@ -30,11 +30,11 @@
         label="Novo"
         icon="pi pi-plus"
         class="p-button-success mr-2"
-        (click)="createForm()"
+        (click)="createProduct()"
       ></button>
       <p-dialog
-        header="Header"
-        [(visible)]="visible"
+        header="Salvar Produto"
+        [(visible)]="visibleFormProduct"
         [style]="{ width: '50vw' }"
         [maximizable]="true"
       >
@@ -81,7 +81,7 @@
           pRipple
           label="Save"
           icon="pi pi-check"
-          (click)="createProduct()"
+          (click)="saveProduct()"
         ></button>
       </p-dialog>
     </ng-template>
@@ -181,7 +181,7 @@
                 pRipple
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-danger"
-                (click)="deleteType(type)"
+                (click)="deleteType(type.id)"
               ></button>
             </td>
           </tr>
