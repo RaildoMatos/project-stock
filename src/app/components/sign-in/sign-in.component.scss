@@ -3,28 +3,22 @@
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 350px;
-  height: 350px;
-  margin: 0 auto;
-  margin-top: 100px;
+  padding: 3rem;
+  width: fit-content;
+  height: fit-content;
   text-align: center;
   align-items: center;
   color: rgb(0, 0, 0);
   background-image: url("../../../assets/img/login.png");
-  background-repeat: round;
+  // background-repeat: round;
+  background-size: cover;
 }
 
-.grid {
-  align-items: center;
-  margin-top: 100px;
-}
+// .field {
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+// }
 
-.field {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-label {
-  margin-right: 10px;
-}
+// label {
+//   margin-right: 10px;
+// }

@@ -1,25 +1,16 @@
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-height: calc(100% - 40px);
+.card-dashboard {
+  padding: 1rem;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
 }
 
-.graph1,
-.graph2,
-.graph3 {
-  width: 22rem;
-  height: 29rem;
-  align-items: center;
+h3 {
+  text-align: center;
 }
-.graph4,
-.graph5,
-.graph6 {
-  width: 22rem;
-  height: 15rem;
-}
-.bar {
-  margin-top: 1%;
+
+.chart {
+  display: flex;
+  justify-content: center;
 }
 
 @media screen and (max-width: 768px) {
