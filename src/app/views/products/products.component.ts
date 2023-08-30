@@ -1,11 +1,5 @@
 import { Page } from './../../models/page';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/products.service';
 import { Product } from 'src/app/models/product';
@@ -15,6 +9,11 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { Type } from 'src/app/models/type';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Supplier } from 'src/app/models/supplier';
+import {
+  ConfirmEventType,
+  ConfirmationService,
+  MessageService,
+} from 'primeng/api';
 
 @Component({
   selector: 'app-products',
@@ -44,8 +43,11 @@ export class ProductsComponent implements OnInit {
   suppliers: Supplier[] = [];
 
   page!: Page;
-  form!: FormGroup;
+  formProduct!: FormGroup;
+  formType!: FormGroup;
 
+  confirmationService = inject(ConfirmationService);
+  messageService = inject(MessageService);
   productsService = inject(ProductsService);
   suppliersService = inject(SuppliersService);
   fb = inject(FormBuilder);
@@ -73,7 +75,7 @@ export class ProductsComponent implements OnInit {
     this.suppliersService.getListSuppliers().subscribe((data) => {
       this.suppliers = data;
     });
-    this.form = this.fb.group({
+    this.formProduct = this.fb.group({
       id: [''],
       name: ['', [Validators.required]],
       type: [],
@@ -133,13 +135,28 @@ export class ProductsComponent implements OnInit {
   }
 
   saveProduct(): void {
-    this.productsService.createProduct(this.form.value).subscribe(() => {
+    this.productsService.createProduct(this.formProduct.value).subscribe(() => {
       console.log('Produto Criado!');
-      console.log(this.form.value);
+      console.log(this.formProduct.value);
     });
   }
 
   editProduct(product: Product): void {}
+
+  openDeleteProduct() {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
+      },
+    });
+  }
 
   deleteProduct(id: number): void {
     this.productsService.deleteProduct(id).subscribe(
@@ -157,7 +174,7 @@ export class ProductsComponent implements OnInit {
   // TYPES:
 
   createFormNewType(): void {
-    this.form = this.fb.group({
+    this.formType = this.fb.group({
       id: [''],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
@@ -194,10 +211,13 @@ export class ProductsComponent implements OnInit {
     this.createFormNewType();
   }
 
+  // Estou com erro no salvar, está chegando vazio os dados inseridos no formulário.
+
   saveType(): void {
-    this.productsService.createType(this.form.value).subscribe(() => {
+    debugger;
+    this.productsService.createType(this.formType.value).subscribe(() => {
       console.log('Type Criado!');
-      console.log(this.form.value);
+      console.log(this.formType.value);
     });
   }
 
