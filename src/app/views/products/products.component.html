@@ -21,13 +21,25 @@
           field="name"
         ></p-autoComplete>
       </div>
-      <div class="p-field col-2">
-        <p-button
-          label="Pesquisar"
-          icon="pi pi-search"
-          styleClass="p-button-info"
-          (click)="findAll()"
-        ></p-button>
+      <div class="flex justify-content-start align-items-center">
+        <div class="p-field ml-2">
+          <p-button
+            class="flex align-items-end justify-content-end"
+            [disabled]="buttonFindDisable"
+            icon="pi pi-search"
+            styleClass="p-button-info"
+            (click)="findAll()"
+          ></p-button>
+        </div>
+        <div class="p-field ml-2">
+          <p-button
+            class="flex align-items-end justify-content-end"
+            [disabled]="buttonClearDisable"
+            icon="pi pi-eraser"
+            styleClass="p-button-info"
+            (click)="clear()"
+          ></p-button>
+        </div>
       </div>
     </div>
   </div>
@@ -132,14 +144,14 @@
                 pButton
                 pRipple
                 icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
+                class="p-button-success mr-2"
                 (click)="editProduct(product)"
               ></button>
               <button
                 pButton
                 pRipple
                 icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
+                class="p-button-danger"
                 (click)="deleteProduct(product.id)"
               ></button>
             </td>
@@ -176,10 +188,10 @@
                 <input type="text" pInputText formControlName="name" />
               </div>
               <textarea
+                formControlName="description"
                 rows="5"
                 cols="30"
                 pInputTextarea
-                formControlName="description"
               ></textarea>
             </form>
             <button
@@ -202,7 +214,7 @@
         [(selection)]="selectedTypes"
         [rowHover]="true"
         dataKey="id"
-        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        currentPageReportTemplate="{first} até {last} de {totalRecords}"
         [showCurrentPageReport]="true"
       >
         <ng-template pTemplate="header">
@@ -221,14 +233,14 @@
                 pButton
                 pRipple
                 icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
+                class="p-button-success mr-2"
                 (click)="editType(type)"
               ></button>
               <button
                 pButton
                 pRipple
                 icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
+                class="p-button-danger"
                 (click)="deleteType(type.id)"
               ></button>
             </td>

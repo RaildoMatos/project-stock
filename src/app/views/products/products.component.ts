@@ -45,6 +45,8 @@ export class ProductsComponent implements OnInit {
   page!: Page;
   formProduct!: FormGroup;
   formType!: FormGroup;
+  buttonClearDisable?: boolean;
+  buttonFindDisable?: boolean;
 
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
@@ -54,14 +56,22 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll();
+    this.createFormNewProduct();
+    this.createFormNewType();
   }
 
   findAll(): void {
     if (this.selectedProduct) {
+      this.buttonClearDisable = false;
+      this.buttonFindDisable = true;
       this.filterProduct(this.selectedProduct);
     } else if (this.selectedTypeByProduct) {
+      this.buttonClearDisable = false;
+      this.buttonFindDisable = true;
       this.filterProductsByType(this.selectedTypeByProduct);
     } else {
+      this.buttonClearDisable = true;
+      this.buttonFindDisable = false;
       this.loadGridProducts();
     }
     this.loadGridTypes();
@@ -131,14 +141,12 @@ export class ProductsComponent implements OnInit {
 
   createProduct(): void {
     this.visibleFormProduct = true;
-    this.createFormNewProduct();
   }
 
   saveProduct(): void {
-    this.productsService.createProduct(this.formProduct.value).subscribe(() => {
-      console.log('Produto Criado!');
-      console.log(this.formProduct.value);
-    });
+    this.productsService
+      .createProduct(this.formProduct.value)
+      .subscribe(() => {});
   }
 
   editProduct(product: Product): void {}
@@ -208,17 +216,10 @@ export class ProductsComponent implements OnInit {
 
   createType(): void {
     this.visibleFormType = true;
-    this.createFormNewType();
   }
 
-  // Estou com erro no salvar, está chegando vazio os dados inseridos no formulário.
-
   saveType(): void {
-    debugger;
-    this.productsService.createType(this.formType.value).subscribe(() => {
-      console.log('Type Criado!');
-      console.log(this.formType.value);
-    });
+    this.productsService.createType(this.formType.value).subscribe(() => {});
   }
 
   editType(type: Type): void {}
@@ -234,5 +235,11 @@ export class ProductsComponent implements OnInit {
         // Adicionar comportamento de erro após exclusão.
       }
     );
+  }
+
+  clear() {
+    this.selectedProduct = null;
+    this.selectedTypeByProduct = null;
+    this.findAll();
   }
 }
