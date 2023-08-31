@@ -73,8 +73,8 @@ export class ProductsService {
     return this.http.get<Type[]>(`${this.API_STOCK_TYPES}/types`);
   }
 
-  filterType(id: string | number): Observable<Type> {
-    return this.http.get<Type>(`${this.API_STOCK_TYPES}/${id}`);
+  filterType(id: string | number): Observable<Type[]> {
+    return this.http.get<Type[]>(`${this.API_STOCK_TYPES}/${id}`);
   }
 
   createType(data: Type) {

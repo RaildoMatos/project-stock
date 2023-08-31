@@ -7,23 +7,11 @@ body {
   min-height: 100vh;
 }
 
-.wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  flex: 1;
-  padding: 0;
-}
-
-.footer {
-  text-align: center;
-}
-
 .footer-content {
   background-color: #2b243b;
   color: rgb(194, 191, 191);
-  padding: 15px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 7vh;
 }

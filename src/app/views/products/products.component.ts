@@ -1,11 +1,5 @@
 import { Page } from './../../models/page';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/products.service';
 import { Product } from 'src/app/models/product';
@@ -15,6 +9,11 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { Type } from 'src/app/models/type';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Supplier } from 'src/app/models/supplier';
+import {
+  ConfirmEventType,
+  ConfirmationService,
+  MessageService,
+} from 'primeng/api';
 
 @Component({
   selector: 'app-products',
@@ -33,25 +32,60 @@ export class ProductsComponent implements OnInit {
   types: Type[] = [];
   listTypes: Type[] = [];
   selectedTypes: Type[] = [];
-  selectedType: any;
+  selectedTypeByProduct: any;
   filteredTypes: any;
 
   type?: Type;
-  visible: boolean = false;
+  visibleFormProduct: boolean = false;
+  visibleFormType: boolean = false;
   selectedTypeCreate: Type | undefined;
 
   suppliers: Supplier[] = [];
 
   page!: Page;
-  form!: FormGroup;
+  formProduct!: FormGroup;
+  formType!: FormGroup;
+  buttonClearDisable?: boolean;
+  buttonFindDisable?: boolean;
 
+  confirmationService = inject(ConfirmationService);
+  messageService = inject(MessageService);
   productsService = inject(ProductsService);
   suppliersService = inject(SuppliersService);
   fb = inject(FormBuilder);
 
   ngOnInit(): void {
     this.findAll();
-    this.form = this.fb.group({
+    this.createFormNewProduct();
+    this.createFormNewType();
+  }
+
+  findAll(): void {
+    if (this.selectedProduct) {
+      this.buttonClearDisable = false;
+      this.buttonFindDisable = true;
+      this.filterProduct(this.selectedProduct);
+    } else if (this.selectedTypeByProduct) {
+      this.buttonClearDisable = false;
+      this.buttonFindDisable = true;
+      this.filterProductsByType(this.selectedTypeByProduct);
+    } else {
+      this.buttonClearDisable = true;
+      this.buttonFindDisable = false;
+      this.loadGridProducts();
+    }
+    this.loadGridTypes();
+    this.loadListProducts();
+    this.loadListTypes();
+  }
+
+  // PRODUCTS:
+
+  createFormNewProduct(): void {
+    this.suppliersService.getListSuppliers().subscribe((data) => {
+      this.suppliers = data;
+    });
+    this.formProduct = this.fb.group({
       id: [''],
       name: ['', [Validators.required]],
       type: [],
@@ -62,33 +96,9 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  // ESTOU TENTANDO FAZER A FILTRAGEM DOS DADOS REFLETIR NO GRID.
-
-  findAll() {
-    debugger;
-    if (this.selectedProduct) {
-      const id = this.selectedProduct.id;
-      this.productsService.filterProduct(id).subscribe((data) => {
-        console.log(data);
-        this.products = data;
-      });
-    } else {
-      this.loadGridProducts();
-    }
-    this.loadGridTypes();
-    this.loadListProducts();
-    this.loadListTypes();
-  }
-
   loadGridProducts(): void {
     this.productsService.getPaginatedListProducts().subscribe((data) => {
       this.products = data;
-    });
-  }
-
-  loadGridTypes(): void {
-    this.productsService.getPaginatedListTypes().subscribe((data) => {
-      this.types = data;
     });
   }
 
@@ -98,18 +108,7 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  loadListTypes(): void {
-    this.productsService.getListTypes().subscribe((data) => {
-      this.listTypes = data;
-    });
-  }
-
-  selectProduct(product: any) {
-    debugger;
-    this.selectedProduct = product;
-  }
-
-  filterProduct(event: AutoCompleteCompleteEvent) {
+  loadFilterProduct(event: AutoCompleteCompleteEvent): void {
     let filtered: any[] = [];
     let query = event.query;
 
@@ -122,34 +121,50 @@ export class ProductsComponent implements OnInit {
     this.filteredProducts = filtered;
   }
 
-  filterTypes(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < (this.listTypes as any[]).length; i++) {
-      let type = (this.listTypes as any[])[i];
-      if (type.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(type);
-      }
-    }
-    this.filteredTypes = filtered;
+  filterProduct(product: string): void {
+    this.selectedProduct = product;
+    const id = this.selectedProduct.id;
+    this.productsService.filterProduct(id).subscribe((data) => {
+      this.products = [];
+      this.products = data;
+    });
   }
 
-  createForm(): void {
-    this.visible = true;
-    this.suppliersService.getListSuppliers().subscribe((data) => {
-      this.suppliers = data;
+  filterProductsByType(type: string): void {
+    this.selectedTypeByProduct = type;
+    const id = this.selectedTypeByProduct.id;
+    this.productsService.filterProductsByType(id).subscribe((data) => {
+      this.products = [];
+      this.products = data;
     });
   }
 
   createProduct(): void {
-    this.productsService.createProduct(this.form.value).subscribe(() => {
-      console.log('Produto Criado!');
-      console.log(this.form.value);
-    });
+    this.visibleFormProduct = true;
+  }
+
+  saveProduct(): void {
+    this.productsService
+      .createProduct(this.formProduct.value)
+      .subscribe(() => {});
   }
 
   editProduct(product: Product): void {}
+
+  openDeleteProduct() {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'Record deleted',
+        });
+      },
+    });
+  }
 
   deleteProduct(id: number): void {
     this.productsService.deleteProduct(id).subscribe(
@@ -164,7 +179,67 @@ export class ProductsComponent implements OnInit {
     );
   }
 
+  // TYPES:
+
+  createFormNewType(): void {
+    this.formType = this.fb.group({
+      id: [''],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+    });
+  }
+
+  loadGridTypes(): void {
+    this.productsService.getPaginatedListTypes().subscribe((data) => {
+      this.types = data;
+    });
+  }
+
+  loadListTypes(): void {
+    this.productsService.getListTypes().subscribe((data) => {
+      this.listTypes = data;
+    });
+  }
+
+  loadFilterTypes(event: AutoCompleteCompleteEvent): void {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.listTypes as any[]).length; i++) {
+      let type = (this.listTypes as any[])[i];
+      if (type.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(type);
+      }
+    }
+    this.filteredTypes = filtered;
+  }
+
+  createType(): void {
+    this.visibleFormType = true;
+  }
+
+  saveType(): void {
+    this.productsService.createType(this.formType.value).subscribe(() => {});
+  }
+
   editType(type: Type): void {}
 
-  deleteType(type: Type): void {}
+  deleteType(id: number): void {
+    this.productsService.deleteType(id).subscribe(
+      () => {
+        console.log('Type deleted successfully.');
+        // Adicionar comportamento de sucesso após exclusão.
+      },
+      (error) => {
+        console.error('Error deleting type:', error);
+        // Adicionar comportamento de erro após exclusão.
+      }
+    );
+  }
+
+  clear() {
+    this.selectedProduct = null;
+    this.selectedTypeByProduct = null;
+    this.findAll();
+  }
 }
