@@ -25,7 +25,6 @@
         <div class="p-field ml-2">
           <p-button
             class="flex align-items-end justify-content-end"
-            [disabled]="buttonFindDisable"
             icon="pi pi-search"
             styleClass="p-button-info"
             (click)="findAll()"
@@ -43,6 +42,30 @@
       </div>
     </div>
   </div>
+  <!-- <div class="flex card-container">
+    <div class="col-3">
+      <div class="card">
+        <p-card header="Quantidade">
+          <p class="m-0">Quantidade</p>
+        </p-card>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <p-card header="Valor Total">
+          <p class="m-0">Valor Total</p>
+        </p-card>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <p-card header="Fornecedor">
+          <p class="m-0">Fornecedor</p>
+        </p-card>
+      </div>
+    </div>
+  </div> -->
+
   <div class="col-8">
     <div class="card">
       <p-toolbar styleClass="">
@@ -55,60 +78,9 @@
             class="p-button-success mr-2"
             (click)="createProduct()"
           ></button>
-          <p-dialog
-            header="Salvar Produto"
-            [(visible)]="visibleFormProduct"
-            [style]="{ width: '50vw' }"
-            [maximizable]="true"
-          >
-            <form [formGroup]="formProduct">
-              <div class="card flex justify-content-center">
-                <input type="text" pInputText formControlName="name" />
-              </div>
-
-              <p-inputNumber
-                formControlName="amount"
-                [showButtons]="true"
-                inputId="minmax-buttons"
-                [min]="0"
-                [max]="10000"
-              >
-              </p-inputNumber>
-              <p-inputNumber
-                formControlName="value"
-                mode="currency"
-                currency="BRL"
-                [showButtons]="true"
-                inputId="stacked"
-              >
-              </p-inputNumber>
-              <p-dropdown
-                formControlName="type"
-                [options]="types"
-                optionLabel="name"
-              ></p-dropdown>
-              <p-dropdown
-                formControlName="supplier"
-                [options]="suppliers"
-                optionLabel="name"
-              ></p-dropdown>
-              <textarea
-                rows="5"
-                cols="30"
-                pInputTextarea
-                formControlName="description"
-              ></textarea>
-            </form>
-            <button
-              pButton
-              pRipple
-              label="Save"
-              icon="pi pi-check"
-              (click)="saveProduct()"
-            ></button>
-          </p-dialog>
         </ng-template>
       </p-toolbar>
+
       <p-table
         class="custom-table"
         #dt
@@ -143,17 +115,111 @@
               <button
                 pButton
                 pRipple
+                icon="pi pi-eye"
+                class="p-button-info mr-2"
+                (click)="viewProduct(product.id)"
+                key="view"
+              ></button>
+              <p-dialog
+                #view
+                header="Informações do Produto: {{ product.name }}"
+                [(visible)]="viewVisible"
+                [style]="{ width: '50vw', height: '300px' }"
+              >
+                <p>
+                  {{ product.description }}
+                </p>
+              </p-dialog>
+              <button
+                pButton
+                pRipple
                 icon="pi pi-pencil"
                 class="p-button-success mr-2"
                 (click)="editProduct(product)"
               ></button>
+              <p-dialog
+                header="Editar Produto"
+                [(visible)]="visibleEditFormProduct"
+                [style]="{ width: '50vw' }"
+                [maximizable]="true"
+              >
+                <form [formGroup]="formProduct">
+                  <div class="card flex justify-content-center">
+                    <input type="text" pInputText formControlName="name" />
+                  </div>
+
+                  <p-inputNumber
+                    formControlName="amount"
+                    [showButtons]="true"
+                    inputId="minmax-buttons"
+                    [min]="0"
+                    [max]="10000"
+                  >
+                  </p-inputNumber>
+                  <p-inputNumber
+                    formControlName="value"
+                    mode="currency"
+                    currency="BRL"
+                    [showButtons]="true"
+                    inputId="stacked"
+                  >
+                  </p-inputNumber>
+                  <p-dropdown
+                    formControlName="type"
+                    [options]="types"
+                    optionLabel="name"
+                  ></p-dropdown>
+                  <p-dropdown
+                    formControlName="supplier"
+                    [options]="suppliers"
+                    optionLabel="name"
+                  ></p-dropdown>
+                  <textarea
+                    formControlName="description"
+                    rows="5"
+                    cols="30"
+                    pInputTextarea
+                  ></textarea>
+                </form>
+                <button
+                  pButton
+                  pRipple
+                  label="Salvar"
+                  icon="pi pi-check"
+                  (click)="updateProduct()"
+                ></button>
+              </p-dialog>
               <button
                 pButton
                 pRipple
                 icon="pi pi-trash"
                 class="p-button-danger"
-                (click)="deleteProduct(product.id)"
+                (click)="openDeleteProduct(product)"
               ></button>
+              <p-toast position="bottom-center"></p-toast>
+              <p-confirmDialog
+                header="Confirmation"
+                icon="pi pi-exclamation-triangle"
+                [closable]="false"
+                key="product"
+              >
+                <ng-template pTemplate="footer">
+                  <button
+                    type="button"
+                    pButton
+                    label="Não"
+                    class="ui-button-secondary"
+                    (click)="deleteProduct(false)"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    label="Sim"
+                    class="ui-button-danger"
+                    (click)="deleteProduct(true)"
+                  ></button>
+                </ng-template>
+              </p-confirmDialog>
             </td>
           </tr>
         </ng-template>
@@ -241,8 +307,32 @@
                 pRipple
                 icon="pi pi-trash"
                 class="p-button-danger"
-                (click)="deleteType(type.id)"
+                (click)="openDeleteType(type)"
               ></button>
+              <p-toast position="bottom-center"></p-toast>
+              <p-confirmDialog
+                header="Confirmation"
+                icon="pi pi-exclamation-triangle"
+                [closable]="false"
+                key="type"
+              >
+                <ng-template pTemplate="footer">
+                  <button
+                    type="button"
+                    pButton
+                    label="Não"
+                    class="ui-button-secondary"
+                    (click)="deleteType(false)"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    label="Sim"
+                    class="ui-button-danger"
+                    (click)="deleteType(true)"
+                  ></button>
+                </ng-template>
+              </p-confirmDialog>
             </td>
           </tr>
         </ng-template>
@@ -256,209 +346,74 @@
   </div>
 </div>
 
-<!-- <div class="card flex justify-content-center">
-  <p-autoComplete
-    [(ngModel)]="selectedProduct"
-    [dropdown]="true"
-    [suggestions]="filteredProducts"
-    (completeMethod)="loadFilterProduct($event)"
-    field="name"
-  ></p-autoComplete>
-  <p-autoComplete
-    [(ngModel)]="selectedTypeByProduct"
-    [dropdown]="true"
-    [suggestions]="filteredTypes"
-    (completeMethod)="loadFilterTypes($event)"
-    field="name"
-  ></p-autoComplete>
-
-  <p-button
-    label="Pesquisar"
-    icon="pi pi-search"
-    styleClass="p-button-info"
-    (click)="findAll()"
-  ></p-button>
-
-  <p-toast></p-toast>
-  <p-toolbar styleClass="mb-4 gap-2">
-    <ng-template pTemplate="left">
-      <button
-        pButton
-        pRipple
-        label="Novo"
-        icon="pi pi-plus"
-        class="p-button-success mr-2"
-        (click)="createProduct()"
-      ></button>
-      <p-dialog
-        header="Salvar Produto"
-        [(visible)]="visibleFormProduct"
-        [style]="{ width: '50vw' }"
-        [maximizable]="true"
-      >
-        <form [formGroup]="form">
-          <div class="card flex justify-content-center">
-            <input type="text" pInputText formControlName="name" />
-          </div>
-
-          <p-inputNumber
-            formControlName="amount"
-            [showButtons]="true"
-            inputId="minmax-buttons"
-            [min]="0"
-            [max]="10000"
-          >
-          </p-inputNumber>
-          <p-inputNumber
-            formControlName="value"
-            mode="currency"
-            currency="BRL"
-            [showButtons]="true"
-            inputId="stacked"
-          >
-          </p-inputNumber>
-          <p-dropdown
-            formControlName="type"
-            [options]="types"
-            optionLabel="name"
-          ></p-dropdown>
-          <p-dropdown
-            formControlName="supplier"
-            [options]="suppliers"
-            optionLabel="name"
-          ></p-dropdown>
-          <textarea
-            rows="5"
-            cols="30"
-            pInputTextarea
-            formControlName="description"
-          ></textarea>
-        </form>
-        <button
-          pButton
-          pRipple
-          label="Save"
-          icon="pi pi-check"
-          (click)="saveProduct()"
-        ></button>
-      </p-dialog>
-    </ng-template>
-  </p-toolbar>
-  <div class="table-container">
-    <div class="table-item">
-      <p-table
-        class="custom-table"
-        #dt
-        [value]="products"
-        [rows]="5"
-        [paginator]="true"
-        [tableStyle]="{ 'min-width': '50%' }"
-        [rowHover]="true"
-        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
-        [showCurrentPageReport]="true"
-      >
-        <ng-template pTemplate="header">
-          <tr>
-            <th pSortableColumn="name" style="min-width: 15rem">
-              Nome <p-sortIcon field="name"></p-sortIcon>
-            </th>
-            <th pSortableColumn="value">
-              Valor <p-sortIcon field="value"></p-sortIcon>
-            </th>
-            <th pSortableColumn="type.name" style="min-width: 10rem">
-              Tipo <p-sortIcon field="type.name"></p-sortIcon>
-            </th>
-            <th>Ações</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-          <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.value }}</td>
-            <td>{{ product.type.name }}</td>
-            <td>
-              <button
-                pButton
-                pRipple
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
-                (click)="editProduct(product)"
-              ></button>
-              <button
-                pButton
-                pRipple
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
-                (click)="deleteProduct(product.id)"
-              ></button>
-
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-          <div class="flex align-items-center justify-content-between">
-            {{ products ? products.length : 0 }} Produtos em Estoque.
-          </div>
-        </ng-template>
-      </p-table>
+<p-dialog
+  header="Salvar Produto"
+  [(visible)]="visibleFormProduct"
+  [style]="{ width: '50vw' }"
+  [maximizable]="false"
+>
+  <form [formGroup]="formProduct">
+    <div class="grid p-fluid p-formgrid">
+      <div class="col-6 flex flex-column gap-2">
+        <label htmlFor="username">Nome</label>
+        <input formControlName="name" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label htmlFor="username">Tipo</label>
+        <p-dropdown
+          formControlName="type"
+          [options]="types"
+          optionLabel="name"
+        ></p-dropdown>
+      </div>
+      <div class="col-3 flex flex-column gap-2">
+        <label htmlFor="username">Quantidade</label>
+        <p-inputNumber
+          formControlName="amount"
+          [showButtons]="true"
+          inputId="minmax-buttons"
+          [min]="0"
+          [max]="10000"
+        >
+        </p-inputNumber>
+      </div>
+      <div class="col-3 flex flex-column gap-2">
+        <label htmlFor="username">Valor</label>
+        <p-inputNumber
+          formControlName="value"
+          mode="currency"
+          currency="BRL"
+          [showButtons]="true"
+          inputId="stacked"
+        >
+        </p-inputNumber>
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label htmlFor="username">Fornecedor</label>
+        <p-dropdown
+          formControlName="supplier"
+          [options]="suppliers"
+          optionLabel="name"
+        ></p-dropdown>
+      </div>
+      <div class="col-12 flex flex-column gap-2">
+        <label htmlFor="username">Descrição</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          formControlName="description"
+        ></textarea>
+      </div>
     </div>
-
-    <div class="table-item">
-      <p-table
-        #dt
-        [value]="types"
-        [rows]="5"
-        [paginator]="true"
-        [tableStyle]="{ 'min-width': '30%' }"
-        [(selection)]="selectedTypes"
-        [rowHover]="true"
-        dataKey="id"
-        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
-        [showCurrentPageReport]="true"
-      >
-        <ng-template pTemplate="header">
-          <tr>
-            <th pSortableColumn="name" style="min-width: 15rem">
-              Nome <p-sortIcon field="name"></p-sortIcon>
-            </th>
-            <th>Ações</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-type>
-          <tr>
-            <td>{{ type.name }}</td>
-            <td>
-              <button
-                pButton
-                pRipple
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
-                (click)="editType(type)"
-              ></button>
-              <button
-                pButton
-                pRipple
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
-                (click)="deleteType(type.id)"
-              ></button>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-          <div class="flex align-items-center justify-content-between">
-            {{ types ? types.length : 0 }} Tipos de Produto Cadastrados.
-          </div>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-</div> -->
-<!-- <p-toast></p-toast>
-                <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
-                <p-button
-                  (click)="deleteProduct(product.id)"
-                  icon="pi pi-times"
-                  label="Delete"
-                  class="p-button-danger"
-                ></p-button> -->
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Salvar"
+      icon="pi pi-check"
+      (click)="saveProduct()"
+    ></button>
+  </ng-template>
+</p-dialog>

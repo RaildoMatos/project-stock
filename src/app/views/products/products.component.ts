@@ -9,11 +9,7 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { Type } from 'src/app/models/type';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Supplier } from 'src/app/models/supplier';
-import {
-  ConfirmEventType,
-  ConfirmationService,
-  MessageService,
-} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-products',
@@ -28,6 +24,9 @@ export class ProductsComponent implements OnInit {
   selectedProducts: Product[] = [];
   selectedProduct: any;
   filteredProducts: any;
+  selectedProductDelete: any;
+
+  viewVisible: boolean = false;
 
   types: Type[] = [];
   listTypes: Type[] = [];
@@ -37,8 +36,10 @@ export class ProductsComponent implements OnInit {
 
   type?: Type;
   visibleFormProduct: boolean = false;
+  visibleEditFormProduct: boolean = false;
   visibleFormType: boolean = false;
   selectedTypeCreate: Type | undefined;
+  selectedTypeDelete: any;
 
   suppliers: Supplier[] = [];
 
@@ -46,7 +47,8 @@ export class ProductsComponent implements OnInit {
   formProduct!: FormGroup;
   formType!: FormGroup;
   buttonClearDisable?: boolean;
-  buttonFindDisable?: boolean;
+  editedProductId: any;
+  viewInfoProduct?: Product[];
 
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
@@ -63,15 +65,12 @@ export class ProductsComponent implements OnInit {
   findAll(): void {
     if (this.selectedProduct) {
       this.buttonClearDisable = false;
-      this.buttonFindDisable = true;
       this.filterProduct(this.selectedProduct);
     } else if (this.selectedTypeByProduct) {
       this.buttonClearDisable = false;
-      this.buttonFindDisable = true;
       this.filterProductsByType(this.selectedTypeByProduct);
     } else {
       this.buttonClearDisable = true;
-      this.buttonFindDisable = false;
       this.loadGridProducts();
     }
     this.loadGridTypes();
@@ -144,39 +143,100 @@ export class ProductsComponent implements OnInit {
   }
 
   saveProduct(): void {
-    this.productsService
-      .createProduct(this.formProduct.value)
-      .subscribe(() => {});
-  }
-
-  editProduct(product: Product): void {}
-
-  openDeleteProduct() {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Record deleted',
-        });
+    this.productsService.createProduct(this.formProduct.value).subscribe({
+      next: () => {},
+      error: () => {
+        this.visibleFormProduct = false;
+      },
+      complete: () => {
+        this.visibleFormProduct = false;
       },
     });
   }
 
-  deleteProduct(id: number): void {
-    this.productsService.deleteProduct(id).subscribe(
-      () => {
-        console.log('Product deleted successfully.');
-        // Adicionar comportamento de sucesso após exclusão.
-      },
-      (error) => {
-        console.error('Error deleting product:', error);
-        // Adicionar comportamento de erro após exclusão.
-      }
-    );
+  editProduct(product: Product): void {
+    this.formProduct.patchValue({
+      name: product.name,
+      amount: product.amount,
+      value: product.value,
+      type: product.type,
+      supplier: product.supplier,
+      description: product.description,
+    });
+    this.editedProductId = product.id;
+    this.visibleEditFormProduct = true;
+  }
+
+  viewProduct(id: string) {
+    this.productsService
+      .filterProduct(id)
+      .subscribe((data) => (this.viewInfoProduct = data));
+      this.viewVisible = true;
+  }
+
+  updateProduct(): void {
+    if (this.formProduct.valid && this.editedProductId !== null) {
+      const updatedProduct: Product = {
+        id: this.editedProductId,
+        ...this.formProduct.value,
+      };
+      this.productsService
+        .updateProduct(this.editedProductId, updatedProduct)
+        .subscribe(
+          (response: any) => {
+            if (response.includes('Product updated successfully!')) {
+              // Atualização bem-sucedida, faça o que for necessário (fechar modal, atualizar lista, etc.)
+              this.visibleEditFormProduct = false;
+              // Chame uma função para atualizar a lista de produtos, se necessário
+            } else {
+              // Lidar com outras respostas, se necessário
+            }
+          },
+          (error) => {
+            // Lidar com erro na atualização, se necessário
+            this.visibleEditFormProduct = false;
+            console.error('Erro ao atualizar produto:', error);
+          }
+        );
+    }
+  }
+
+  openDeleteProduct(product: any) {
+    this.selectedProductDelete = product;
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      header: 'Excluir',
+      icon: 'pi pi-info-circle',
+      key: 'product',
+    });
+  }
+
+  deleteProduct(confirmProduct: boolean) {
+    this.confirmationService.close();
+    if (confirmProduct) {
+      const productIdToDelete = this.selectedProductDelete.id;
+      this.productsService.deleteProduct(productIdToDelete).subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso!',
+            detail: this.selectedProductDelete.name + ' ' + 'Excluído...',
+          });
+          setTimeout(() => {
+            this.findAll();
+          }, 3000);
+        },
+        (error) => {
+          console.error('Erro ao excluir:', error);
+        }
+      );
+    } else {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelou...',
+        detail: 'A Exclusão foi Cancelada!',
+      });
+    }
   }
 
   // TYPES:
@@ -224,17 +284,42 @@ export class ProductsComponent implements OnInit {
 
   editType(type: Type): void {}
 
-  deleteType(id: number): void {
-    this.productsService.deleteType(id).subscribe(
-      () => {
-        console.log('Type deleted successfully.');
-        // Adicionar comportamento de sucesso após exclusão.
-      },
-      (error) => {
-        console.error('Error deleting type:', error);
-        // Adicionar comportamento de erro após exclusão.
-      }
-    );
+  openDeleteType(type: any) {
+    this.selectedTypeDelete = type;
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      header: 'Excluir',
+      icon: 'pi pi-info-circle',
+      key: 'type',
+    });
+  }
+
+  deleteType(confirmType: boolean) {
+    this.confirmationService.close();
+    if (confirmType) {
+      const typeIdToDelete = this.selectedTypeDelete.id;
+      this.productsService.deleteType(typeIdToDelete).subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso!',
+            detail: this.selectedTypeDelete.name + ' ' + 'Excluído...',
+          });
+          setTimeout(() => {
+            this.findAll();
+          }, 3000);
+        },
+        (error) => {
+          console.error('Erro ao excluir:', error);
+        }
+      );
+    } else {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelou...',
+        detail: 'A Exclusão foi Cancelada!',
+      });
+    }
   }
 
   clear() {
