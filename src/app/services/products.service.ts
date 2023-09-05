@@ -81,8 +81,8 @@ export class ProductsService {
     return this.http.post<Type>(this.API_STOCK_TYPES, data);
   }
 
-  updateType(data: Type) {
-    return this.http.put(this.API_STOCK_TYPES, data);
+  updateType(id: number, data: Type) {
+    return this.http.put(`${this.API_STOCK_TYPES}/${id}`, data);
   }
 
   deleteType(id: string | number) {

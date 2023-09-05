@@ -34,9 +34,12 @@ export class ProductsComponent implements OnInit {
   selectedTypeByProduct: any;
   filteredTypes: any;
 
-  type?: Type;
   visibleFormProduct: boolean = false;
   visibleEditFormProduct: boolean = false;
+
+  visibleEditFormType: boolean = false;
+
+  type?: Type;
   visibleFormType: boolean = false;
   selectedTypeCreate: Type | undefined;
   selectedTypeDelete: any;
@@ -48,6 +51,7 @@ export class ProductsComponent implements OnInit {
   formType!: FormGroup;
   buttonClearDisable?: boolean;
   editedProductId: any;
+  editedTypeId: any;
   viewInfoProduct?: Product[];
 
   confirmationService = inject(ConfirmationService);
@@ -139,19 +143,26 @@ export class ProductsComponent implements OnInit {
   }
 
   createProduct(): void {
+    this.formProduct.reset();
     this.visibleFormProduct = true;
   }
 
   saveProduct(): void {
     this.productsService.createProduct(this.formProduct.value).subscribe({
-      next: () => {},
+      complete: () => {
+        this.visibleFormProduct = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso!',
+          key: 'sp',
+          detail: 'Produto Salvo!',
+        });
+      },
       error: () => {
         this.visibleFormProduct = false;
       },
-      complete: () => {
-        this.visibleFormProduct = false;
-      },
     });
+    this.findAll();
   }
 
   editProduct(product: Product): void {
@@ -171,7 +182,7 @@ export class ProductsComponent implements OnInit {
     this.productsService
       .filterProduct(id)
       .subscribe((data) => (this.viewInfoProduct = data));
-      this.viewVisible = true;
+    this.viewVisible = true;
   }
 
   updateProduct(): void {
@@ -184,16 +195,21 @@ export class ProductsComponent implements OnInit {
         .updateProduct(this.editedProductId, updatedProduct)
         .subscribe(
           (response: any) => {
-            if (response.includes('Product updated successfully!')) {
-              // Atualização bem-sucedida, faça o que for necessário (fechar modal, atualizar lista, etc.)
+            if (
+              response &&
+              response.message === 'Product updated successfully!'
+            ) {
               this.visibleEditFormProduct = false;
-              // Chame uma função para atualizar a lista de produtos, se necessário
-            } else {
-              // Lidar com outras respostas, se necessário
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                key: 'up',
+                detail: updatedProduct.name + ' Editado!',
+              });
+              this.findAll();
             }
           },
           (error) => {
-            // Lidar com erro na atualização, se necessário
             this.visibleEditFormProduct = false;
             console.error('Erro ao atualizar produto:', error);
           }
@@ -220,7 +236,8 @@ export class ProductsComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
-            detail: this.selectedProductDelete.name + ' ' + 'Excluído...',
+            detail:
+              'Produto ' + this.selectedProductDelete.name + ' Excluído...',
           });
           setTimeout(() => {
             this.findAll();
@@ -275,14 +292,63 @@ export class ProductsComponent implements OnInit {
   }
 
   createType(): void {
+    this.formType.reset();
     this.visibleFormType = true;
   }
 
   saveType(): void {
-    this.productsService.createType(this.formType.value).subscribe(() => {});
+    this.productsService.createType(this.formType.value).subscribe({
+      complete: () => {
+        this.visibleFormType = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso!',
+          key: 'st',
+          detail: 'Tipo de Produto Salvo!',
+        });
+      },
+      error: () => {
+        this.visibleFormType = false;
+      },
+    });
+    this.findAll();
   }
 
-  editType(type: Type): void {}
+  editType(type: Type): void {
+    this.formType.patchValue({
+      name: type.name,
+      description: type.description,
+    });
+    this.editedTypeId = type.id;
+    this.visibleEditFormType = true;
+  }
+
+  updateType(): void {
+    if (this.formType.valid && this.editedTypeId !== null) {
+      const updatedType: Type = {
+        id: this.editedTypeId,
+        ...this.formType.value,
+      };
+      this.productsService.updateType(this.editedTypeId, updatedType).subscribe(
+        (response: any) => {
+          if (response && response.message === 'Type updated successfully!') {
+            this.visibleEditFormType = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso!',
+              key: 'ut',
+              detail: updatedType.name + ' Editado!',
+            });
+            this.findAll();
+          }
+        },
+        (error) => {
+          this.visibleEditFormType = false;
+          console.error('Erro ao atualizar produto:', error);
+        }
+      );
+    }
+  }
 
   openDeleteType(type: any) {
     this.selectedTypeDelete = type;

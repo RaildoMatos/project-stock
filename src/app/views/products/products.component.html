@@ -2,6 +2,7 @@
   <div class="col-12">
     <div class="flex">
       <div class="p-field col-3">
+        <label htmlFor="">Filtrar Produto</label>
         <p-autoComplete
           [(ngModel)]="selectedProduct"
           [dropdown]="true"
@@ -12,6 +13,7 @@
         ></p-autoComplete>
       </div>
       <div class="p-field col-3">
+        <label htmlFor="">Filtrar Produto por Tipo</label>
         <p-autoComplete
           [(ngModel)]="selectedTypeByProduct"
           styleClass="w-full"
@@ -302,6 +304,31 @@
                 class="p-button-success mr-2"
                 (click)="editType(type)"
               ></button>
+              <p-dialog
+                header="Editar Tipo"
+                [(visible)]="visibleEditFormType"
+                [style]="{ width: '50vw' }"
+                [maximizable]="true"
+              >
+                <form [formGroup]="formType">
+                  <div class="card flex justify-content-center">
+                    <input type="text" pInputText formControlName="name" />
+                  </div>
+                  <textarea
+                    formControlName="description"
+                    rows="5"
+                    cols="30"
+                    pInputTextarea
+                  ></textarea>
+                </form>
+                <button
+                  pButton
+                  pRipple
+                  label="Salvar"
+                  icon="pi pi-check"
+                  (click)="updateType()"
+                ></button>
+              </p-dialog>
               <button
                 pButton
                 pRipple
@@ -417,3 +444,7 @@
     ></button>
   </ng-template>
 </p-dialog>
+<p-toast position="bottom-center" key="sp"></p-toast>
+<p-toast position="bottom-center" key="st"></p-toast>
+<p-toast position="bottom-center" key="up"></p-toast>
+<p-toast position="bottom-center" key="ut"></p-toast>
