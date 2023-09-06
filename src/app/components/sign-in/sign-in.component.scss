@@ -1,24 +1,14 @@
 .card {
+  background-color: #2b243b;
   font-style: oblique;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px #2b243b;
   padding: 3rem;
   width: fit-content;
   height: fit-content;
   text-align: center;
   align-items: center;
-  color: rgb(0, 0, 0);
-  background-image: url("../../../assets/img/login.png");
-  // background-repeat: round;
+  color: #fff;
   background-size: cover;
 }
-
-// .field {
-//   margin-top: 20px;
-//   margin-bottom: 20px;
-// }
-
-// label {
-//   margin-right: 10px;
-// }
