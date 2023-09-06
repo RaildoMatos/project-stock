@@ -13,5 +13,27 @@
 }
 
 .table-item:first-child {
-  flex: 0 0 70%; /* 70% do espaço para a tabela de produtos */
+  flex: 0 0 70%;
+}
+
+.view {
+  max-height: 300px;
+  overflow-y: auto;
+  word-wrap: break-word;
+}
+
+.info-title {
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ffc107;
+  background-color: #ffc107;
+  margin: 8px 0px 15px 0px;
+}
+
+.info {
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ffe79f;
+  background-color: #ffe79f;
+  margin-bottom: 20px;
 }
