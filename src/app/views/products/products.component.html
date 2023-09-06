@@ -1,8 +1,10 @@
 <div class="grid">
   <div class="col-12">
-    <div class="flex">
-      <div class="p-field col-3">
-        <label htmlFor="">Filtrar Produto</label>
+    <div class="flex align-items-end">
+      <div class="p-field col-3 pb-0">
+        <div class="mb-2">
+          <label htmlFor="">Filtrar Produto</label>
+        </div>
         <p-autoComplete
           [(ngModel)]="selectedProduct"
           [dropdown]="true"
@@ -12,8 +14,10 @@
           field="name"
         ></p-autoComplete>
       </div>
-      <div class="p-field col-3">
-        <label htmlFor="">Filtrar Produto por Tipo</label>
+      <div class="p-field col-3 pb-0">
+        <div class="mb-2">
+          <label htmlFor="">Filtrar Produto por Tipo</label>
+        </div>
         <p-autoComplete
           [(ngModel)]="selectedTypeByProduct"
           styleClass="w-full"
@@ -44,30 +48,31 @@
       </div>
     </div>
   </div>
-  <!-- <div class="flex card-container">
-    <div class="col-3">
-      <div class="card">
-        <p-card header="Quantidade">
-          <p class="m-0">Quantidade</p>
-        </p-card>
+  <div class="col-12">
+    <div class="flex">
+      <div class="flex-1 border-round">
+        <div class="card">
+          <p-card header="Quantidade">
+            <p class="m-0">Quantidade</p>
+          </p-card>
+        </div>
+      </div>
+      <div class="flex-1 border-round mx-4">
+        <div class="card">
+          <p-card header="Valor Total">
+            <p class="m-0">Valor Total</p>
+          </p-card>
+        </div>
+      </div>
+      <div class="flex-1 border-round">
+        <div class="card">
+          <p-card header="Fornecedor">
+            <p class="m-0">Fornecedor</p>
+          </p-card>
+        </div>
       </div>
     </div>
-    <div class="col-3">
-      <div class="card">
-        <p-card header="Valor Total">
-          <p class="m-0">Valor Total</p>
-        </p-card>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card">
-        <p-card header="Fornecedor">
-          <p class="m-0">Fornecedor</p>
-        </p-card>
-      </div>
-    </div>
-  </div> -->
-
+  </div>
   <div class="col-8">
     <div class="card">
       <p-toolbar styleClass="">
@@ -123,14 +128,27 @@
                 key="view"
               ></button>
               <p-dialog
-                #view
-                header="Informações do Produto: {{ product.name }}"
-                [(visible)]="viewVisible"
-                [style]="{ width: '50vw', height: '300px' }"
+                header="{{ product.name }}"
+                [(visible)]="viewVisible[product.id]"
+                [style]="{ width: '30vw', height: '300px' }"
               >
-                <p>
-                  {{ product.description }}
-                </p>
+                <p-scrollPanel
+                  [style]="{ width: '100%', height: 'auto' }"
+                  class="view"
+                >
+                  <div class="info">
+                    <h5 class="info-title">Descrição</h5>
+                    {{ product.description }}
+                  </div>
+                  <div class="info">
+                    <h5 class="info-title">Descrição do Tipo</h5>
+                    {{ product.type.description }}
+                  </div>
+                  <div class="info">
+                    <h5 class="info-title">Categoria do Fornecedor</h5>
+                    {{ product.supplier.category }}
+                  </div>
+                </p-scrollPanel>
               </p-dialog>
               <button
                 pButton
@@ -143,53 +161,72 @@
                 header="Editar Produto"
                 [(visible)]="visibleEditFormProduct"
                 [style]="{ width: '50vw' }"
-                [maximizable]="true"
+                [maximizable]="false"
               >
                 <form [formGroup]="formProduct">
-                  <div class="card flex justify-content-center">
-                    <input type="text" pInputText formControlName="name" />
+                  <div class="grid p-fluid p-formgrid">
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Nome</label>
+                      <input formControlName="name" type="text" pInputText />
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Tipo</label>
+                      <p-dropdown
+                        formControlName="type"
+                        [options]="types"
+                        optionLabel="name"
+                      ></p-dropdown>
+                    </div>
+                    <div class="col-3 flex flex-column gap-2">
+                      <label htmlFor="username">Quantidade</label>
+                      <p-inputNumber
+                        formControlName="amount"
+                        [showButtons]="true"
+                        inputId="minmax-buttons"
+                        [min]="0"
+                        [max]="10000"
+                      >
+                      </p-inputNumber>
+                    </div>
+                    <div class="col-3 flex flex-column gap-2">
+                      <label htmlFor="username">Valor</label>
+                      <p-inputNumber
+                        formControlName="value"
+                        mode="currency"
+                        currency="BRL"
+                        [showButtons]="true"
+                        inputId="stacked"
+                      >
+                      </p-inputNumber>
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Fornecedor</label>
+                      <p-dropdown
+                        formControlName="supplier"
+                        [options]="suppliers"
+                        optionLabel="name"
+                      ></p-dropdown>
+                    </div>
+                    <div class="col-12 flex flex-column gap-2">
+                      <label htmlFor="username">Descrição</label>
+                      <textarea
+                        rows="5"
+                        cols="30"
+                        pInputTextarea
+                        formControlName="description"
+                      ></textarea>
+                    </div>
                   </div>
-
-                  <p-inputNumber
-                    formControlName="amount"
-                    [showButtons]="true"
-                    inputId="minmax-buttons"
-                    [min]="0"
-                    [max]="10000"
-                  >
-                  </p-inputNumber>
-                  <p-inputNumber
-                    formControlName="value"
-                    mode="currency"
-                    currency="BRL"
-                    [showButtons]="true"
-                    inputId="stacked"
-                  >
-                  </p-inputNumber>
-                  <p-dropdown
-                    formControlName="type"
-                    [options]="types"
-                    optionLabel="name"
-                  ></p-dropdown>
-                  <p-dropdown
-                    formControlName="supplier"
-                    [options]="suppliers"
-                    optionLabel="name"
-                  ></p-dropdown>
-                  <textarea
-                    formControlName="description"
-                    rows="5"
-                    cols="30"
-                    pInputTextarea
-                  ></textarea>
                 </form>
-                <button
-                  pButton
-                  pRipple
-                  label="Salvar"
-                  icon="pi pi-check"
-                  (click)="updateProduct()"
-                ></button>
+                <ng-template pTemplate="footer">
+                  <button
+                    pButton
+                    pRipple
+                    label="Salvar"
+                    icon="pi pi-check"
+                    (click)="updateProduct()"
+                  ></button>
+                </ng-template>
               </p-dialog>
               <button
                 pButton
@@ -245,31 +282,6 @@
             class="p-button-success mr-2"
             (click)="createType()"
           ></button>
-          <p-dialog
-            header="Salvar Tipo"
-            [(visible)]="visibleFormType"
-            [style]="{ width: '50vw' }"
-            [maximizable]="true"
-          >
-            <form [formGroup]="formType">
-              <div class="card flex justify-content-center">
-                <input type="text" pInputText formControlName="name" />
-              </div>
-              <textarea
-                formControlName="description"
-                rows="5"
-                cols="30"
-                pInputTextarea
-              ></textarea>
-            </form>
-            <button
-              pButton
-              pRipple
-              label="Save"
-              icon="pi pi-check"
-              (click)="saveType()"
-            ></button>
-          </p-dialog>
         </ng-template>
       </p-toolbar>
 
@@ -307,27 +319,35 @@
               <p-dialog
                 header="Editar Tipo"
                 [(visible)]="visibleEditFormType"
-                [style]="{ width: '50vw' }"
-                [maximizable]="true"
+                [style]="{ width: '30vw' }"
+                [maximizable]="false"
               >
                 <form [formGroup]="formType">
-                  <div class="card flex justify-content-center">
-                    <input type="text" pInputText formControlName="name" />
+                  <div class="grid p-fluid p-formgrid">
+                    <div class="col-12 flex flex-column gap-2">
+                      <label htmlFor="username">Nome</label>
+                      <input formControlName="name" type="text" pInputText />
+                    </div>
+                    <div class="col-12 flex flex-column gap-2">
+                      <label htmlFor="username">Descrição</label>
+                      <textarea
+                        rows="5"
+                        cols="30"
+                        pInputTextarea
+                        formControlName="description"
+                      ></textarea>
+                    </div>
                   </div>
-                  <textarea
-                    formControlName="description"
-                    rows="5"
-                    cols="30"
-                    pInputTextarea
-                  ></textarea>
                 </form>
-                <button
-                  pButton
-                  pRipple
-                  label="Salvar"
-                  icon="pi pi-check"
-                  (click)="updateType()"
-                ></button>
+                <ng-template pTemplate="footer">
+                  <button
+                    pButton
+                    pRipple
+                    label="Salvar"
+                    icon="pi pi-check"
+                    (click)="updateType()"
+                  ></button>
+                </ng-template>
               </p-dialog>
               <button
                 pButton
@@ -373,6 +393,7 @@
   </div>
 </div>
 
+<!-- NG TEMPLATES (Colocar na ordem, deixar o código na ordem de tela ou centralizar todos os ngTemplates aqui): -->
 <p-dialog
   header="Salvar Produto"
   [(visible)]="visibleFormProduct"
@@ -444,6 +465,41 @@
     ></button>
   </ng-template>
 </p-dialog>
+
+<p-dialog
+  header="Salvar Tipo"
+  [(visible)]="visibleFormType"
+  [style]="{ width: '30vw' }"
+  [maximizable]="false"
+>
+  <form [formGroup]="formType">
+    <div class="grid p-fluid p-formgrid">
+      <div class="col-12 flex flex-column gap-2">
+        <label htmlFor="username">Nome</label>
+        <input formControlName="name" type="text" pInputText />
+      </div>
+      <div class="col-12 flex flex-column gap-2">
+        <label htmlFor="username">Descrição</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          formControlName="description"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Salvar"
+      icon="pi pi-check"
+      (click)="saveType()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
 <p-toast position="bottom-center" key="sp"></p-toast>
 <p-toast position="bottom-center" key="st"></p-toast>
 <p-toast position="bottom-center" key="up"></p-toast>

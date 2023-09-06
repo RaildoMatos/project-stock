@@ -21,38 +21,34 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   listProducts: Product[] = [];
+  formProduct!: FormGroup;
   selectedProducts: Product[] = [];
+  editedProductId: any;
+  editedTypeId: any;
+  viewInfoProduct?: Product[];
   selectedProduct: any;
   filteredProducts: any;
   selectedProductDelete: any;
-
-  viewVisible: boolean = false;
+  visibleFormProduct: boolean = false;
+  visibleEditFormProduct: boolean = false;
 
   types: Type[] = [];
   listTypes: Type[] = [];
   selectedTypes: Type[] = [];
   selectedTypeByProduct: any;
   filteredTypes: any;
-
-  visibleFormProduct: boolean = false;
-  visibleEditFormProduct: boolean = false;
-
   visibleEditFormType: boolean = false;
-
   type?: Type;
   visibleFormType: boolean = false;
   selectedTypeCreate: Type | undefined;
   selectedTypeDelete: any;
+  formType!: FormGroup;
 
   suppliers: Supplier[] = [];
 
   page!: Page;
-  formProduct!: FormGroup;
-  formType!: FormGroup;
   buttonClearDisable?: boolean;
-  editedProductId: any;
-  editedTypeId: any;
-  viewInfoProduct?: Product[];
+  viewVisible: { [key: string]: boolean } = {};
 
   confirmationService = inject(ConfirmationService);
   messageService = inject(MessageService);
@@ -80,6 +76,12 @@ export class ProductsComponent implements OnInit {
     this.loadGridTypes();
     this.loadListProducts();
     this.loadListTypes();
+  }
+
+  clear() {
+    this.selectedProduct = null;
+    this.selectedTypeByProduct = null;
+    this.findAll();
   }
 
   // PRODUCTS:
@@ -165,6 +167,13 @@ export class ProductsComponent implements OnInit {
     this.findAll();
   }
 
+  viewProduct(id: string) {
+    this.productsService.filterProduct(id).subscribe((data) => {
+      this.viewInfoProduct = data;
+      this.viewVisible[id] = true;
+    });
+  }
+
   editProduct(product: Product): void {
     this.formProduct.patchValue({
       name: product.name,
@@ -176,13 +185,6 @@ export class ProductsComponent implements OnInit {
     });
     this.editedProductId = product.id;
     this.visibleEditFormProduct = true;
-  }
-
-  viewProduct(id: string) {
-    this.productsService
-      .filterProduct(id)
-      .subscribe((data) => (this.viewInfoProduct = data));
-    this.viewVisible = true;
   }
 
   updateProduct(): void {
@@ -386,11 +388,5 @@ export class ProductsComponent implements OnInit {
         detail: 'A Exclusão foi Cancelada!',
       });
     }
-  }
-
-  clear() {
-    this.selectedProduct = null;
-    this.selectedTypeByProduct = null;
-    this.findAll();
   }
 }
