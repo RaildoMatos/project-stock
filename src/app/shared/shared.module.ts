@@ -50,6 +50,7 @@ import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { PaginatorModule } from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { ImageModule } from 'primeng/image';
 @NgModule({
@@ -106,6 +107,7 @@ import { ImageModule } from 'primeng/image';
     TieredMenuModule,
     TagModule,
     PaginatorModule,
+    ProgressSpinnerModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -159,6 +161,7 @@ import { ImageModule } from 'primeng/image';
     TieredMenuModule,
     TagModule,
     PaginatorModule,
+    ProgressSpinnerModule,
   ],
   providers: [MessageService, ConfirmationService, DialogService],
 })

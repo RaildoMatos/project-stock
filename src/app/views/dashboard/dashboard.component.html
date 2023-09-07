@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid" *ngIf="!loading">
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
       <h3>Quantidade por Tipo de Produto</h3>
@@ -67,4 +67,7 @@
       ></p-chart>
     </div>
   </div>
+</div>
+<div class="p-dialog-mask" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>
