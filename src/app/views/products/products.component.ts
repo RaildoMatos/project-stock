@@ -10,6 +10,7 @@ import { Type } from 'src/app/models/type';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Supplier } from 'src/app/models/supplier';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -31,6 +32,8 @@ export class ProductsComponent implements OnInit {
   selectedProductDelete: any;
   visibleFormProduct: boolean = false;
   visibleEditFormProduct: boolean = false;
+  valueProductsCard: number = 0;
+  amountProductsCard: number = 0;
 
   types: Type[] = [];
   listTypes: Type[] = [];
@@ -76,12 +79,32 @@ export class ProductsComponent implements OnInit {
     this.loadGridTypes();
     this.loadListProducts();
     this.loadListTypes();
+    setTimeout(() => {
+      this.calculateCards();
+    }, 200);
   }
 
   clear() {
     this.selectedProduct = null;
     this.selectedTypeByProduct = null;
     this.findAll();
+  }
+
+  calculateCards() {
+    this.valueProductsCard = this.products.reduce((total, product) => {
+      if (product.value !== undefined && product.amount !== undefined) {
+        return total + product.value * product.amount;
+      } else {
+        return total;
+      }
+    }, 0);
+    this.amountProductsCard = this.products.reduce((total, product) => {
+      if (product.amount !== undefined) {
+        return total + product.amount;
+      } else {
+        return total;
+      }
+    }, 0);
   }
 
   // PRODUCTS:
@@ -102,9 +125,17 @@ export class ProductsComponent implements OnInit {
   }
 
   loadGridProducts(): void {
-    this.productsService.getPaginatedListProducts().subscribe((data) => {
-      this.products = data;
-    });
+    this.productsService
+      .getPaginatedListProducts()
+      .pipe(
+        switchMap((data) => {
+          this.products = data;
+          return of(data);
+        })
+      )
+      .subscribe(() => {
+        this.calculateCards();
+      });
   }
 
   loadListProducts(): void {
@@ -164,7 +195,10 @@ export class ProductsComponent implements OnInit {
         this.visibleFormProduct = false;
       },
     });
-    this.findAll();
+    this.calculateCards();
+    setTimeout(() => {
+      this.findAll();
+    }, 1000);
   }
 
   viewProduct(id: string) {
@@ -378,7 +412,11 @@ export class ProductsComponent implements OnInit {
           }, 3000);
         },
         (error) => {
-          console.error('Erro ao excluir:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            detail: 'Tipo atrelado a um Produto!',
+          });
         }
       );
     } else {
