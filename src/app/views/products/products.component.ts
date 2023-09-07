@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit {
   formType!: FormGroup;
 
   suppliers: Supplier[] = [];
-
+  errorOccurred: boolean = false;
   page!: Page;
   buttonClearDisable?: boolean;
   viewVisible: { [key: string]: boolean } = {};
@@ -76,12 +76,15 @@ export class ProductsComponent implements OnInit {
       this.buttonClearDisable = true;
       this.loadGridProducts();
     }
+
     this.loadGridTypes();
     this.loadListProducts();
     this.loadListTypes();
+
     setTimeout(() => {
       this.calculateCards();
     }, 200);
+    this.errorOccurred = false;
   }
 
   clear() {
@@ -160,19 +163,46 @@ export class ProductsComponent implements OnInit {
   filterProduct(product: string): void {
     this.selectedProduct = product;
     const id = this.selectedProduct.id;
-    this.productsService.filterProduct(id).subscribe((data) => {
-      this.products = [];
-      this.products = data;
-    });
+
+    this.productsService.filterProduct(id).subscribe(
+      (data) => {
+        this.products = [];
+        this.products = data;
+      },
+      (error) => {
+        if (!this.errorOccurred) {
+          this.errorOccurred = true;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'filterProduct',
+            detail: 'Este produto não existe!',
+          });
+        }
+      }
+    );
   }
 
   filterProductsByType(type: string): void {
     this.selectedTypeByProduct = type;
     const id = this.selectedTypeByProduct.id;
-    this.productsService.filterProductsByType(id).subscribe((data) => {
-      this.products = [];
-      this.products = data;
-    });
+    this.productsService.filterProductsByType(id).subscribe(
+      (data) => {
+        this.products = [];
+        this.products = data;
+      },
+      (error) => {
+        if (!this.errorOccurred) {
+          this.errorOccurred = true;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: ' filterProductsByType',
+            detail: 'Este tipo não existe!',
+          });
+        }
+      }
+    );
   }
 
   createProduct(): void {
@@ -187,12 +217,9 @@ export class ProductsComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso!',
-          key: 'sp',
+          key: 'saveProduct',
           detail: 'Produto Salvo!',
         });
-      },
-      error: () => {
-        this.visibleFormProduct = false;
       },
     });
     this.calculateCards();
@@ -239,15 +266,19 @@ export class ProductsComponent implements OnInit {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso!',
-                key: 'up',
+                key: 'updateProduct',
                 detail: updatedProduct.name + ' Editado!',
               });
               this.findAll();
             }
           },
           (error) => {
-            this.visibleEditFormProduct = false;
-            console.error('Erro ao atualizar produto:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro!',
+              key: 'updateProduct',
+              detail: 'Erro ao atualizar produto!',
+            });
           }
         );
     }
@@ -272,23 +303,30 @@ export class ProductsComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
+            key: 'deleteProduct',
             detail:
               'Produto ' + this.selectedProductDelete.name + ' Excluído...',
           });
-          setTimeout(() => {
-            this.findAll();
-          }, 3000);
+          // Chame o método para carregar os dados do grid novamente
+          this.loadGridProducts();
         },
         (error) => {
-          console.error('Erro ao excluir:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'deleteProduct',
+            detail: 'Erro ao excluir produto!',
+          });
         }
       );
     } else {
       this.messageService.add({
         severity: 'info',
         summary: 'Cancelou...',
+        key: 'deleteProduct',
         detail: 'A Exclusão foi Cancelada!',
       });
+      this.loadGridProducts();
     }
   }
 
@@ -339,15 +377,20 @@ export class ProductsComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso!',
-          key: 'st',
+          key: ' saveType',
           detail: 'Tipo de Produto Salvo!',
         });
+        this.findAll();
       },
-      error: () => {
-        this.visibleFormType = false;
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro!',
+          key: ' saveType',
+          detail: 'Erro ao salvar o produto!',
+        });
       },
     });
-    this.findAll();
   }
 
   editType(type: Type): void {
@@ -372,15 +415,19 @@ export class ProductsComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso!',
-              key: 'ut',
+              key: 'updateType',
               detail: updatedType.name + ' Editado!',
             });
             this.findAll();
           }
         },
         (error) => {
-          this.visibleEditFormType = false;
-          console.error('Erro ao atualizar produto:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'updateType',
+            detail: 'Erro ao atualizar o tipo!',
+          });
         }
       );
     }
@@ -405,17 +452,19 @@ export class ProductsComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
+            key: 'deleteType',
             detail: this.selectedTypeDelete.name + ' ' + 'Excluído...',
           });
           setTimeout(() => {
             this.findAll();
-          }, 3000);
+          }, 2600);
         },
         (error) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Erro!',
-            detail: 'Tipo atrelado a um Produto!',
+            key: 'deleteType',
+            detail: 'Erro tipo atrelado a um produto!',
           });
         }
       );
@@ -423,6 +472,7 @@ export class ProductsComponent implements OnInit {
       this.messageService.add({
         severity: 'info',
         summary: 'Cancelou...',
+        key: 'deleteType',
         detail: 'A Exclusão foi Cancelada!',
       });
     }

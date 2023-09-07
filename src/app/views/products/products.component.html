@@ -3,7 +3,7 @@
     <div class="flex align-items-end">
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label htmlFor="">Filtrar Produto</label>
+          <label>Filtrar Produto</label>
         </div>
         <p-autoComplete
           [(ngModel)]="selectedProduct"
@@ -34,6 +34,8 @@
             icon="pi pi-search"
             styleClass="p-button-info"
             (click)="findAll()"
+            pTooltip="Pesquisar"
+            tooltipPosition="top"
           ></p-button>
         </div>
         <div class="p-field ml-2">
@@ -43,6 +45,8 @@
             icon="pi pi-eraser"
             styleClass="p-button-info"
             (click)="clear()"
+            pTooltip="Limpar"
+            tooltipPosition="top"
           ></p-button>
         </div>
       </div>
@@ -60,7 +64,9 @@
       <div class="flex-1 border-round mx-4">
         <div class="card">
           <p-card header="Valor Total">
-            <p class="m-0">Valor Total {{ valueProductsCard }}</p>
+            <p class="m-0">
+              Valor Total {{ valueProductsCard | currency : "BRL" }}
+            </p>
           </p-card>
         </div>
       </div>
@@ -116,7 +122,10 @@
         <ng-template pTemplate="body" let-product>
           <tr>
             <td>{{ product.name }}</td>
-            <td>{{ product.value }}</td>
+            <td>
+              {{ product.value | currency : "BRL" : "symbol" : "1.2-2" }}
+            </td>
+
             <td>{{ product.type.name }}</td>
             <td>
               <button
@@ -184,7 +193,6 @@
                         [showButtons]="true"
                         inputId="minmax-buttons"
                         [min]="0"
-                        [max]="10000"
                       >
                       </p-inputNumber>
                     </div>
@@ -196,6 +204,7 @@
                         currency="BRL"
                         [showButtons]="true"
                         inputId="stacked"
+                        [min]="0"
                       >
                       </p-inputNumber>
                     </div>
@@ -421,7 +430,6 @@
           [showButtons]="true"
           inputId="minmax-buttons"
           [min]="0"
-          [max]="10000"
         >
         </p-inputNumber>
       </div>
@@ -433,6 +441,7 @@
           currency="BRL"
           [showButtons]="true"
           inputId="stacked"
+          [min]="0"
         >
         </p-inputNumber>
       </div>
@@ -500,7 +509,11 @@
   </ng-template>
 </p-dialog>
 
-<p-toast position="bottom-center" key="sp"></p-toast>
-<p-toast position="bottom-center" key="st"></p-toast>
-<p-toast position="bottom-center" key="up"></p-toast>
-<p-toast position="bottom-center" key="ut"></p-toast>
+<p-toast position="bottom-center" key="saveProduct"></p-toast>
+<p-toast position="bottom-center" key="deleteProduct"></p-toast>
+<p-toast position="bottom-center" key="filterProduct"></p-toast>
+<p-toast position="bottom-center" key=" filterProductsByType"></p-toast>
+<p-toast position="bottom-center" key="deleteType"></p-toast>
+<p-toast position="bottom-center" key="saveType"></p-toast>
+<p-toast position="bottom-center" key="updateProduct"></p-toast>
+<p-toast position="bottom-center" key="updateType"></p-toast>

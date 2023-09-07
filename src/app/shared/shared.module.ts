@@ -51,6 +51,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FocusTrapModule } from 'primeng/focustrap';
 
 import { ImageModule } from 'primeng/image';
 @NgModule({
@@ -108,6 +109,7 @@ import { ImageModule } from 'primeng/image';
     TagModule,
     PaginatorModule,
     ProgressSpinnerModule,
+    FocusTrapModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -162,6 +164,7 @@ import { ImageModule } from 'primeng/image';
     TagModule,
     PaginatorModule,
     ProgressSpinnerModule,
+    FocusTrapModule,
   ],
   providers: [MessageService, ConfirmationService, DialogService],
 })
