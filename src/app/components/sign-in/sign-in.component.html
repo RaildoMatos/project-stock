@@ -1,30 +1,27 @@
 <div
-  style="min-height: 100vh; width: 100%; "  
+  style="min-height: 100vh; width: 100%"
   class="align-items-center justify-content-center flex"
 >
   <div class="card">
     <div class="grid">
       <div class="p-fluid">
-       <div > 
-        <img 
-        width="190px" 
-        height= "190px"
-        style="padding: 0px 15px 25px 15px;"
-        src="../../../assets/img/logo_amarelo2.png" alt="">
-      </div>
+        <div>
+          <img
+            width="190px"
+            height="190px"
+            style="padding: 0px 15px 25px 15px"
+            src="../../../assets/img/logo_amarelo2.png"
+            alt=""
+          />
+        </div>
 
         <div class="field">
-          <label>E-mail :</label>
+          <label style="padding-right: 77%">E-mail </label>
           <input type="text" pInputText placeholder="E-mail" #userName />
         </div>
         <div class="field">
-          <label>Senha :</label>
-          <input
-            type="password"
-            pInputText
-            placeholder="Senha"
-            #userPassword
-          />
+          <label style="padding-right: 77%">Senha </label>
+          <input type="password" pInputText placeholder="Senha" #userPassword />
         </div>
 
         <p-button
@@ -36,11 +33,3 @@
     </div>
   </div>
 </div>
-        <div>
-          <p-button
-            label="Login"
-            (click)="onSignIn(userName.value, userPassword.value)"
-          >
-          </p-button>
-        </div>
- 
