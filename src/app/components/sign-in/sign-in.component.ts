@@ -19,7 +19,7 @@ export class SignInComponent implements OnInit {
 
   onSignIn(email: string, password: string) {
     this.authService.signIn(email, password).then(() => {
-      this.router.navigate(['/dashboard']); // Ou a rota desejada após o login
+      this.router.navigate(['/dashboard']);
     });
   }
 }

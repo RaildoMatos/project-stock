@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   productService = inject(ProductsService);
   supplierstService = inject(SuppliersService);
 
+  loading: boolean = false;
+
   dataGraphAmountByType: any;
   optionsGraphAmountByType: any;
 
@@ -46,6 +48,7 @@ export class DashboardComponent implements OnInit {
   }
 
   generateGraphAmountByType() {
+    this.loading = true;
     this.productService.getGraphAmountByType().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -92,10 +95,12 @@ export class DashboardComponent implements OnInit {
           },
         },
       };
+      this.loading = false;
     });
   }
 
   generateGraphValuesByType() {
+    this.loading = true;
     this.productService.getGraphValuesByType().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -142,10 +147,12 @@ export class DashboardComponent implements OnInit {
           },
         },
       };
+      this.loading = false;
     });
   }
 
   generateGraphProductsValues() {
+    this.loading = true;
     this.productService.getGraphProductsValues().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -194,10 +201,12 @@ export class DashboardComponent implements OnInit {
           },
         },
       };
+      this.loading = false;
     });
   }
 
   generateGraphAmountByStates() {
+    this.loading = true;
     this.supplierstService.getGraphAmountByStates().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -244,10 +253,12 @@ export class DashboardComponent implements OnInit {
         },
         cutout: '80%',
       };
+      this.loading = false;
     });
   }
 
   generateGraphAmountByCategory() {
+    this.loading = true;
     this.supplierstService.getGraphAmountByCategory().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -294,10 +305,12 @@ export class DashboardComponent implements OnInit {
           },
         },
       };
+      this.loading = false;
     });
   }
 
   generateGraphAmountByProduct() {
+    this.loading = true;
     this.supplierstService.getGraphAmountByProducts().subscribe((res) => {
       const documentStyle = getComputedStyle(document.documentElement);
       const textColor = documentStyle.getPropertyValue('--text-color');
@@ -347,6 +360,7 @@ export class DashboardComponent implements OnInit {
           },
         },
       };
+      this.loading = false;
     });
   }
 }
