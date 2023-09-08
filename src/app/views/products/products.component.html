@@ -52,34 +52,77 @@
       </div>
     </div>
   </div>
-  <div class="col-12">
+  <div class="col-12" style="margin: 2% 0 2% 0">
     <div class="flex">
       <div class="flex-1 border-round">
-        <div class="card">
-          <p-card header="Quantidade">
-            <p class="m-0">Quantidade {{ amountProductsCard }}</p>
+        <div
+          class="card"
+          [ngClass]="{
+            'card-green': amountProductsCard > 50,
+            'card-yellow': amountProductsCard <= 50 && amountProductsCard > 5,
+            'card-red': amountProductsCard <= 5
+          }"
+        >
+          <p-card header="Quantidade Total">
+            <div class="flex justify-content-between align-items-center">
+              <p
+                [ngStyle]="{
+                  color:
+                    amountProductsCard > 50
+                      ? '#689f38'
+                      : amountProductsCard <= 50 && amountProductsCard > 5
+                      ? '#fcc107'
+                      : '#d32f2f',
+                  'font-weight': 'bold'
+                }"
+                class="m-0"
+              >
+                {{ amountProductsCard }} em Estoque
+              </p>
+              <i class="pi pi-inbox"></i>
+            </div>
           </p-card>
         </div>
       </div>
       <div class="flex-1 border-round mx-4">
         <div class="card">
-          <p-card header="Valor Total">
-            <p class="m-0">
-              Valor Total {{ valueProductsCard | currency : "BRL" }}
-            </p>
-          </p-card>
+          <div class="card-default">
+            <p-card header="Valor Total">
+              <div class="flex justify-content-between align-items-center">
+                <p class="m-0" style="font-weight: bold">
+                  Valor de {{ valueProductsCard | currency : "BRL" }} em Estoque
+                </p>
+                <i class="pi pi-money-bill"></i>
+              </div>
+            </p-card>
+          </div>
         </div>
       </div>
       <div class="flex-1 border-round">
         <div class="card">
-          <p-card header="Fornecedor">
-            <p class="m-0">Fornecedor</p>
-          </p-card>
+          <div class="card-default">
+            <p-card header="Fornecedor">
+              <div class="flex justify-content-between align-items-center">
+                <p class="m-0" style="font-weight: bold">
+                  Quantidade de Fornecedores: {{ amountSuppliersCard }}
+                </p>
+                <i class="pi pi-building"></i>
+              </div>
+              <ng-container *ngIf="supplierName">
+                <p>Fornecedor: {{ supplierName }}</p>
+              </ng-container>
+              <!-- Preciso melhorar a exibição e atualizar quando mudar o produto -->
+              <ng-container *ngIf="supplierCountry">
+                <p>Localização: {{ supplierCountry }} + {{ supplierState }}</p>
+              </ng-container>
+            </p-card>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="col-8">
+    <label for="">Produtos</label>
     <div class="card">
       <p-toolbar styleClass="">
         <ng-template pTemplate="left">
@@ -93,7 +136,6 @@
           ></button>
         </ng-template>
       </p-toolbar>
-
       <p-table
         class="custom-table"
         #dt
@@ -280,6 +322,7 @@
     </div>
   </div>
   <div class="col-4">
+    <label for="">Tipos</label>
     <div class="card">
       <p-toolbar styleClass="">
         <ng-template pTemplate="left">
@@ -417,11 +460,13 @@
       </div>
       <div class="col-6 flex flex-column gap-2">
         <label htmlFor="username">Tipo</label>
-        <p-dropdown
-          formControlName="type"
-          [options]="types"
-          optionLabel="name"
-        ></p-dropdown>
+        <div *ngIf="types.length > 0; else disabledType">
+          <p-dropdown
+            formControlName="type"
+            [options]="types"
+            optionLabel="name"
+          ></p-dropdown>
+        </div>
       </div>
       <div class="col-3 flex flex-column gap-2">
         <label htmlFor="username">Quantidade</label>
@@ -447,11 +492,13 @@
       </div>
       <div class="col-6 flex flex-column gap-2">
         <label htmlFor="username">Fornecedor</label>
-        <p-dropdown
-          formControlName="supplier"
-          [options]="suppliers"
-          optionLabel="name"
-        ></p-dropdown>
+        <div *ngIf="suppliers.length > 0; else disabledSupplier">
+          <p-dropdown
+            formControlName="supplier"
+            [options]="suppliers"
+            optionLabel="name"
+          ></p-dropdown>
+        </div>
       </div>
       <div class="col-12 flex flex-column gap-2">
         <label htmlFor="username">Descrição</label>
@@ -508,6 +555,29 @@
     ></button>
   </ng-template>
 </p-dialog>
+
+<ng-template #disabledSupplier>
+  <p-dropdown
+    [disabled]="true"
+    formControlName="supplier"
+    [options]="suppliers"
+    placeholder="Nenhum Fornecedor Cadastrado"
+    optionLabel="name"
+    pTooltip="Cadastre um Fornecedor"
+    tooltipPosition="bottom"
+  ></p-dropdown>
+</ng-template>
+<ng-template #disabledType>
+  <p-dropdown
+    [disabled]="true"
+    formControlName="formType"
+    [options]="suppliers"
+    placeholder="Nenhum Tipo Cadastrado"
+    optionLabel="name"
+    pTooltip="Cadastre um Tipo"
+    tooltipPosition="bottom"
+  ></p-dropdown>
+</ng-template>
 
 <p-toast position="bottom-center" key="saveProduct"></p-toast>
 <p-toast position="bottom-center" key="deleteProduct"></p-toast>

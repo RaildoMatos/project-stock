@@ -270,7 +270,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade por Categoria de Fornecedor',
+            label: 'Quantidade da Categoria',
             data: data,
             backgroundColor: [
               '#6767ff',
@@ -325,7 +325,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade de Produto por Fornecedor',
+            label: 'Quantidade Fornecida:',
             data: data,
             backgroundColor: [
               '#6767ff',

@@ -34,6 +34,9 @@ export class ProductsComponent implements OnInit {
   visibleEditFormProduct: boolean = false;
   valueProductsCard: number = 0;
   amountProductsCard: number = 0;
+  amountSuppliersCard: number = 0;
+
+  suppliersCard: Supplier[] = [];
 
   types: Type[] = [];
   listTypes: Type[] = [];
@@ -58,6 +61,10 @@ export class ProductsComponent implements OnInit {
   productsService = inject(ProductsService);
   suppliersService = inject(SuppliersService);
   fb = inject(FormBuilder);
+  supplierName?: any;
+  supplierCountry?: any;
+  supplierState?: any;
+  product?: any;
 
   ngOnInit(): void {
     this.findAll();
@@ -80,6 +87,7 @@ export class ProductsComponent implements OnInit {
     this.loadGridTypes();
     this.loadListProducts();
     this.loadListTypes();
+    this.countSuppliers();
 
     setTimeout(() => {
       this.calculateCards();
@@ -108,6 +116,17 @@ export class ProductsComponent implements OnInit {
         return total;
       }
     }, 0);
+  }
+
+  countSuppliers(): void {
+    this.suppliersService.getListSuppliers().subscribe((data) => {
+      this.suppliersCard = data;
+      if (this.suppliersCard && Array.isArray(this.suppliersCard)) {
+        this.amountSuppliersCard = this.suppliersCard.length;
+      } else {
+        this.amountSuppliersCard = 0;
+      }
+    });
   }
 
   // PRODUCTS:
@@ -168,6 +187,22 @@ export class ProductsComponent implements OnInit {
       (data) => {
         this.products = [];
         this.products = data;
+        debugger;
+        if (this.products.length > 0) {
+          // Armazene o primeiro produto da lista (o objeto filtrado) em uma variável
+          this.product = this.products[0];
+
+          // Extraia as informações do supplier
+          this.supplierName = this.product.supplier.name;
+          this.supplierState = this.product.supplier.state;
+          this.supplierCountry = this.product.supplier.country;
+        } else {
+          // Trate o caso em que nenhum produto corresponde ao filtro
+          this.product = null;
+          this.supplierName = null;
+          this.supplierState = null;
+          this.supplierCountry = null;
+        }
       },
       (error) => {
         if (!this.errorOccurred) {
