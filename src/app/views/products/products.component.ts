@@ -189,15 +189,12 @@ export class ProductsComponent implements OnInit {
         this.products = data;
         debugger;
         if (this.products.length > 0) {
-          // Armazene o primeiro produto da lista (o objeto filtrado) em uma variável
           this.product = this.products[0];
 
-          // Extraia as informações do supplier
           this.supplierName = this.product.supplier.name;
           this.supplierState = this.product.supplier.state;
           this.supplierCountry = this.product.supplier.country;
         } else {
-          // Trate o caso em que nenhum produto corresponde ao filtro
           this.product = null;
           this.supplierName = null;
           this.supplierState = null;
@@ -246,21 +243,32 @@ export class ProductsComponent implements OnInit {
   }
 
   saveProduct(): void {
-    this.productsService.createProduct(this.formProduct.value).subscribe({
-      complete: () => {
-        this.visibleFormProduct = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso!',
-          key: 'saveProduct',
-          detail: 'Produto Salvo!',
-        });
-      },
-    });
-    this.calculateCards();
-    setTimeout(() => {
-      this.findAll();
-    }, 1000);
+    // Verifique se todos os campos obrigatórios estão preenchidos
+    if (this.formProduct.valid) {
+      this.productsService.createProduct(this.formProduct.value).subscribe({
+        complete: () => {
+          this.visibleFormProduct = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso!',
+            key: 'saveProduct',
+            detail: 'Produto Salvo!',
+          });
+        },
+      });
+      this.calculateCards();
+      setTimeout(() => {
+        this.findAll();
+      }, 1000);
+    } else {
+      // Exiba uma mensagem de erro ou lide com a validação de outra forma
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        key: 'saveProduct',
+        detail: 'Preencha todos os campos obrigatórios antes de salvar.',
+      });
+    }
   }
 
   viewProduct(id: string) {
@@ -289,6 +297,7 @@ export class ProductsComponent implements OnInit {
         id: this.editedProductId,
         ...this.formProduct.value,
       };
+
       this.productsService
         .updateProduct(this.editedProductId, updatedProduct)
         .subscribe(
@@ -316,6 +325,13 @@ export class ProductsComponent implements OnInit {
             });
           }
         );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        key: 'updateProduct',
+        detail: 'Preencha todos os campos obrigatórios antes de atualizar.',
+      });
     }
   }
 
@@ -342,7 +358,7 @@ export class ProductsComponent implements OnInit {
             detail:
               'Produto ' + this.selectedProductDelete.name + ' Excluído...',
           });
-          // Chame o método para carregar os dados do grid novamente
+
           this.loadGridProducts();
         },
         (error) => {
@@ -406,26 +422,36 @@ export class ProductsComponent implements OnInit {
   }
 
   saveType(): void {
-    this.productsService.createType(this.formType.value).subscribe({
-      complete: () => {
-        this.visibleFormType = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso!',
-          key: ' saveType',
-          detail: 'Tipo de Produto Salvo!',
-        });
-        this.findAll();
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro!',
-          key: ' saveType',
-          detail: 'Erro ao salvar o produto!',
-        });
-      },
-    });
+    if (this.formType.valid) {
+      this.productsService.createType(this.formType.value).subscribe({
+        complete: () => {
+          this.visibleFormType = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso!',
+            key: 'saveType',
+            detail: 'Tipo de Produto Salvo!',
+          });
+          this.findAll();
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'saveType',
+            detail: 'Erro ao salvar o tipo de produto!',
+          });
+        },
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        key: 'saveType',
+        detail:
+          'Preencha todos os campos obrigatórios antes de salvar o tipo de produto.',
+      });
+    }
   }
 
   editType(type: Type): void {
@@ -443,6 +469,7 @@ export class ProductsComponent implements OnInit {
         id: this.editedTypeId,
         ...this.formType.value,
       };
+
       this.productsService.updateType(this.editedTypeId, updatedType).subscribe(
         (response: any) => {
           if (response && response.message === 'Type updated successfully!') {
@@ -465,6 +492,14 @@ export class ProductsComponent implements OnInit {
           });
         }
       );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        key: 'updateType',
+        detail:
+          'Preencha todos os campos obrigatórios antes de atualizar o tipo.',
+      });
     }
   }
 
