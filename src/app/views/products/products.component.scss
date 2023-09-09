@@ -1,21 +1,36 @@
-.p-card {
-  border-radius: 10px !important;
+.card {
+  border-radius: 15px;
 }
 
 .card-green {
-  box-shadow: 0px 0px 10px #689f38;
+  box-shadow: 0px 0px 8px #689f38;
 }
 
 .card-yellow {
-  box-shadow: 0px 0px 10px #fcc107;
+  box-shadow: 0px 0px 8px #fcc107;
 }
 
 .card-red {
-  box-shadow: 0px 0px 10px #d32f2f;
+  box-shadow: 0px 0px 8px #d32f2f;
 }
 
 .card-default {
-  box-shadow: 0px 0px 10px #495057;
+  box-shadow: 0px 0px 8px #495057;
+  border-radius: 15px;
+}
+
+.label-container {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 10px;
+  display: inline-block;
+  border-bottom: none;
+}
+
+.label-text {
+  color: #495057;
+  font-weight: bold;
 }
 
 .table-container {

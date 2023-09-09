@@ -25,23 +25,24 @@ export class ProductsComponent implements OnInit {
   formProduct!: FormGroup;
   selectedProducts: Product[] = [];
   editedProductId: any;
-  editedTypeId: any;
   viewInfoProduct?: Product[];
   selectedProduct: any;
   filteredProducts: any;
   selectedProductDelete: any;
   visibleFormProduct: boolean = false;
   visibleEditFormProduct: boolean = false;
+
   valueProductsCard: number = 0;
   amountProductsCard: number = 0;
   amountSuppliersCard: number = 0;
-
   suppliersCard: Supplier[] = [];
+  cardSupplier: boolean = false;
 
   types: Type[] = [];
   listTypes: Type[] = [];
   selectedTypes: Type[] = [];
   selectedTypeByProduct: any;
+  editedTypeId: any;
   filteredTypes: any;
   visibleEditFormType: boolean = false;
   type?: Type;
@@ -51,7 +52,6 @@ export class ProductsComponent implements OnInit {
   formType!: FormGroup;
 
   suppliers: Supplier[] = [];
-  errorOccurred: boolean = false;
   page!: Page;
   buttonClearDisable?: boolean;
   viewVisible: { [key: string]: boolean } = {};
@@ -92,12 +92,12 @@ export class ProductsComponent implements OnInit {
     setTimeout(() => {
       this.calculateCards();
     }, 200);
-    this.errorOccurred = false;
   }
 
   clear() {
     this.selectedProduct = null;
     this.selectedTypeByProduct = null;
+    this.cardSupplier = false;
     this.findAll();
   }
 
@@ -182,35 +182,26 @@ export class ProductsComponent implements OnInit {
   filterProduct(product: string): void {
     this.selectedProduct = product;
     const id = this.selectedProduct.id;
-
     this.productsService.filterProduct(id).subscribe(
       (data) => {
         this.products = [];
         this.products = data;
-        debugger;
         if (this.products.length > 0) {
+          this.cardSupplier = true;
           this.product = this.products[0];
 
           this.supplierName = this.product.supplier.name;
           this.supplierState = this.product.supplier.state;
           this.supplierCountry = this.product.supplier.country;
-        } else {
-          this.product = null;
-          this.supplierName = null;
-          this.supplierState = null;
-          this.supplierCountry = null;
         }
       },
       (error) => {
-        if (!this.errorOccurred) {
-          this.errorOccurred = true;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro!',
-            key: 'filterProduct',
-            detail: 'Este produto não existe!',
-          });
-        }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro!',
+          key: 'filterProduct',
+          detail: 'Este Produto não Existe!',
+        });
       }
     );
   }
@@ -224,15 +215,12 @@ export class ProductsComponent implements OnInit {
         this.products = data;
       },
       (error) => {
-        if (!this.errorOccurred) {
-          this.errorOccurred = true;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro!',
-            key: ' filterProductsByType',
-            detail: 'Este tipo não existe!',
-          });
-        }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro!',
+          key: ' filterProductsByType',
+          detail: 'Não há Produtos com este Tipo!',
+        });
       }
     );
   }
@@ -243,7 +231,6 @@ export class ProductsComponent implements OnInit {
   }
 
   saveProduct(): void {
-    // Verifique se todos os campos obrigatórios estão preenchidos
     if (this.formProduct.valid) {
       this.productsService.createProduct(this.formProduct.value).subscribe({
         complete: () => {
@@ -261,12 +248,11 @@ export class ProductsComponent implements OnInit {
         this.findAll();
       }, 1000);
     } else {
-      // Exiba uma mensagem de erro ou lide com a validação de outra forma
       this.messageService.add({
         severity: 'error',
         summary: 'Erro!',
         key: 'saveProduct',
-        detail: 'Preencha todos os campos obrigatórios antes de salvar.',
+        detail: 'Preencha todos os Campos Obrigatórios antes de Salvar.',
       });
     }
   }
@@ -330,7 +316,7 @@ export class ProductsComponent implements OnInit {
         severity: 'error',
         summary: 'Erro!',
         key: 'updateProduct',
-        detail: 'Preencha todos os campos obrigatórios antes de atualizar.',
+        detail: 'Preencha todos os Campos Obrigatórios antes de Atualizar.',
       });
     }
   }
@@ -448,8 +434,7 @@ export class ProductsComponent implements OnInit {
         severity: 'error',
         summary: 'Erro!',
         key: 'saveType',
-        detail:
-          'Preencha todos os campos obrigatórios antes de salvar o tipo de produto.',
+        detail: 'Preencha todos os Campos Obrigatórios antes de Salvar.',
       });
     }
   }
@@ -488,7 +473,7 @@ export class ProductsComponent implements OnInit {
             severity: 'error',
             summary: 'Erro!',
             key: 'updateType',
-            detail: 'Erro ao atualizar o tipo!',
+            detail: 'Erro ao atualizar o Tipo!',
           });
         }
       );
@@ -497,8 +482,7 @@ export class ProductsComponent implements OnInit {
         severity: 'error',
         summary: 'Erro!',
         key: 'updateType',
-        detail:
-          'Preencha todos os campos obrigatórios antes de atualizar o tipo.',
+        detail: 'Preencha todos os Campos Obrigatórios antes de Atualizar.',
       });
     }
   }
@@ -534,7 +518,7 @@ export class ProductsComponent implements OnInit {
             severity: 'error',
             summary: 'Erro!',
             key: 'deleteType',
-            detail: 'Erro tipo atrelado a um produto!',
+            detail: 'Tipo em Uso!',
           });
         }
       );
