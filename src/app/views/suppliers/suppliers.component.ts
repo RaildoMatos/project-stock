@@ -5,9 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 import { Supplier } from 'src/app/models/supplier';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Page } from 'src/app/models/page';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { of, switchMap } from 'rxjs';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 @Component({
@@ -18,46 +16,23 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
   imports: [CommonModule, SharedModule],
 })
 export class SuppliersComponent implements OnInit {
-  productsSuppliers: Supplier[] = [];
-  list: Supplier[] = [];
   formSupplier!: FormGroup;
-  selectedSupplier: Supplier[] = [];
-  editedSupplierId: any;
-  viewInfoSupplier?: Supplier[];
-
-  filteredSupplier: any;
-  formCategory!: FormGroup;
-  visibleFormProduct: boolean = false;
-  visibleEditFormProduct: boolean = false;
-  suppliersService = inject(SuppliersService);
-  valueProductsCard: number = 0;
-  amountProductsCard: number = 0;
-  amountSuppliersCard: number = 0;
-  suppliersCard: Supplier[] = [];
-  cardSupplier: boolean = false;
-  selectedCategoryBySupplier: any;
-  category: any;
-  selectedCategory: any;
-  editedCategory: any;
   suppliers: Supplier[] = [];
-  page!: Page;
-  buttonClearDisable?: boolean;
-  viewVisible: { [key: string]: boolean } = {};
+  listCategories: any[] = [];
+  listSuppliers: any[] = [];
+  selectedSupplier: any;
+  editedSupplierId: any;
+  selectedSupplierDelete: any;
+  filteredCategory: any;
+  filteredSupplier: any;
+  selectedCategoryBySupplier: any;
+  visibleFormSupplier: boolean = false;
+  visibleEditFormSupplier: boolean = false;
 
   confirmationService = inject(ConfirmationService);
+  suppliersService = inject(SuppliersService);
   messageService = inject(MessageService);
-
   fb = inject(FormBuilder);
-  supplierName?: any;
-  supplierCountry?: any;
-  supplierState?: any;
-  product?: any;
-  createFormNewProduct: any;
-  listSuppliers: any[] | undefined;
-  visibleEditFormSupplier: boolean = false;
-  visibleEditFormCategory: boolean = false;
-  listCategory?: any[];
-  filteredCategory!: any[];
 
   ngOnInit(): void {
     this.findAll();
@@ -66,150 +41,130 @@ export class SuppliersComponent implements OnInit {
 
   findAll(): void {
     if (this.selectedSupplier) {
-      this.buttonClearDisable = false;
-      this.filteredSupplier(this.selectedSupplier);
-    } else if (this.selectedSupplier) {
-      this.buttonClearDisable = false;
+      this.filterSupplier(this.selectedSupplier);
+    } else if (this.selectedCategoryBySupplier) {
+      this.filterSuppliersByCategory(this.selectedCategoryBySupplier);
     } else {
-      this.buttonClearDisable = true;
       this.loadGridSupplier();
     }
-
-    this.loadListSupplier();
-
-    this.countSuppliers();
+    this.loadListSuppliers();
+    this.loadListCategories();
   }
-  loadListSupplier() {
+
+  loadGridSupplier() {
+    this.suppliersService.getPaginatedListSuppliers().subscribe((data) => {
+      this.suppliers = data;
+    });
+  }
+
+  loadListSuppliers() {
     this.suppliersService.getListSuppliers().subscribe((data) => {
       this.listSuppliers = data;
     });
   }
-  loadGridSupplier() {}
+
+  loadListCategories() {
+    this.suppliersService.getListCategories().subscribe((data) => {
+      this.listCategories = data;
+    });
+  }
 
   clear() {
-    this.cardSupplier = false;
+    this.selectedSupplier = null;
+    this.selectedCategoryBySupplier = null;
     this.findAll();
   }
 
-  countSuppliers(): void {
-    this.suppliersService.getListSuppliers().subscribe((data) => {
-      this.suppliersCard = data;
-      if (this.suppliersCard && Array.isArray(this.suppliersCard)) {
-        this.amountSuppliersCard = this.suppliersCard.length;
-      } else {
-        this.amountSuppliersCard = 0;
-      }
-    });
-  }
-
-  // PRODUCTS:
-
   createFormNewSupplier(): void {
-    this.suppliersService.getListSuppliers().subscribe((data) => {
-      this.suppliers = data;
-    });
     this.formSupplier = this.fb.group({
       id: [''],
       name: ['', [Validators.required]],
-
-      contact: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      category: ['', [Validators.required]],
       country: ['', [Validators.required]],
       state: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      contact: ['', [Validators.required]],
       adress: ['', [Validators.required]],
-      category: ['', [Validators.required]],
       comments: ['', [Validators.required]],
     });
   }
-
-  /* loadGridSuppliers(): void {
-    this.suppliersService
-    getPaginatedListSuppliers()
-     .subscribe((data: Supplier[]) => {
-        this.suppliers = data;
-      });
-  }*/
-
-  loadListSuppliers(): void {}
 
   loadFilterSupplier(event: AutoCompleteCompleteEvent): void {
     let filtered: any[] = [];
     let query = event.query;
 
     for (let i = 0; i < (this.listSuppliers as any[]).length; i++) {
-      let product = (this.listSuppliers as any[])[i];
-      if (product.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(product);
+      let supplier = (this.listSuppliers as any[])[i];
+      if (supplier.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(supplier);
       }
     }
     this.filteredSupplier = filtered;
   }
 
-  filterSupplier(supplier: any): void {
-    const id = supplier.id;
-    this.suppliersService.filterSupplier(id).subscribe(
-      (filteredSuppliers: any) => {
-        if (filteredSuppliers.length > 0) {
-          this.cardSupplier = true;
-          this.selectedSupplier = filteredSuppliers;
-          this.product = filteredSuppliers[0];
-
-          this.supplierName = this.product.name;
-          this.supplierState = this.product.state;
-          this.supplierCountry = this.product.country;
-        } else {
-          this.cardSupplier = false;
-        }
-      },
-      (error: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro!',
-          key: 'filterSupplier',
-          detail: 'Erro ao filtrar fornecedor!',
-        });
-      }
-    );
-  }
-
-  filterSuppliersByCategory(Product: string): void {
-    this.suppliersService.filterSuppliersByCategory(Product).subscribe(
-      (data: any) => {
-        this.suppliers = data;
-      },
-      (error: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro!',
-          key: 'filterSupplierbyProducts',
-          detail: 'Não há Fornecedor com esta Categoria!',
-        });
-      }
-    );
-  }
-  loadFilterCategory(event: AutoCompleteCompleteEvent): void {
+  loadFilterCategories(event: AutoCompleteCompleteEvent): void {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.listCategory as any[]).length; i++) {
-      let category = (this.listCategory as any[])[i];
-      if (category.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for (let i = 0; i < (this.listCategories as any[]).length; i++) {
+      let category = (this.listCategories as any[])[i];
+      if (category.category.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(category);
       }
     }
     this.filteredCategory = filtered;
   }
 
-  create(): void {
-    this.formSupplier.reset();
-    this.visibleFormProduct = true;
+  filterSupplier(supplier: string): void {
+    this.selectedSupplier = null;
+    this.selectedSupplier = supplier;
+    const id = this.selectedSupplier.id;
+    this.suppliersService.filterSupplier(id).subscribe(
+      (data) => {
+        this.suppliers = [];
+        this.suppliers = data;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro!',
+          key: ' filterProductsByType',
+          detail: 'Não há Produtos com este Tipo!',
+        });
+      }
+    );
   }
 
-  saveSupplier(): void {
+  filterSuppliersByCategory(supplier: string): void {
+    this.selectedCategoryBySupplier = null;
+    this.selectedCategoryBySupplier = supplier;
+    const category = this.selectedCategoryBySupplier.category;
+    this.suppliersService.filterSuppliersByCategory(category).subscribe(
+      (data) => {
+        this.suppliers = [];
+        this.suppliers = data;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro!',
+          key: ' filterProductsByType',
+          detail: 'Não há Produtos com este Tipo!',
+        });
+      }
+    );
+  }
+
+  create(): void {
+    this.formSupplier.reset();
+    this.visibleFormSupplier = true;
+  }
+
+  save(): void {
     if (this.formSupplier.valid) {
       this.suppliersService.create(this.formSupplier.value).subscribe({
         complete: () => {
-          this.visibleEditFormSupplier = false;
+          this.visibleFormSupplier = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
@@ -219,7 +174,6 @@ export class SuppliersComponent implements OnInit {
           this.findAll();
         },
       });
-      this.calculateCards();
     } else {
       this.messageService.add({
         severity: 'error',
@@ -229,20 +183,21 @@ export class SuppliersComponent implements OnInit {
       });
     }
   }
-  calculateCards() {
-    throw new Error('Method not implemented.');
-  }
 
-  /*editSupplier(Supplier: Supplier): void {
+  editSupplier(supplier: Supplier): void {
     this.formSupplier.patchValue({
-      name: Supplier.name,
-      amount: Supplier.amount,
-
-      description: Supplier.description,
+      name: supplier.name,
+      category: supplier.category,
+      country: supplier.country,
+      state: supplier.state,
+      email: supplier.email,
+      contact: supplier.contact,
+      adress: supplier.adress,
+      comments: supplier.comments,
     });
-    this.editedSupplierId = Supplier.id;
-    this.visibleEditFormProduct = true;
-  }*/
+    this.editedSupplierId = supplier.id;
+    this.visibleEditFormSupplier = true;
+  }
 
   update(): void {
     if (this.formSupplier.valid && this.editedSupplierId !== null) {
@@ -257,12 +212,12 @@ export class SuppliersComponent implements OnInit {
             response &&
             response.message === 'Supplier updated successfully!'
           ) {
-            this.visibleEditFormProduct = false;
+            this.visibleEditFormSupplier = false;
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso!',
               key: 'update',
-              detail: updated.name + ' Editado!',
+              detail: updated.name + ' Atualizado!',
             });
             this.findAll();
           }
@@ -271,8 +226,8 @@ export class SuppliersComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Erro!',
-            key: 'updateProduct',
-            detail: 'Erro ao atualizar Fornecedor!',
+            key: 'update',
+            detail: 'Erro ao Atualizar Fornecedor!',
           });
         }
       );
@@ -286,8 +241,8 @@ export class SuppliersComponent implements OnInit {
     }
   }
 
-  openDeleteSupplier(Supplier: any) {
-    this.selectedSupplier = Supplier;
+  openDeleteSupplier(supplier: any) {
+    this.selectedSupplierDelete = supplier;
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
       header: 'Excluir',
@@ -299,15 +254,15 @@ export class SuppliersComponent implements OnInit {
   delete(confirmSupplier: boolean) {
     this.confirmationService.close();
     if (confirmSupplier) {
-      const SupplierIdToDelete = this.selectedSupplier[0].id;
-      this.suppliersService.deleteSupplier(SupplierIdToDelete).subscribe(
+      const supplierIdToDelete = this.selectedSupplierDelete.id;
+      this.suppliersService.deleteSupplier(supplierIdToDelete).subscribe(
         () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
-            key: 'deleteSupplier',
+            key: 'delete',
             detail:
-              'Supplier ' + this.selectedSupplier[0].name + ' Excluído...',
+              'Supplier ' + this.selectedSupplierDelete.name + ' Excluído...',
           });
 
           this.loadGridSupplier();

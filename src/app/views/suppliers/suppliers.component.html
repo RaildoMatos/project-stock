@@ -11,23 +11,24 @@
           styleClass="w-full"
           [suggestions]="filteredSupplier"
           (completeMethod)="loadFilterSupplier($event)"
+          [disabled]="selectedCategoryBySupplier"
           field="name"
         ></p-autoComplete>
       </div>
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label htmlFor="">Filtrar Fornecedor por Categoria</label>
+          <label>Filtrar Fornecedor por Categoria</label>
         </div>
         <p-autoComplete
           [(ngModel)]="selectedCategoryBySupplier"
           styleClass="w-full"
           [dropdown]="true"
           [suggestions]="filteredCategory"
-          (completeMethod)="loadFilterCategory($event)"
-          field="name"
+          (completeMethod)="loadFilterCategories($event)"
+          [disabled]="selectedSupplier"
+          field="category"
         ></p-autoComplete>
       </div>
-      <!--Botao de pesquisa-->
       <div class="flex justify-content-start align-items-center">
         <div class="p-field ml-2">
           <p-button
@@ -42,7 +43,6 @@
         <div class="p-field ml-2">
           <p-button
             class="flex align-items-end justify-content-end"
-            [disabled]="buttonClearDisable"
             icon="pi pi-eraser"
             styleClass="p-button-info"
             (click)="clear()"
@@ -53,61 +53,13 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-12" style="margin: 2% 0 2% 0">
-    <div class="flex">
-      <div class="flex-1 border-round">
-        <div
-          class="card"
-          [ngClass]="{
-            'card-green': amountProductsCard > 50,
-            'card-yellow': amountProductsCard <= 50 && amountProductsCard > 5,
-            'card-red': amountProductsCard <= 5
-          }"
-        >
-          <p-card header="Quantidade Total">
-            <div class="flex justify-content-between align-items-center">
-              <p
-                [ngStyle]="{
-                  color:
-                    amountProductsCard > 50
-                      ? '#689f38'
-                      : amountProductsCard <= 50 && amountProductsCard > 5
-                      ? '#fcc107'
-                      : '#d32f2f',
-                  'font-weight': 'bold'
-                }"
-                class="m-0"
-              >
-                {{ amountProductsCard }} em Estoque
-              </p>
-              <i class="pi pi-inbox"></i>
-            </div>
-          </p-card>
-        </div>
-      </div>
 
-      <div class="flex-1 border-round">
-        <div class="card">
-          <div *ngIf="!cardSupplier; else supplierCard" class="card-default">
-            <p-card header="Fornecedor">
-              <div class="flex justify-content-between align-items-center">
-                <p class="m-0" style="font-weight: bold">
-                  Quantidade de Fornecedores: {{ amountSuppliersCard }}
-                </p>
-                <i class="pi pi-building"></i>
-              </div>
-            </p-card>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
-  <div class="col-8">
+  <div class="col-12">
     <div class="label-container">
       <label class="label-text">Fornecedor</label>
     </div>
     <div class="card">
-      <p-toolbar styleClass="">
+      <p-toolbar>
         <ng-template pTemplate="left">
           <button
             pButton
@@ -124,6 +76,7 @@
         #dt
         [rows]="5"
         [paginator]="true"
+        [value]="suppliers"
         [tableStyle]="{ 'min-width': '50%' }"
         [rowHover]="true"
         currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
@@ -134,8 +87,11 @@
             <th pSortableColumn="name" style="min-width: 15rem">
               Nome <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th pSortableColumn="value">
-              Categoria<p-sortIcon field="value"></p-sortIcon>
+            <th pSortableColumn="country">
+              País<p-sortIcon field="country"></p-sortIcon>
+            </th>
+            <th pSortableColumn="category">
+              Categoria<p-sortIcon field="category"></p-sortIcon>
             </th>
 
             <th>Ações</th>
@@ -143,45 +99,21 @@
         </ng-template>
         <ng-template pTemplate="body" let-supplier>
           <tr>
-            <td>{{ product.name }}</td>
+            <td>{{ supplier.name }}</td>
             <td>
-              {{ product.value | currency : "BRL" : "symbol" : "1.2-2" }}
+              {{ supplier.country }}
             </td>
-
-            <td>{{ product.type.name }}</td>
+            <td>{{ supplier.category }}</td>
             <td>
-              <p-dialog
-                header="{{ product.name }}"
-                [(visible)]="viewVisible[product.id]"
-                [style]="{ width: '30vw', height: '300px' }"
-              >
-                <p-scrollPanel
-                  [style]="{ width: '100%', height: 'auto' }"
-                  class="view"
-                >
-                  <div class="info">
-                    <h5 class="info-title">Descrição</h5>
-                    {{ product.description }}
-                  </div>
-                  <div class="info">
-                    <h5 class="info-title">Descrição do Tipo</h5>
-                    {{ product.type.description }}
-                  </div>
-                  <div class="info">
-                    <h5 class="info-title">Categoria do Fornecedor</h5>
-                    {{ product.supplier.category }}
-                  </div>
-                </p-scrollPanel>
-              </p-dialog>
-              <!--<button
+              <button
                 pButton
                 pRipple
                 icon="pi pi-pencil"
                 class="p-button-success mr-2"
                 (click)="editSupplier(supplier)"
-              ></button>-->
+              ></button>
               <p-dialog
-                header="Editar Produto"
+                header="Editar Fornecedor"
                 [(visible)]="visibleEditFormSupplier"
                 [style]="{ width: '50vw' }"
                 [maximizable]="false"
@@ -189,29 +121,44 @@
                 <form [formGroup]="formSupplier">
                   <div class="grid p-fluid p-formgrid">
                     <div class="col-6 flex flex-column gap-2">
-                      <label htmlFor="username">Nome</label>
+                      <label>Nome</label>
                       <input formControlName="name" type="text" pInputText />
                     </div>
                     <div class="col-6 flex flex-column gap-2">
-                      <label htmlFor="username">Categoria</label>
-                      <input formControlName="name" type="text" pInputText />
+                      <label>Categoria</label>
+                      <input
+                        formControlName="category"
+                        type="text"
+                        pInputText
+                      />
                     </div>
-
                     <div class="col-6 flex flex-column gap-2">
-                      <label htmlFor="username">Fornecedor</label>
-                      <p-dropdown
-                        formControlName="supplier"
-                        [options]="suppliers"
-                        optionLabel="name"
-                      ></p-dropdown>
+                      <label>País</label>
+                      <input formControlName="country" type="text" pInputText />
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label>Estado</label>
+                      <input formControlName="state" type="text" pInputText />
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label>E-mail</label>
+                      <input formControlName="email" type="text" pInputText />
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label>Contato</label>
+                      <input formControlName="contact" type="text" pInputText />
                     </div>
                     <div class="col-12 flex flex-column gap-2">
-                      <label htmlFor="username">Descrição</label>
+                      <label>Endereço</label>
+                      <input formControlName="adress" type="text" pInputText />
+                    </div>
+                    <div class="col-12 flex flex-column gap-2">
+                      <label>Comentários</label>
                       <textarea
                         rows="5"
                         cols="30"
                         pInputTextarea
-                        formControlName="description"
+                        formControlName="comments"
                       ></textarea>
                     </div>
                   </div>
@@ -222,6 +169,7 @@
                     pRipple
                     label="Salvar"
                     icon="pi pi-check"
+                    (click)="update()"
                   ></button>
                 </ng-template>
               </p-dialog>
@@ -232,12 +180,11 @@
                 class="p-button-danger"
                 (click)="openDeleteSupplier(supplier)"
               ></button>
-              <p-toast position="bottom-center"></p-toast>
               <p-confirmDialog
                 header="Confirmation"
                 icon="pi pi-exclamation-triangle"
                 [closable]="false"
-                key="supplier"
+                key="delete"
               >
                 <ng-template pTemplate="footer">
                   <button
@@ -261,7 +208,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
-            {{ suppliers ? suppliers.length : 0 }} Fornecedoder.
+            {{ suppliers ? suppliers.length : 0 }} Fornecedores.
           </div>
         </ng-template>
       </p-table>
@@ -269,29 +216,48 @@
   </div>
 
   <p-dialog
-    header="Salvar Supplier"
+    header="Salvar Fornecedor"
+    [(visible)]="visibleFormSupplier"
     [style]="{ width: '50vw' }"
     [maximizable]="false"
   >
-    <form>
-      <div>
+    <form [formGroup]="formSupplier">
+      <div class="grid p-fluid p-formgrid">
         <div class="col-6 flex flex-column gap-2">
-          <label htmlFor="username">Fornecedor</label>
-          <div *ngIf="suppliers.length > 0; else disabledSupplier">
-            <p-dropdown
-              formControlName="supplier"
-              [options]="suppliers"
-              optionLabel="name"
-            ></p-dropdown>
-          </div>
+          <label>Nome</label>
+          <input formControlName="name" type="text" pInputText />
+        </div>
+        <div class="col-6 flex flex-column gap-2">
+          <label>Categoria</label>
+          <input formControlName="category" type="text" pInputText />
+        </div>
+        <div class="col-6 flex flex-column gap-2">
+          <label>País</label>
+          <input formControlName="country" type="text" pInputText />
+        </div>
+        <div class="col-6 flex flex-column gap-2">
+          <label>Estado</label>
+          <input formControlName="state" type="text" pInputText />
+        </div>
+        <div class="col-6 flex flex-column gap-2">
+          <label>E-mail</label>
+          <input formControlName="email" type="text" pInputText />
+        </div>
+        <div class="col-6 flex flex-column gap-2">
+          <label>Contato</label>
+          <input formControlName="contact" type="text" pInputText />
         </div>
         <div class="col-12 flex flex-column gap-2">
-          <label htmlFor="username">Descrição</label>
+          <label>Endereço</label>
+          <input formControlName="adress" type="text" pInputText />
+        </div>
+        <div class="col-12 flex flex-column gap-2">
+          <label>Comentários</label>
           <textarea
             rows="5"
             cols="30"
             pInputTextarea
-            formControlName="description"
+            formControlName="comments"
           ></textarea>
         </div>
       </div>
@@ -302,7 +268,7 @@
         pRipple
         label="Salvar"
         icon="pi pi-check"
-        (click)="saveSupplier()"
+        (click)="save()"
       ></button>
     </ng-template>
   </p-dialog>

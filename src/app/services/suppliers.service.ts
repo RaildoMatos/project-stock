@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Supplier } from '../models/supplier';
-import { Page } from '../models/page';
 
 @Injectable({
   providedIn: 'root',
@@ -17,18 +16,22 @@ export class SuppliersService {
     return this.http.get<Supplier[]>(this.API_STOCK_SUPPLIERS);
   }
 
-  getPaginatedListSuppliers(page: Page) {
+  getListCategories(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_STOCK_SUPPLIERS}/categories`);
+  }
+
+  getPaginatedListSuppliers() {
     return this.http.get<Supplier[]>(`${this.API_STOCK_SUPPLIERS}/suppliers`);
   }
 
-  filterSupplier(id: string | number): Observable<Supplier> {
-    return this.http.get<Supplier>(`${this.API_STOCK_SUPPLIERS}/${id}`);
+  filterSupplier(id: string | number): Observable<Supplier[]> {
+    return this.http.get<Supplier[]>(
+      `${this.API_STOCK_SUPPLIERS}/supplier/${id}`
+    );
   }
 
   filterSuppliersByCategory(category: string): Observable<Supplier[]> {
-    return this.http.get<Supplier[]>(
-      `${this.API_STOCK_SUPPLIERS}/category/${category}`
-    );
+    return this.http.get<Supplier[]>(`${this.API_STOCK_SUPPLIERS}/${category}`);
   }
 
   create(data: Supplier) {
