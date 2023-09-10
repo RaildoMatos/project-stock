@@ -53,7 +53,6 @@ export class ProductsComponent implements OnInit {
 
   suppliers: Supplier[] = [];
   page!: Page;
-  buttonClearDisable?: boolean;
   viewVisible: { [key: string]: boolean } = {};
 
   confirmationService = inject(ConfirmationService);
@@ -74,16 +73,12 @@ export class ProductsComponent implements OnInit {
 
   findAll(): void {
     if (this.selectedProduct) {
-      this.buttonClearDisable = false;
       this.filterProduct(this.selectedProduct);
     } else if (this.selectedTypeByProduct) {
-      this.buttonClearDisable = false;
       this.filterProductsByType(this.selectedTypeByProduct);
     } else {
-      this.buttonClearDisable = true;
       this.loadGridProducts();
     }
-
     this.loadGridTypes();
     this.loadListProducts();
     this.loadListTypes();
@@ -180,6 +175,7 @@ export class ProductsComponent implements OnInit {
   }
 
   filterProduct(product: string): void {
+    this.selectedTypeByProduct = null;
     this.selectedProduct = product;
     const id = this.selectedProduct.id;
     this.productsService.filterProduct(id).subscribe(
@@ -207,6 +203,7 @@ export class ProductsComponent implements OnInit {
   }
 
   filterProductsByType(type: string): void {
+    this.selectedProduct = null;
     this.selectedTypeByProduct = type;
     const id = this.selectedTypeByProduct.id;
     this.productsService.filterProductsByType(id).subscribe(
