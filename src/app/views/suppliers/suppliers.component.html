@@ -1,1 +1,326 @@
-<h3>Tela de suppliers</h3>
+<div class="grid">
+  <div class="col-12">
+    <div class="flex align-items-end">
+      <div class="p-field col-3 pb-0">
+        <div class="mb-2">
+          <label>Filtrar Fornecedor</label>
+        </div>
+        <p-autoComplete
+          [(ngModel)]="selectedSupplier"
+          [dropdown]="true"
+          styleClass="w-full"
+          [suggestions]="filteredSupplier"
+          (completeMethod)="loadFilterSupplier($event)"
+          field="name"
+        ></p-autoComplete>
+      </div>
+      <div class="p-field col-3 pb-0">
+        <div class="mb-2">
+          <label htmlFor="">Filtrar Fornecedor por Categoria</label>
+        </div>
+        <p-autoComplete
+          [(ngModel)]="selectedCategoryBySupplier"
+          styleClass="w-full"
+          [dropdown]="true"
+          [suggestions]="filteredCategory"
+          (completeMethod)="loadFilterCategory($event)"
+          field="name"
+        ></p-autoComplete>
+      </div>
+      <!--Botao de pesquisa-->
+      <div class="flex justify-content-start align-items-center">
+        <div class="p-field ml-2">
+          <p-button
+            class="flex align-items-end justify-content-end"
+            icon="pi pi-search"
+            styleClass="p-button-info"
+            (click)="findAll()"
+            pTooltip="Pesquisar"
+            tooltipPosition="top"
+          ></p-button>
+        </div>
+        <div class="p-field ml-2">
+          <p-button
+            class="flex align-items-end justify-content-end"
+            [disabled]="buttonClearDisable"
+            icon="pi pi-eraser"
+            styleClass="p-button-info"
+            (click)="clear()"
+            pTooltip="Limpar"
+            tooltipPosition="top"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-12" style="margin: 2% 0 2% 0">
+    <div class="flex">
+      <div class="flex-1 border-round">
+        <div
+          class="card"
+          [ngClass]="{
+            'card-green': amountProductsCard > 50,
+            'card-yellow': amountProductsCard <= 50 && amountProductsCard > 5,
+            'card-red': amountProductsCard <= 5
+          }"
+        >
+          <p-card header="Quantidade Total">
+            <div class="flex justify-content-between align-items-center">
+              <p
+                [ngStyle]="{
+                  color:
+                    amountProductsCard > 50
+                      ? '#689f38'
+                      : amountProductsCard <= 50 && amountProductsCard > 5
+                      ? '#fcc107'
+                      : '#d32f2f',
+                  'font-weight': 'bold'
+                }"
+                class="m-0"
+              >
+                {{ amountProductsCard }} em Estoque
+              </p>
+              <i class="pi pi-inbox"></i>
+            </div>
+          </p-card>
+        </div>
+      </div>
+
+      <div class="flex-1 border-round">
+        <div class="card">
+          <div *ngIf="!cardSupplier; else supplierCard" class="card-default">
+            <p-card header="Fornecedor">
+              <div class="flex justify-content-between align-items-center">
+                <p class="m-0" style="font-weight: bold">
+                  Quantidade de Fornecedores: {{ amountSuppliersCard }}
+                </p>
+                <i class="pi pi-building"></i>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  <div class="col-8">
+    <div class="label-container">
+      <label class="label-text">Fornecedor</label>
+    </div>
+    <div class="card">
+      <p-toolbar styleClass="">
+        <ng-template pTemplate="left">
+          <button
+            pButton
+            pRipple
+            label="Novo"
+            icon="pi pi-plus"
+            class="p-button-success mr-2"
+            (click)="create()"
+          ></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table
+        class="custom-table"
+        #dt
+        [rows]="5"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '50%' }"
+        [rowHover]="true"
+        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        [showCurrentPageReport]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" style="min-width: 15rem">
+              Nome <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="value">
+              Categoria<p-sortIcon field="value"></p-sortIcon>
+            </th>
+
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-supplier>
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>
+              {{ product.value | currency : "BRL" : "symbol" : "1.2-2" }}
+            </td>
+
+            <td>{{ product.type.name }}</td>
+            <td>
+              <p-dialog
+                header="{{ product.name }}"
+                [(visible)]="viewVisible[product.id]"
+                [style]="{ width: '30vw', height: '300px' }"
+              >
+                <p-scrollPanel
+                  [style]="{ width: '100%', height: 'auto' }"
+                  class="view"
+                >
+                  <div class="info">
+                    <h5 class="info-title">Descrição</h5>
+                    {{ product.description }}
+                  </div>
+                  <div class="info">
+                    <h5 class="info-title">Descrição do Tipo</h5>
+                    {{ product.type.description }}
+                  </div>
+                  <div class="info">
+                    <h5 class="info-title">Categoria do Fornecedor</h5>
+                    {{ product.supplier.category }}
+                  </div>
+                </p-scrollPanel>
+              </p-dialog>
+              <!--<button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-success mr-2"
+                (click)="editSupplier(supplier)"
+              ></button>-->
+              <p-dialog
+                header="Editar Produto"
+                [(visible)]="visibleEditFormSupplier"
+                [style]="{ width: '50vw' }"
+                [maximizable]="false"
+              >
+                <form [formGroup]="formSupplier">
+                  <div class="grid p-fluid p-formgrid">
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Nome</label>
+                      <input formControlName="name" type="text" pInputText />
+                    </div>
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Categoria</label>
+                      <input formControlName="name" type="text" pInputText />
+                    </div>
+
+                    <div class="col-6 flex flex-column gap-2">
+                      <label htmlFor="username">Fornecedor</label>
+                      <p-dropdown
+                        formControlName="supplier"
+                        [options]="suppliers"
+                        optionLabel="name"
+                      ></p-dropdown>
+                    </div>
+                    <div class="col-12 flex flex-column gap-2">
+                      <label htmlFor="username">Descrição</label>
+                      <textarea
+                        rows="5"
+                        cols="30"
+                        pInputTextarea
+                        formControlName="description"
+                      ></textarea>
+                    </div>
+                  </div>
+                </form>
+                <ng-template pTemplate="footer">
+                  <button
+                    pButton
+                    pRipple
+                    label="Salvar"
+                    icon="pi pi-check"
+                  ></button>
+                </ng-template>
+              </p-dialog>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="openDeleteSupplier(supplier)"
+              ></button>
+              <p-toast position="bottom-center"></p-toast>
+              <p-confirmDialog
+                header="Confirmation"
+                icon="pi pi-exclamation-triangle"
+                [closable]="false"
+                key="supplier"
+              >
+                <ng-template pTemplate="footer">
+                  <button
+                    type="button"
+                    pButton
+                    label="Não"
+                    class="ui-button-secondary"
+                    (click)="delete(false)"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    label="Sim"
+                    class="ui-button-danger"
+                    (click)="delete(true)"
+                  ></button>
+                </ng-template>
+              </p-confirmDialog>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            {{ suppliers ? suppliers.length : 0 }} Fornecedoder.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <p-dialog
+    header="Salvar Supplier"
+    [style]="{ width: '50vw' }"
+    [maximizable]="false"
+  >
+    <form>
+      <div>
+        <div class="col-6 flex flex-column gap-2">
+          <label htmlFor="username">Fornecedor</label>
+          <div *ngIf="suppliers.length > 0; else disabledSupplier">
+            <p-dropdown
+              formControlName="supplier"
+              [options]="suppliers"
+              optionLabel="name"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="col-12 flex flex-column gap-2">
+          <label htmlFor="username">Descrição</label>
+          <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            formControlName="description"
+          ></textarea>
+        </div>
+      </div>
+    </form>
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        pRipple
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="saveSupplier()"
+      ></button>
+    </ng-template>
+  </p-dialog>
+
+  <ng-template #disabledSupplier>
+    <p-dropdown
+      [disabled]="true"
+      formControlName="supplier"
+      [options]="suppliers"
+      placeholder="Nenhum Fornecedor Cadastrado"
+      optionLabel="name"
+      pTooltip="Cadastre um Fornecedor"
+      tooltipPosition="bottom"
+    ></p-dropdown>
+  </ng-template>
+
+  <p-toast position="bottom-center" key="saveSupplier"></p-toast>
+  <p-toast position="bottom-center" key="delete"></p-toast>
+  <p-toast position="bottom-center" key="filterSuppliersByCategory"></p-toast>
+  <p-toast position="bottom-center" key="update"></p-toast>
+</div>

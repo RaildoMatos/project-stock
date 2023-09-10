@@ -11,15 +11,14 @@ export class SuppliersService {
   private API_STOCK_SUPPLIERS = 'http://localhost:8080/suppliers';
 
   http = inject(HttpClient);
+  deleteSupplier: any;
 
   getListSuppliers(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(this.API_STOCK_SUPPLIERS);
   }
 
   getPaginatedListSuppliers(page: Page) {
-    return this.http.get<any>(
-      `${this.API_STOCK_SUPPLIERS}/suppliers?page=${page.page}&size=${page.size}`
-    );
+    return this.http.get<Supplier[]>(`${this.API_STOCK_SUPPLIERS}/suppliers`);
   }
 
   filterSupplier(id: string | number): Observable<Supplier> {
@@ -36,8 +35,8 @@ export class SuppliersService {
     return this.http.post<Supplier>(this.API_STOCK_SUPPLIERS, data);
   }
 
-  update(data: Supplier) {
-    return this.http.put(this.API_STOCK_SUPPLIERS, data);
+  update(id: number, data: Supplier) {
+    return this.http.put(`${this.API_STOCK_SUPPLIERS}/${id}`, data);
   }
 
   delete(id: string | number) {
