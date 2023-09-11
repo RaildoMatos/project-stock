@@ -25,8 +25,8 @@
           [dropdown]="true"
           [suggestions]="filteredCategory"
           (completeMethod)="loadFilterCategories($event)"
-          [disabled]="selectedSupplier"
           field="category"
+          [disabled]="selectedSupplier"
         ></p-autoComplete>
       </div>
       <div class="flex justify-content-start align-items-center">
@@ -142,16 +142,37 @@
                     </div>
                     <div class="col-6 flex flex-column gap-2">
                       <label>E-mail</label>
-                      <input formControlName="email" type="text" pInputText />
+                      <input
+                        formControlName="email"
+                        type="email"
+                        pInputText
+                        pTooltip="Insira no formato email@example.com"
+                        tooltipPosition="top"
+                      />
                     </div>
                     <div class="col-6 flex flex-column gap-2">
                       <label>Contato</label>
-                      <input formControlName="contact" type="text" pInputText />
+                      <input
+                        formControlName="contact"
+                        type="text"
+                        pInputText
+                        pattern="^\+\d{2}\(\d{2}\)\d{5}-\d{4}$"
+                        pTooltip="Insira no formato +11 (11) 11111-1111"
+                        tooltipPosition="top"
+                      />
                     </div>
+
                     <div class="col-12 flex flex-column gap-2">
                       <label>Endereço</label>
-                      <input formControlName="adress" type="text" pInputText />
+                      <input
+                        formControlName="adress"
+                        type="text"
+                        id="address"
+                        name="address"
+                        pInputText
+                      />
                     </div>
+
                     <div class="col-12 flex flex-column gap-2">
                       <label>Comentários</label>
                       <textarea
@@ -159,6 +180,7 @@
                         cols="30"
                         pInputTextarea
                         formControlName="comments"
+                        maxlength="299"
                       ></textarea>
                     </div>
                   </div>
@@ -241,15 +263,35 @@
         </div>
         <div class="col-6 flex flex-column gap-2">
           <label>E-mail</label>
-          <input formControlName="email" type="text" pInputText />
+          <input
+            formControlName="email"
+            type="email"
+            pInputText
+            pTooltip="Insira no formato email@example.com"
+            tooltipPosition="top"
+          />
         </div>
         <div class="col-6 flex flex-column gap-2">
           <label>Contato</label>
-          <input formControlName="contact" type="text" pInputText />
+          <input
+            formControlName="contact"
+            type="text"
+            pInputText
+            pattern="^\+\d{2}\(\d{2}\)\d{5}-\d{4}$"
+            pTooltip="Insira no formato +11(11)11111-1111"
+            tooltipPosition="top"
+          />
         </div>
+
         <div class="col-12 flex flex-column gap-2">
           <label>Endereço</label>
-          <input formControlName="adress" type="text" pInputText />
+          <input
+            formControlName="adress"
+            type="text"
+            id="address"
+            name="address"
+            pInputText
+          />
         </div>
         <div class="col-12 flex flex-column gap-2">
           <label>Comentários</label>
@@ -258,6 +300,7 @@
             cols="30"
             pInputTextarea
             formControlName="comments"
+            maxlength="299"
           ></textarea>
         </div>
       </div>
@@ -288,5 +331,6 @@
   <p-toast position="bottom-center" key="saveSupplier"></p-toast>
   <p-toast position="bottom-center" key="delete"></p-toast>
   <p-toast position="bottom-center" key="filterSuppliersByCategory"></p-toast>
+  <p-toast position="bottom-center" key="filterSupplier"></p-toast>
   <p-toast position="bottom-center" key="update"></p-toast>
 </div>

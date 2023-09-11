@@ -121,15 +121,24 @@ export class SuppliersComponent implements OnInit {
     const id = this.selectedSupplier.id;
     this.suppliersService.filterSupplier(id).subscribe(
       (data) => {
-        this.suppliers = [];
-        this.suppliers = data;
+        if (data.length === 0) {
+          // Verifica se o retorno está vazio
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'filterSupplier',
+            detail: 'Não há Fornecedor!',
+          });
+        } else {
+          this.suppliers = data;
+        }
       },
       (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro!',
-          key: ' filterProductsByType',
-          detail: 'Não há Produtos com este Tipo!',
+          key: 'filterSupplier',
+          detail: 'Fornecedor não Cadastrado.',
         });
       }
     );
@@ -139,20 +148,20 @@ export class SuppliersComponent implements OnInit {
     this.selectedCategoryBySupplier = null;
     this.selectedCategoryBySupplier = supplier;
     const category = this.selectedCategoryBySupplier.category;
-    this.suppliersService.filterSuppliersByCategory(category).subscribe(
-      (data) => {
-        this.suppliers = [];
-        this.suppliers = data;
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro!',
-          key: ' filterProductsByType',
-          detail: 'Não há Produtos com este Tipo!',
-        });
-      }
-    );
+    this.suppliersService
+      .filterSuppliersByCategory(category)
+      .subscribe((data) => {
+        if (data.length === 0) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro!',
+            key: 'filterSuppliersByCategory',
+            detail: 'Não há Fornecedor com essa Categoria!',
+          });
+        } else {
+          this.suppliers = data;
+        }
+      });
   }
 
   create(): void {
@@ -195,6 +204,7 @@ export class SuppliersComponent implements OnInit {
       adress: supplier.adress,
       comments: supplier.comments,
     });
+
     this.editedSupplierId = supplier.id;
     this.visibleEditFormSupplier = true;
   }
