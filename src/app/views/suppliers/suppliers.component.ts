@@ -140,21 +140,16 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSupplier(supplier: string): void {
-    this.showCards = true;
     this.selectedSupplier = null;
     this.selectedSupplier = supplier;
     const id = this.selectedSupplier.id;
     this.suppliersService.filterSupplier(id).subscribe(
       (data) => {
         if (data.length === 0) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro!',
-            key: 'filterSupplier',
-            detail: 'Não há Fornecedor!',
-          });
+          this.showCards = false;
         } else {
           this.suppliers = data;
+          this.showCards = true;
         }
       },
       (error) => {
