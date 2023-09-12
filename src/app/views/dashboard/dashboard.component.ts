@@ -14,10 +14,6 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  authService = inject(AuthService);
-  productService = inject(ProductsService);
-  supplierstService = inject(SuppliersService);
-
   loading: boolean = false;
 
   dataGraphAmountByType: any;
@@ -37,6 +33,10 @@ export class DashboardComponent implements OnInit {
 
   dataGraphAmountByProduct: any;
   optionsGraphAmountByProduct: any;
+
+  authService = inject(AuthService);
+  productService = inject(ProductsService);
+  supplierstService = inject(SuppliersService);
 
   ngOnInit(): void {
     this.generateGraphAmountByType();

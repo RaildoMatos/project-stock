@@ -20,12 +20,15 @@ import { of, switchMap } from 'rxjs';
   imports: [CommonModule, SharedModule],
 })
 export class ProductsComponent implements OnInit {
-  products: Product[] = [];
-  listProducts: Product[] = [];
   formProduct!: FormGroup;
+  formType!: FormGroup;
+
+  listProducts: Product[] = [];
   selectedProducts: Product[] = [];
-  editedProductId: any;
+  products: Product[] = [];
   viewInfoProduct?: Product[];
+
+  editedProductId: any;
   selectedProduct: any;
   filteredProducts: any;
   selectedProductDelete: any;
@@ -44,15 +47,18 @@ export class ProductsComponent implements OnInit {
   selectedTypeByProduct: any;
   editedTypeId: any;
   filteredTypes: any;
-  visibleEditFormType: boolean = false;
   type?: Type;
+  visibleEditFormType: boolean = false;
   visibleFormType: boolean = false;
-  selectedTypeCreate: Type | undefined;
+  selectedTypeCreate?: Type;
   selectedTypeDelete: any;
-  formType!: FormGroup;
 
   suppliers: Supplier[] = [];
-  page!: Page;
+  supplierName?: any;
+  supplierCountry?: any;
+  supplierState?: any;
+  product?: any;
+
   viewVisible: { [key: string]: boolean } = {};
 
   confirmationService = inject(ConfirmationService);
@@ -60,10 +66,6 @@ export class ProductsComponent implements OnInit {
   productsService = inject(ProductsService);
   suppliersService = inject(SuppliersService);
   fb = inject(FormBuilder);
-  supplierName?: any;
-  supplierCountry?: any;
-  supplierState?: any;
-  product?: any;
 
   ngOnInit(): void {
     this.findAll();

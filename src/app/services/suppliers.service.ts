@@ -10,7 +10,6 @@ export class SuppliersService {
   private API_STOCK_SUPPLIERS = 'http://localhost:8080/suppliers';
 
   http = inject(HttpClient);
-  deleteSupplier: any;
 
   getListSuppliers(): Observable<Supplier[]> {
     return this.http.get<Supplier[]>(this.API_STOCK_SUPPLIERS);

@@ -2,21 +2,17 @@
   border-radius: 15px;
 }
 
-.card-green {
-  box-shadow: 0px 0px 8px #689f38;
-}
-
-.card-yellow {
-  box-shadow: 0px 0px 8px #fcc107;
-}
-
-.card-red {
-  box-shadow: 0px 0px 8px #d32f2f;
-}
-
 .card-default {
-  box-shadow: 0px 0px 8px #495057;
+  box-shadow: 0px 0px 8px #2b243b;
   border-radius: 15px;
+}
+
+.card-disabled {
+  opacity: 0.5;
+}
+
+.card-container-tall {
+  height: 5rem;
 }
 
 .label-container {

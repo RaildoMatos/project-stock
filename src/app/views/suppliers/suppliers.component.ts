@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,9 +26,17 @@ export class SuppliersComponent implements OnInit {
   selectedSupplierDelete: any;
   filteredCategory: any;
   filteredSupplier: any;
+  nameSupplier?: any;
+  stateCard?: any;
+  adressCard?: any;
+  emailCard?: any;
+  contactCard?: any;
+  commentCard?: any;
+  showCards: any;
   selectedCategoryBySupplier: any;
   visibleFormSupplier: boolean = false;
   visibleEditFormSupplier: boolean = false;
+  loading: boolean = false;
 
   confirmationService = inject(ConfirmationService);
   suppliersService = inject(SuppliersService);
@@ -49,12 +58,26 @@ export class SuppliersComponent implements OnInit {
     }
     this.loadListSuppliers();
     this.loadListCategories();
+    setTimeout(() => {
+      this.extractDataBySupplier();
+    }, 100);
   }
 
   loadGridSupplier() {
     this.suppliersService.getPaginatedListSuppliers().subscribe((data) => {
       this.suppliers = data;
     });
+  }
+
+  extractDataBySupplier() {
+    if (this.suppliers && this.suppliers.length > 0) {
+      this.nameSupplier = this.suppliers.map((supplier) => supplier.name);
+      this.stateCard = this.suppliers.map((supplier) => supplier.state);
+      this.adressCard = this.suppliers.map((supplier) => supplier.adress);
+      this.emailCard = this.suppliers.map((supplier) => supplier.email);
+      this.contactCard = this.suppliers.map((supplier) => supplier.contact);
+      this.commentCard = this.suppliers.map((supplier) => supplier.comments);
+    }
   }
 
   loadListSuppliers() {
@@ -72,6 +95,7 @@ export class SuppliersComponent implements OnInit {
   clear() {
     this.selectedSupplier = null;
     this.selectedCategoryBySupplier = null;
+    this.showCards = false;
     this.findAll();
   }
 
@@ -116,13 +140,13 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSupplier(supplier: string): void {
+    this.showCards = true;
     this.selectedSupplier = null;
     this.selectedSupplier = supplier;
     const id = this.selectedSupplier.id;
     this.suppliersService.filterSupplier(id).subscribe(
       (data) => {
         if (data.length === 0) {
-          // Verifica se o retorno está vazio
           this.messageService.add({
             severity: 'error',
             summary: 'Erro!',
@@ -145,6 +169,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSuppliersByCategory(supplier: string): void {
+    this.showCards = false;
     this.selectedCategoryBySupplier = null;
     this.selectedCategoryBySupplier = supplier;
     const category = this.selectedCategoryBySupplier.category;
@@ -204,7 +229,6 @@ export class SuppliersComponent implements OnInit {
       adress: supplier.adress,
       comments: supplier.comments,
     });
-
     this.editedSupplierId = supplier.id;
     this.visibleEditFormSupplier = true;
   }
@@ -265,24 +289,23 @@ export class SuppliersComponent implements OnInit {
     this.confirmationService.close();
     if (confirmSupplier) {
       const supplierIdToDelete = this.selectedSupplierDelete.id;
-      this.suppliersService.deleteSupplier(supplierIdToDelete).subscribe(
+      this.suppliersService.delete(supplierIdToDelete).subscribe(
         () => {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
             key: 'delete',
             detail:
-              'Supplier ' + this.selectedSupplierDelete.name + ' Excluído...',
+              'Fornecedor ' + this.selectedSupplierDelete.name + ' Excluído...',
           });
-
-          this.loadGridSupplier();
+          this.findAll();
         },
         (error: any) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Erro!',
             key: 'delete',
-            detail: 'Erro ao excluir Fornecedor!',
+            detail: 'Fornecedor em Uso!',
           });
         }
       );
@@ -293,7 +316,7 @@ export class SuppliersComponent implements OnInit {
         key: 'delete',
         detail: 'A Exclusão foi Cancelada!',
       });
-      this.loadGridSupplier();
+      this.findAll();
     }
   }
 }

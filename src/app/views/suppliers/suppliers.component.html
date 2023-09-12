@@ -6,8 +6,8 @@
           <label>Filtrar Fornecedor</label>
         </div>
         <p-autoComplete
-          [(ngModel)]="selectedSupplier"
           [dropdown]="true"
+          [(ngModel)]="selectedSupplier"
           styleClass="w-full"
           [suggestions]="filteredSupplier"
           (completeMethod)="loadFilterSupplier($event)"
@@ -20,13 +20,13 @@
           <label>Filtrar Fornecedor por Categoria</label>
         </div>
         <p-autoComplete
+          [dropdown]="true"
           [(ngModel)]="selectedCategoryBySupplier"
           styleClass="w-full"
-          [dropdown]="true"
           [suggestions]="filteredCategory"
           (completeMethod)="loadFilterCategories($event)"
-          field="category"
           [disabled]="selectedSupplier"
+          field="category"
         ></p-autoComplete>
       </div>
       <div class="flex justify-content-start align-items-center">
@@ -54,6 +54,61 @@
     </div>
   </div>
 
+  <div *ngIf="showCards; else noCards" class="col-12" style="margin: 2% 0 2% 0">
+    <div class="flex">
+      <div class="flex-1 border-round">
+        <div class="card">
+          <div class="card-default">
+            <p-card header="Localização">
+              <div
+                class="flex justify-content-between align-items-center card-container-tall"
+              >
+                <p class="m-0" style="font-weight: bold">
+                  {{ stateCard }} -
+                  {{ adressCard }}
+                </p>
+                <i class="pi pi-map"></i>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 border-round mx-4">
+        <div class="card">
+          <div class="card-default">
+            <p-card header="Contato">
+              <div
+                class="flex justify-content-between align-items-center card-container-tall"
+              >
+                <p class="m-0" style="font-weight: bold">
+                  {{ emailCard }} -
+                  {{ contactCard }}
+                </p>
+                <i class="pi pi-at"></i>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 border-round">
+        <div class="card">
+          <div class="card-default">
+            <p-card header="O {{ nameSupplier }}">
+              <div
+                class="flex justify-content-between align-items-center card-container-tall"
+              >
+                <p class="m-0" style="font-weight: bold">
+                  {{ commentCard }}
+                </p>
+                <i class="pi pi-comment"></i>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-12">
     <div class="label-container">
       <label class="label-text">Fornecedor</label>
@@ -74,7 +129,7 @@
       <p-table
         class="custom-table"
         #dt
-        [rows]="5"
+        [rows]="10"
         [paginator]="true"
         [value]="suppliers"
         [tableStyle]="{ 'min-width': '50%' }"
@@ -93,7 +148,6 @@
             <th pSortableColumn="category">
               Categoria<p-sortIcon field="category"></p-sortIcon>
             </th>
-
             <th>Ações</th>
           </tr>
         </ng-template>
@@ -112,89 +166,6 @@
                 class="p-button-success mr-2"
                 (click)="editSupplier(supplier)"
               ></button>
-              <p-dialog
-                header="Editar Fornecedor"
-                [(visible)]="visibleEditFormSupplier"
-                [style]="{ width: '50vw' }"
-                [maximizable]="false"
-              >
-                <form [formGroup]="formSupplier">
-                  <div class="grid p-fluid p-formgrid">
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>Nome</label>
-                      <input formControlName="name" type="text" pInputText />
-                    </div>
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>Categoria</label>
-                      <input
-                        formControlName="category"
-                        type="text"
-                        pInputText
-                      />
-                    </div>
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>País</label>
-                      <input formControlName="country" type="text" pInputText />
-                    </div>
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>Estado</label>
-                      <input formControlName="state" type="text" pInputText />
-                    </div>
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>E-mail</label>
-                      <input
-                        formControlName="email"
-                        type="email"
-                        pInputText
-                        pTooltip="Insira no formato email@example.com"
-                        tooltipPosition="top"
-                      />
-                    </div>
-                    <div class="col-6 flex flex-column gap-2">
-                      <label>Contato</label>
-                      <input
-                        formControlName="contact"
-                        type="text"
-                        pInputText
-                        pattern="^\+\d{2}\(\d{2}\)\d{5}-\d{4}$"
-                        pTooltip="Insira no formato +11 (11) 11111-1111"
-                        tooltipPosition="top"
-                      />
-                    </div>
-
-                    <div class="col-12 flex flex-column gap-2">
-                      <label>Endereço</label>
-                      <input
-                        formControlName="adress"
-                        type="text"
-                        id="address"
-                        name="address"
-                        pInputText
-                      />
-                    </div>
-
-                    <div class="col-12 flex flex-column gap-2">
-                      <label>Comentários</label>
-                      <textarea
-                        rows="5"
-                        cols="30"
-                        pInputTextarea
-                        formControlName="comments"
-                        maxlength="299"
-                      ></textarea>
-                    </div>
-                  </div>
-                </form>
-                <ng-template pTemplate="footer">
-                  <button
-                    pButton
-                    pRipple
-                    label="Salvar"
-                    icon="pi pi-check"
-                    (click)="update()"
-                  ></button>
-                </ng-template>
-              </p-dialog>
               <button
                 pButton
                 pRipple
@@ -202,29 +173,6 @@
                 class="p-button-danger"
                 (click)="openDeleteSupplier(supplier)"
               ></button>
-              <p-confirmDialog
-                header="Confirmation"
-                icon="pi pi-exclamation-triangle"
-                [closable]="false"
-                key="delete"
-              >
-                <ng-template pTemplate="footer">
-                  <button
-                    type="button"
-                    pButton
-                    label="Não"
-                    class="ui-button-secondary"
-                    (click)="delete(false)"
-                  ></button>
-                  <button
-                    type="button"
-                    pButton
-                    label="Sim"
-                    class="ui-button-danger"
-                    (click)="delete(true)"
-                  ></button>
-                </ng-template>
-              </p-confirmDialog>
             </td>
           </tr>
         </ng-template>
@@ -236,101 +184,252 @@
       </p-table>
     </div>
   </div>
+</div>
 
-  <p-dialog
-    header="Salvar Fornecedor"
-    [(visible)]="visibleFormSupplier"
-    [style]="{ width: '50vw' }"
-    [maximizable]="false"
-  >
-    <form [formGroup]="formSupplier">
-      <div class="grid p-fluid p-formgrid">
-        <div class="col-6 flex flex-column gap-2">
-          <label>Nome</label>
-          <input formControlName="name" type="text" pInputText />
-        </div>
-        <div class="col-6 flex flex-column gap-2">
-          <label>Categoria</label>
-          <input formControlName="category" type="text" pInputText />
-        </div>
-        <div class="col-6 flex flex-column gap-2">
-          <label>País</label>
-          <input formControlName="country" type="text" pInputText />
-        </div>
-        <div class="col-6 flex flex-column gap-2">
-          <label>Estado</label>
-          <input formControlName="state" type="text" pInputText />
-        </div>
-        <div class="col-6 flex flex-column gap-2">
-          <label>E-mail</label>
-          <input
-            formControlName="email"
-            type="email"
-            pInputText
-            pTooltip="Insira no formato email@example.com"
-            tooltipPosition="top"
-          />
-        </div>
-        <div class="col-6 flex flex-column gap-2">
-          <label>Contato</label>
-          <input
-            formControlName="contact"
-            type="text"
-            pInputText
-            pattern="^\+\d{2}\(\d{2}\)\d{5}-\d{4}$"
-            pTooltip="Insira no formato +11(11)11111-1111"
-            tooltipPosition="top"
-          />
-        </div>
+<ng-template #disabledSupplier>
+  <p-dropdown
+    [disabled]="true"
+    formControlName="supplier"
+    [options]="suppliers"
+    placeholder="Nenhum Fornecedor Cadastrado"
+    optionLabel="name"
+    pTooltip="Cadastre um Fornecedor"
+    tooltipPosition="bottom"
+  ></p-dropdown>
+</ng-template>
 
-        <div class="col-12 flex flex-column gap-2">
-          <label>Endereço</label>
-          <input
-            formControlName="adress"
-            type="text"
-            id="address"
-            name="address"
-            pInputText
-          />
-        </div>
-        <div class="col-12 flex flex-column gap-2">
-          <label>Comentários</label>
-          <textarea
-            rows="5"
-            cols="30"
-            pInputTextarea
-            formControlName="comments"
-            maxlength="299"
-          ></textarea>
+<ng-template #noCards>
+  <div class="col-12" style="margin: 2% 0 2% 0">
+    <div class="flex">
+      <div
+        class="flex-1 border-round"
+        pTooltip="Filtre um Fornecedor"
+        tooltipPosition="bottom"
+      >
+        <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
+          <div class="card-default">
+            <p-card header="Localização">
+              <i class="pi pi-map flex justify-content-end align-items-end"></i>
+            </p-card>
+          </div>
         </div>
       </div>
-    </form>
-    <ng-template pTemplate="footer">
-      <button
-        pButton
-        pRipple
-        label="Salvar"
-        icon="pi pi-check"
-        (click)="save()"
-      ></button>
-    </ng-template>
-  </p-dialog>
+      <div
+        class="flex-1 border-round mx-4"
+        pTooltip="Filtre um Fornecedor"
+        tooltipPosition="bottom"
+      >
+        <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
+          <div class="card-default">
+            <p-card header="Contato">
+              <i class="pi pi-at flex justify-content-end align-items-end"></i>
+            </p-card>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex-1 border-round"
+        pTooltip="Filtre um Fornecedor"
+        tooltipPosition="bottom"
+      >
+        <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
+          <div class="card-default">
+            <p-card header="Fornecedor">
+              <i
+                class="pi pi-comment flex justify-content-end align-items-end"
+              ></i>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
-  <ng-template #disabledSupplier>
-    <p-dropdown
-      [disabled]="true"
-      formControlName="supplier"
-      [options]="suppliers"
-      placeholder="Nenhum Fornecedor Cadastrado"
-      optionLabel="name"
-      pTooltip="Cadastre um Fornecedor"
-      tooltipPosition="bottom"
-    ></p-dropdown>
+<p-dialog
+  header="Salvar Fornecedor"
+  [(visible)]="visibleFormSupplier"
+  [style]="{ width: '50vw' }"
+  [maximizable]="false"
+>
+  <form [formGroup]="formSupplier">
+    <div class="grid p-fluid p-formgrid">
+      <div class="col-6 flex flex-column gap-2">
+        <label>Nome</label>
+        <input formControlName="name" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Categoria</label>
+        <input formControlName="category" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>País</label>
+        <input formControlName="country" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Estado</label>
+        <input formControlName="state" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>E-mail</label>
+        <input
+          formControlName="email"
+          type="email"
+          pInputText
+          pTooltip="Insira no formato email@example.com"
+          tooltipPosition="top"
+        />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Contato</label>
+        <input
+          formControlName="contact"
+          type="text"
+          pInputText
+          pattern="^\+\d{2}\(\d{2}\)\d{4}-\d{4}$"
+          pTooltip="Insira no formato +11(11)1111-1111"
+          tooltipPosition="top"
+        />
+      </div>
+      <div class="col-12 flex flex-column gap-2">
+        <label>Endereço</label>
+        <input
+          formControlName="adress"
+          type="text"
+          id="address"
+          name="address"
+          pInputText
+        />
+      </div>
+      <div class="col-12 flex flex-column gap-2">
+        <label>Comentários</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          formControlName="comments"
+          maxlength="299"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Salvar"
+      icon="pi pi-check"
+      (click)="save()"
+    ></button>
   </ng-template>
+</p-dialog>
 
-  <p-toast position="bottom-center" key="saveSupplier"></p-toast>
-  <p-toast position="bottom-center" key="delete"></p-toast>
-  <p-toast position="bottom-center" key="filterSuppliersByCategory"></p-toast>
-  <p-toast position="bottom-center" key="filterSupplier"></p-toast>
-  <p-toast position="bottom-center" key="update"></p-toast>
-</div>
+<p-dialog
+  header="Editar Fornecedor"
+  [(visible)]="visibleEditFormSupplier"
+  [style]="{ width: '50vw' }"
+  [maximizable]="false"
+>
+  <form [formGroup]="formSupplier">
+    <div class="grid p-fluid p-formgrid">
+      <div class="col-6 flex flex-column gap-2">
+        <label>Nome</label>
+        <input formControlName="name" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Categoria</label>
+        <input formControlName="category" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>País</label>
+        <input formControlName="country" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Estado</label>
+        <input formControlName="state" type="text" pInputText />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>E-mail</label>
+        <input
+          formControlName="email"
+          type="email"
+          pInputText
+          pTooltip="Insira no formato email@example.com"
+          tooltipPosition="top"
+        />
+      </div>
+      <div class="col-6 flex flex-column gap-2">
+        <label>Contato</label>
+        <input
+          formControlName="contact"
+          type="text"
+          pInputText
+          pattern="^\+\d{2}\(\d{2}\)\d{4}-\d{4}$"
+          pTooltip="Insira no formato +11(11)1111-1111"
+          tooltipPosition="top"
+        />
+      </div>
+
+      <div class="col-12 flex flex-column gap-2">
+        <label>Endereço</label>
+        <input
+          formControlName="adress"
+          type="text"
+          id="address"
+          name="address"
+          pInputText
+        />
+      </div>
+
+      <div class="col-12 flex flex-column gap-2">
+        <label>Comentários</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          formControlName="comments"
+          maxlength="299"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Salvar"
+      icon="pi pi-check"
+      (click)="update()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+  [closable]="false"
+  key="delete"
+>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      label="Não"
+      class="ui-button-secondary"
+      (click)="delete(false)"
+    ></button>
+    <button
+      type="button"
+      pButton
+      label="Sim"
+      class="ui-button-danger"
+      (click)="delete(true)"
+    ></button>
+  </ng-template>
+</p-confirmDialog>
+
+<p-toast position="bottom-center" key="filterSupplier"></p-toast>
+<p-toast position="bottom-center" key="filterSuppliersByCategory"></p-toast>
+<p-toast position="bottom-center" key="saveSupplier"></p-toast>
+<p-toast position="bottom-center" key="update"></p-toast>
+<p-toast position="bottom-center" key="delete"></p-toast>
