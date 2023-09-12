@@ -17,7 +17,7 @@
       </div>
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label htmlFor="">Filtrar Produto por Tipo</label>
+          <label>Filtrar Produto por Tipo</label>
         </div>
         <p-autoComplete
           [(ngModel)]="selectedTypeByProduct"
@@ -304,11 +304,11 @@
   <form [formGroup]="formProduct">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Nome</label>
+        <label>Nome</label>
         <input formControlName="name" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Tipo</label>
+        <label>Tipo</label>
         <div *ngIf="types.length > 0; else disabledType">
           <p-dropdown
             formControlName="type"
@@ -318,7 +318,7 @@
         </div>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label htmlFor="username">Quantidade</label>
+        <label>Quantidade</label>
         <p-inputNumber
           formControlName="amount"
           [showButtons]="true"
@@ -328,7 +328,7 @@
         </p-inputNumber>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label htmlFor="username">Valor</label>
+        <label>Valor</label>
         <p-inputNumber
           formControlName="value"
           mode="currency"
@@ -340,7 +340,7 @@
         </p-inputNumber>
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Fornecedor</label>
+        <label>Fornecedor</label>
         <div *ngIf="suppliers.length > 0; else disabledSupplier">
           <p-dropdown
             formControlName="supplier"
@@ -350,7 +350,7 @@
         </div>
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Descrição</label>
+        <label>Descrição</label>
         <textarea
           rows="5"
           cols="30"
@@ -380,11 +380,11 @@
   <form [formGroup]="formProduct">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Nome</label>
+        <label>Nome</label>
         <input formControlName="name" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Tipo</label>
+        <label>Tipo</label>
         <p-dropdown
           formControlName="type"
           [options]="types"
@@ -392,7 +392,7 @@
         ></p-dropdown>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label htmlFor="username">Quantidade</label>
+        <label>Quantidade</label>
         <p-inputNumber
           formControlName="amount"
           [showButtons]="true"
@@ -402,7 +402,7 @@
         </p-inputNumber>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label htmlFor="username">Valor</label>
+        <label>Valor</label>
         <p-inputNumber
           formControlName="value"
           mode="currency"
@@ -414,7 +414,7 @@
         </p-inputNumber>
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label htmlFor="username">Fornecedor</label>
+        <label>Fornecedor</label>
         <p-dropdown
           formControlName="supplier"
           [options]="suppliers"
@@ -422,7 +422,7 @@
         ></p-dropdown>
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Descrição</label>
+        <label>Descrição</label>
         <textarea
           rows="5"
           cols="30"
@@ -476,11 +476,11 @@
   <form [formGroup]="formType">
     <div class="grid p-fluid p-formgrid">
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Nome</label>
+        <label>Nome</label>
         <input formControlName="name" type="text" pInputText />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Descrição</label>
+        <label>Descrição</label>
         <textarea
           rows="5"
           cols="30"
@@ -510,11 +510,11 @@
   <form [formGroup]="formType">
     <div class="grid p-fluid p-formgrid">
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Nome</label>
+        <label>Nome</label>
         <input formControlName="name" type="text" pInputText />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label htmlFor="username">Descrição</label>
+        <label>Descrição</label>
         <textarea
           rows="5"
           cols="30"
