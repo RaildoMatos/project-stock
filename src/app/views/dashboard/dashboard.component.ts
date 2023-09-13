@@ -325,7 +325,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade Fornecida:',
+            label: 'Quantidade Fornecida',
             data: data,
             backgroundColor: [
               '#6767ff',
