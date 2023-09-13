@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -60,7 +59,7 @@ export class SuppliersComponent implements OnInit {
     this.loadListCategories();
     setTimeout(() => {
       this.extractDataBySupplier();
-    }, 100);
+    }, 200);
   }
 
   loadGridSupplier() {
