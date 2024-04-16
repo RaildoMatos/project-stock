@@ -3,7 +3,7 @@
     <div class="flex align-items-end">
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label>Filtrar Produto</label>
+          <label>Filter Product</label>
         </div>
         <p-autoComplete
           [(ngModel)]="selectedProduct"
@@ -17,7 +17,7 @@
       </div>
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label>Filtrar Produto por Tipo</label>
+          <label>Filter Product by Type</label>
         </div>
         <p-autoComplete
           [(ngModel)]="selectedTypeByProduct"
@@ -36,7 +36,7 @@
             icon="pi pi-search"
             styleClass="p-button-info"
             (click)="findAll()"
-            pTooltip="Pesquisar"
+            pTooltip="Search"
             tooltipPosition="top"
           ></p-button>
         </div>
@@ -46,7 +46,7 @@
             icon="pi pi-eraser"
             styleClass="p-button-info"
             (click)="clear()"
-            pTooltip="Limpar"
+            pTooltip="Clear"
             tooltipPosition="top"
           ></p-button>
         </div>
@@ -65,7 +65,7 @@
             'card-red': amountProductsCard <= 5
           }"
         >
-          <p-card header="Quantidade Total">
+          <p-card header="Total Amount">
             <div class="flex justify-content-between align-items-center">
               <p
                 [ngStyle]="{
@@ -79,7 +79,7 @@
                 }"
                 class="m-0"
               >
-                {{ amountProductsCard }} em Estoque
+                {{ amountProductsCard }} stock in
               </p>
               <i class="pi pi-inbox"></i>
             </div>
@@ -89,10 +89,10 @@
       <div class="flex-1 border-round mx-4">
         <div class="card">
           <div class="card-default">
-            <p-card header="Valor Total">
+            <p-card header="Total Value">
               <div class="flex justify-content-between align-items-center">
                 <p class="m-0" style="font-weight: bold">
-                  Valor de {{ valueProductsCard | currency : "BRL" }} em Estoque
+                  Value of {{ valueProductsCard | currency : "BRL" }} in stock
                 </p>
                 <i class="pi pi-money-bill"></i>
               </div>
@@ -103,10 +103,10 @@
       <div class="flex-1 border-round">
         <div class="card">
           <div *ngIf="!cardSupplier; else supplierCard" class="card-default">
-            <p-card header="Total de Fornecedores">
+            <p-card header="Total Suppliers">
               <div class="flex justify-content-between align-items-center">
                 <p class="m-0" style="font-weight: bold">
-                  Quantidade: {{ amountSuppliersCard }}
+                  Amount: {{ amountSuppliersCard }}
                 </p>
                 <i class="pi pi-building"></i>
               </div>
@@ -119,7 +119,7 @@
 
   <div class="col-8">
     <div class="label-container">
-      <label class="label-text">Produtos</label>
+      <label class="label-text">Products</label>
     </div>
     <div class="card">
       <p-toolbar styleClass="">
@@ -127,7 +127,7 @@
           <button
             pButton
             pRipple
-            label="Novo"
+            label="New"
             icon="pi pi-plus"
             class="p-button-success mr-2"
             (click)="createProduct()"
@@ -142,21 +142,21 @@
         [paginator]="true"
         [tableStyle]="{ 'min-width': '50%' }"
         [rowHover]="true"
-        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        currentPageReportTemplate=" {first} to {last} in {totalRecords} results"
         [showCurrentPageReport]="true"
       >
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name" style="min-width: 15rem">
-              Nome <p-sortIcon field="name"></p-sortIcon>
+              Name <p-sortIcon field="name"></p-sortIcon>
             </th>
             <th pSortableColumn="value">
-              Valor <p-sortIcon field="value"></p-sortIcon>
+              Value <p-sortIcon field="value"></p-sortIcon>
             </th>
             <th pSortableColumn="type.name" style="min-width: 10rem">
-              Tipo <p-sortIcon field="type.name"></p-sortIcon>
+              Type <p-sortIcon field="type.name"></p-sortIcon>
             </th>
-            <th>Ações</th>
+            <th>Actons</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product>
@@ -185,15 +185,15 @@
                   class="view"
                 >
                   <div class="info">
-                    <h5 class="info-title">Descrição</h5>
+                    <h5 class="info-title">Descriotion</h5>
                     {{ product.description }}
                   </div>
                   <div class="info">
-                    <h5 class="info-title">Descrição do Tipo</h5>
+                    <h5 class="info-title">Type Description</h5>
                     {{ product.type.description }}
                   </div>
                   <div class="info">
-                    <h5 class="info-title">Categoria do Fornecedor</h5>
+                    <h5 class="info-title">Supplier Category</h5>
                     {{ product.supplier.category }}
                   </div>
                 </p-scrollPanel>
@@ -217,7 +217,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
-            {{ products ? products.length : 0 }} Produtos em Estoque.
+            {{ products ? products.length : 0 }}Products in Stock.
           </div>
         </ng-template>
       </p-table>
@@ -226,7 +226,7 @@
 
   <div class="col-4">
     <div class="label-container">
-      <label class="label-text">Tipos</label>
+      <label class="label-text">Types</label>
     </div>
     <div class="card">
       <p-toolbar styleClass="">
@@ -234,7 +234,7 @@
           <button
             pButton
             pRipple
-            label="Novo"
+            label="New"
             icon="pi pi-plus"
             class="p-button-success mr-2"
             (click)="createType()"
@@ -251,15 +251,15 @@
         [(selection)]="selectedTypes"
         [rowHover]="true"
         dataKey="id"
-        currentPageReportTemplate="{first} até {last} de {totalRecords}"
+        currentPageReportTemplate="{first} to {last} in {totalRecords}"
         [showCurrentPageReport]="true"
       >
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name" style="min-width: 15rem">
-              Nome <p-sortIcon field="name"></p-sortIcon>
+              Name <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th>Ações</th>
+            <th>Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-type>
@@ -285,7 +285,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
-            {{ types ? types.length : 0 }} Tipos de Produto Cadastrados.
+            {{ types ? types.length : 0 }} Registered Product Types.
           </div>
         </ng-template>
       </p-table>
@@ -296,7 +296,7 @@
 <!-- NG TEMPLATES: -->
 
 <p-dialog
-  header="Salvar Produto"
+  header="Save Product"
   [(visible)]="visibleFormProduct"
   [style]="{ width: '50vw' }"
   [maximizable]="false"
@@ -304,11 +304,11 @@
   <form [formGroup]="formProduct">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Tipo</label>
+        <label>Type</label>
         <div *ngIf="types.length > 0; else disabledType">
           <p-dropdown
             formControlName="type"
@@ -318,7 +318,7 @@
         </div>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label>Quantidade</label>
+        <label>Amount</label>
         <p-inputNumber
           formControlName="amount"
           [showButtons]="true"
@@ -328,7 +328,7 @@
         </p-inputNumber>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label>Valor</label>
+        <label>Value</label>
         <p-inputNumber
           formControlName="value"
           mode="currency"
@@ -340,7 +340,7 @@
         </p-inputNumber>
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Fornecedor</label>
+        <label>Suppleir</label>
         <div *ngIf="suppliers.length > 0; else disabledSupplier">
           <p-dropdown
             formControlName="supplier"
@@ -350,7 +350,7 @@
         </div>
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Descrição</label>
+        <label>Description</label>
         <textarea
           rows="5"
           cols="30"
@@ -364,7 +364,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Saver"
       icon="pi pi-check"
       (click)="saveProduct()"
     ></button>
@@ -372,7 +372,7 @@
 </p-dialog>
 
 <p-dialog
-  header="Editar Produto"
+  header="Edit Product"
   [(visible)]="visibleEditFormProduct"
   [style]="{ width: '50vw' }"
   [maximizable]="false"
@@ -380,11 +380,11 @@
   <form [formGroup]="formProduct">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Tipo</label>
+        <label>Type</label>
         <p-dropdown
           formControlName="type"
           [options]="types"
@@ -392,7 +392,7 @@
         ></p-dropdown>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label>Quantidade</label>
+        <label>Amount</label>
         <p-inputNumber
           formControlName="amount"
           [showButtons]="true"
@@ -402,7 +402,7 @@
         </p-inputNumber>
       </div>
       <div class="col-3 flex flex-column gap-2">
-        <label>Valor</label>
+        <label>Value</label>
         <p-inputNumber
           formControlName="value"
           mode="currency"
@@ -414,7 +414,7 @@
         </p-inputNumber>
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Fornecedor</label>
+        <label>Supplier</label>
         <p-dropdown
           formControlName="supplier"
           [options]="suppliers"
@@ -422,7 +422,7 @@
         ></p-dropdown>
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Descrição</label>
+        <label>Description</label>
         <textarea
           rows="5"
           cols="30"
@@ -436,7 +436,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Save"
       icon="pi pi-check"
       (click)="updateProduct()"
     ></button>
@@ -453,14 +453,14 @@
     <button
       type="button"
       pButton
-      label="Não"
+      label="No"
       class="ui-button-secondary"
       (click)="deleteProduct(false)"
     ></button>
     <button
       type="button"
       pButton
-      label="Sim"
+      label="Yes"
       class="ui-button-danger"
       (click)="deleteProduct(true)"
     ></button>
@@ -468,7 +468,7 @@
 </p-confirmDialog>
 
 <p-dialog
-  header="Salvar Tipo"
+  header="Save Type"
   [(visible)]="visibleFormType"
   [style]="{ width: '30vw' }"
   [maximizable]="false"
@@ -476,11 +476,11 @@
   <form [formGroup]="formType">
     <div class="grid p-fluid p-formgrid">
       <div class="col-12 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30" pInputText />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Descrição</label>
+        <label>Description</label>
         <textarea
           rows="5"
           cols="30"
@@ -494,7 +494,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Save"
       icon="pi pi-check"
       (click)="saveType()"
     ></button>
@@ -502,7 +502,7 @@
 </p-dialog>
 
 <p-dialog
-  header="Editar Tipo"
+  header="Edit Type"
   [(visible)]="visibleEditFormType"
   [style]="{ width: '30vw' }"
   [maximizable]="false"
@@ -510,11 +510,11 @@
   <form [formGroup]="formType">
     <div class="grid p-fluid p-formgrid">
       <div class="col-12 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30" pInputText />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Descrição</label>
+        <label>Description</label>
         <textarea
           rows="5"
           cols="30"
@@ -528,7 +528,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Save"
       icon="pi pi-check"
       (click)="updateType()"
     ></button>
@@ -545,14 +545,14 @@
     <button
       type="button"
       pButton
-      label="Não"
+      label="No"
       class="ui-button-secondary"
       (click)="deleteType(false)"
     ></button>
     <button
       type="button"
       pButton
-      label="Sim"
+      label="Yes"
       class="ui-button-danger"
       (click)="deleteType(true)"
     ></button>
@@ -564,9 +564,9 @@
     [disabled]="true"
     formControlName="supplier"
     [options]="suppliers"
-    placeholder="Nenhum Fornecedor Cadastrado"
+    placeholder="No Registered Supplier"
     optionLabel="name"
-    pTooltip="Cadastre um Fornecedor"
+    pTooltip="Register a Supplier"
     tooltipPosition="bottom"
   ></p-dropdown>
 </ng-template>
@@ -576,9 +576,9 @@
     [disabled]="true"
     formControlName="formType"
     [options]="suppliers"
-    placeholder="Nenhum Tipo Cadastrado"
+    placeholder="No Type Registered"
     optionLabel="name"
-    pTooltip="Cadastre um Tipo"
+    pTooltip="register a Type"
     tooltipPosition="bottom"
   ></p-dropdown>
 </ng-template>
@@ -588,7 +588,7 @@
     <p-card header="Fornecedor {{ supplierName }}">
       <div class="flex justify-content-between align-items-center">
         <p class="m-0" style="font-weight: bold">
-          Localização: {{ supplierCountry }},
+          Location: {{ supplierCountry }},
           {{ supplierState }}
         </p>
         <i class="pi pi-building"></i>

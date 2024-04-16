@@ -154,9 +154,9 @@ export class SuppliersComponent implements OnInit {
       (error) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Erro!',
+          summary: 'Error!',
           key: 'filterSupplier',
-          detail: 'Fornecedor não Cadastrado.',
+          detail: 'not registered Supplier.',
         });
       }
     );
@@ -173,9 +173,9 @@ export class SuppliersComponent implements OnInit {
         if (data.length === 0) {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'filterSuppliersByCategory',
-            detail: 'Não há Fornecedor com essa Categoria!',
+            detail: 'There is no Supplier with this Category!',
           });
         } else {
           this.suppliers = data;
@@ -195,9 +195,9 @@ export class SuppliersComponent implements OnInit {
           this.visibleFormSupplier = false;
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'saveSupplier',
-            detail: 'Fornecedor Salvo!',
+            detail: 'Saved Supplier!',
           });
           this.findAll();
         },
@@ -205,9 +205,9 @@ export class SuppliersComponent implements OnInit {
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'saveSupplier',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Salvar.',
+        detail: 'Fill in all Required Fields before Saving.',
       });
     }
   }
@@ -243,9 +243,9 @@ export class SuppliersComponent implements OnInit {
             this.visibleEditFormSupplier = false;
             this.messageService.add({
               severity: 'success',
-              summary: 'Sucesso!',
+              summary: 'Success!',
               key: 'update',
-              detail: updated.name + ' Atualizado!',
+              detail: updated.name + ' Updated!',
             });
             this.findAll();
           }
@@ -253,18 +253,18 @@ export class SuppliersComponent implements OnInit {
         (error: any) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'update',
-            detail: 'Erro ao Atualizar Fornecedor!',
+            detail: 'Error updating Supplier!',
           });
         }
       );
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'update',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Atualizar.',
+        detail: 'Complete all Required Fields before Updating.',
       });
     }
   }
@@ -272,8 +272,8 @@ export class SuppliersComponent implements OnInit {
   openDeleteSupplier(supplier: any) {
     this.selectedSupplierDelete = supplier;
     this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir?',
-      header: 'Excluir',
+      message: 'Are you sure you want to delete?',
+      header: 'Delete',
       icon: 'pi pi-info-circle',
       key: 'delete',
     });
@@ -287,10 +287,10 @@ export class SuppliersComponent implements OnInit {
         () => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'delete',
             detail:
-              'Fornecedor ' + this.selectedSupplierDelete.name + ' Excluído...',
+              'Supplier ' + this.selectedSupplierDelete.name + ' Deleted...',
           });
           this.findAll();
         },
@@ -299,16 +299,16 @@ export class SuppliersComponent implements OnInit {
             severity: 'error',
             summary: 'Erro!',
             key: 'delete',
-            detail: 'Fornecedor em Uso!',
+            detail: 'Supplier in Use!',
           });
         }
       );
     } else {
       this.messageService.add({
         severity: 'info',
-        summary: 'Cancelou...',
+        summary: 'Canceled...',
         key: 'delete',
-        detail: 'A Exclusão foi Cancelada!',
+        detail: 'Deletion has been canceled!',
       });
       this.findAll();
     }

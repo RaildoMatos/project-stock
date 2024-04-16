@@ -3,7 +3,7 @@
     <div class="flex align-items-end">
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label>Filtrar Fornecedor</label>
+          <label>Filter Supplier</label>
         </div>
         <p-autoComplete
           [dropdown]="true"
@@ -17,7 +17,7 @@
       </div>
       <div class="p-field col-3 pb-0">
         <div class="mb-2">
-          <label>Filtrar Fornecedor por Categoria</label>
+          <label>Filter Supplier by Category</label>
         </div>
         <p-autoComplete
           [dropdown]="true"
@@ -36,7 +36,7 @@
             icon="pi pi-search"
             styleClass="p-button-info"
             (click)="findAll()"
-            pTooltip="Pesquisar"
+            pTooltip="Search"
             tooltipPosition="top"
           ></p-button>
         </div>
@@ -46,7 +46,7 @@
             icon="pi pi-eraser"
             styleClass="p-button-info"
             (click)="clear()"
-            pTooltip="Limpar"
+            pTooltip="clear"
             tooltipPosition="top"
           ></p-button>
         </div>
@@ -59,7 +59,7 @@
       <div class="flex-1 border-round">
         <div class="card">
           <div class="card-default">
-            <p-card header="Localização">
+            <p-card header="Location">
               <div
                 class="flex justify-content-between align-items-center card-container-tall"
               >
@@ -76,7 +76,7 @@
       <div class="flex-1 border-round mx-4">
         <div class="card">
           <div class="card-default">
-            <p-card header="Contato">
+            <p-card header="Contact">
               <div
                 class="flex justify-content-between align-items-center card-container-tall"
               >
@@ -111,7 +111,7 @@
 
   <div class="col-12">
     <div class="label-container">
-      <label class="label-text">Fornecedor</label>
+      <label class="label-text">Supplier</label>
     </div>
     <div class="card">
       <p-toolbar>
@@ -119,7 +119,7 @@
           <button
             pButton
             pRipple
-            label="Novo"
+            label="New"
             icon="pi pi-plus"
             class="p-button-success mr-2"
             (click)="create()"
@@ -134,21 +134,21 @@
         [value]="suppliers"
         [tableStyle]="{ 'min-width': '50%' }"
         [rowHover]="true"
-        currentPageReportTemplate="Exibindo {first} até {last} de {totalRecords} resultados"
+        currentPageReportTemplate="Displaying {first} to {last} in {totalRecords} results"
         [showCurrentPageReport]="true"
       >
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="name" style="min-width: 15rem">
-              Nome <p-sortIcon field="name"></p-sortIcon>
+              Name <p-sortIcon field="name"></p-sortIcon>
             </th>
             <th pSortableColumn="country">
-              País<p-sortIcon field="country"></p-sortIcon>
+              Country<p-sortIcon field="country"></p-sortIcon>
             </th>
             <th pSortableColumn="category">
-              Categoria<p-sortIcon field="category"></p-sortIcon>
+              Category<p-sortIcon field="category"></p-sortIcon>
             </th>
-            <th>Ações</th>
+            <th>Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-supplier>
@@ -178,7 +178,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
           <div class="flex align-items-center justify-content-between">
-            {{ suppliers ? suppliers.length : 0 }} Fornecedores.
+            {{ suppliers ? suppliers.length : 0 }} Suppliers.
           </div>
         </ng-template>
       </p-table>
@@ -191,9 +191,9 @@
     [disabled]="true"
     formControlName="supplier"
     [options]="suppliers"
-    placeholder="Nenhum Fornecedor Cadastrado"
+    placeholder="No Registered Supplier"
     optionLabel="name"
-    pTooltip="Cadastre um Fornecedor"
+    pTooltip="Register a Supplier"
     tooltipPosition="bottom"
   ></p-dropdown>
 </ng-template>
@@ -203,12 +203,12 @@
     <div class="flex">
       <div
         class="flex-1 border-round"
-        pTooltip="Filtre um Fornecedor"
+        pTooltip="Filter a Supplier"
         tooltipPosition="bottom"
       >
         <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
           <div class="card-default">
-            <p-card header="Localização">
+            <p-card header="Location">
               <i class="pi pi-map flex justify-content-end align-items-end"></i>
             </p-card>
           </div>
@@ -216,12 +216,12 @@
       </div>
       <div
         class="flex-1 border-round mx-4"
-        pTooltip="Filtre um Fornecedor"
+        pTooltip="Filter a Supplier"
         tooltipPosition="bottom"
       >
         <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
           <div class="card-default">
-            <p-card header="Contato">
+            <p-card header="Contact">
               <i class="pi pi-at flex justify-content-end align-items-end"></i>
             </p-card>
           </div>
@@ -229,12 +229,12 @@
       </div>
       <div
         class="flex-1 border-round"
-        pTooltip="Filtre um Fornecedor"
+        pTooltip="Filter a Supplier"
         tooltipPosition="bottom"
       >
         <div class="card" [ngClass]="{ 'card-disabled': !showCards }">
           <div class="card-default">
-            <p-card header="Fornecedor">
+            <p-card header="Supplier">
               <i
                 class="pi pi-comment flex justify-content-end align-items-end"
               ></i>
@@ -247,7 +247,7 @@
 </ng-template>
 
 <p-dialog
-  header="Salvar Fornecedor"
+  header="Save Supplier"
   [(visible)]="visibleFormSupplier"
   [style]="{ width: '50vw' }"
   [maximizable]="false"
@@ -255,19 +255,19 @@
   <form [formGroup]="formSupplier">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30 " pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Categoria</label>
+        <label>Category</label>
         <input formControlName="category" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>País</label>
+        <label>Country</label>
         <input formControlName="country" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Estado</label>
+        <label>State</label>
         <input formControlName="state" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
@@ -276,23 +276,22 @@
           formControlName="email"
           type="email"
           pInputText
-          pTooltip="Insira no formato email@example.com"
+          pTooltip="Insert in format email@example.com"
           tooltipPosition="top"
         />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Contato</label>
+        <label>Contact</label>
         <input
           formControlName="contact"
           type="text"
           pInputText
-          pattern="^\+\d{2}\(\d{2}\)\d{4}-\d{4}$"
-          pTooltip="Insira no formato +11(11)1111-1111"
-          tooltipPosition="top"
+          pattern="^\(\d{3}\) \d{3}-\d{4}$"
+          pTooltip="insert in format (XXX) XXX-XXXX"
         />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Endereço</label>
+        <label>Address</label>
         <input
           formControlName="adress"
           type="text"
@@ -302,7 +301,7 @@
         />
       </div>
       <div class="col-12 flex flex-column gap-2">
-        <label>Comentários</label>
+        <label>Comments</label>
         <textarea
           rows="5"
           cols="30"
@@ -317,7 +316,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Save"
       icon="pi pi-check"
       (click)="save()"
     ></button>
@@ -325,7 +324,7 @@
 </p-dialog>
 
 <p-dialog
-  header="Editar Fornecedor"
+  header="Edit Supplier"
   [(visible)]="visibleEditFormSupplier"
   [style]="{ width: '50vw' }"
   [maximizable]="false"
@@ -333,19 +332,19 @@
   <form [formGroup]="formSupplier">
     <div class="grid p-fluid p-formgrid">
       <div class="col-6 flex flex-column gap-2">
-        <label>Nome</label>
+        <label>Name</label>
         <input formControlName="name" type="text" maxlength="30" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Categoria</label>
+        <label>Category</label>
         <input formControlName="category" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>País</label>
+        <label>Country</label>
         <input formControlName="country" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Estado</label>
+        <label>State</label>
         <input formControlName="state" type="text" pInputText />
       </div>
       <div class="col-6 flex flex-column gap-2">
@@ -354,24 +353,24 @@
           formControlName="email"
           type="email"
           pInputText
-          pTooltip="Insira no formato email@example.com"
+          pTooltip="Insert in format email@example.com"
           tooltipPosition="top"
         />
       </div>
       <div class="col-6 flex flex-column gap-2">
-        <label>Contato</label>
+        <label>Contact</label>
         <input
           formControlName="contact"
           type="text"
           pInputText
-          pattern="^\+\d{2}\(\d{2}\)\d{4}-\d{4}$"
-          pTooltip="Insira no formato +11(11)1111-1111"
+          pattern="^\(\d{3}\) \d{3}-\d{4}$"
+          pTooltip="Insert in format (XXX) XXX-XXXX"
           tooltipPosition="top"
         />
       </div>
 
       <div class="col-12 flex flex-column gap-2">
-        <label>Endereço</label>
+        <label>Address</label>
         <input
           formControlName="adress"
           type="text"
@@ -382,7 +381,7 @@
       </div>
 
       <div class="col-12 flex flex-column gap-2">
-        <label>Comentários</label>
+        <label>Comments</label>
         <textarea
           rows="5"
           cols="30"
@@ -397,7 +396,7 @@
     <button
       pButton
       pRipple
-      label="Salvar"
+      label="Save"
       icon="pi pi-check"
       (click)="update()"
     ></button>
@@ -414,14 +413,14 @@
     <button
       type="button"
       pButton
-      label="Não"
+      label="no"
       class="ui-button-secondary"
       (click)="delete(false)"
     ></button>
     <button
       type="button"
       pButton
-      label="Sim"
+      label="Yes"
       class="ui-button-danger"
       (click)="delete(true)"
     ></button>

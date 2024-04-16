@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade em estoque',
+            label: 'Amount in Stock',
             data: data,
             backgroundColor: [
               '#6767ff',
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Valor (R$) em estoque',
+            label: 'Value (R$) in stock',
             data: data,
             backgroundColor: [
               '#6767ff',
@@ -166,7 +166,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Valor (R$) em estoque',
+            label: 'Value (R$) in stock',
             backgroundColor: [
               '#6767ff',
               '#eb5f5f',
@@ -218,7 +218,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Fornecedores por Estado',
+            label: 'Suppliers by State',
             data: data,
             backgroundColor: [
               '#6767ff',
@@ -270,7 +270,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade da Categoria',
+            label: 'category amount',
             data: data,
             backgroundColor: [
               '#6767ff',
@@ -325,7 +325,7 @@ export class DashboardComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Quantidade Fornecida',
+            label: 'Amount Supplied',
             data: data,
             backgroundColor: [
               '#6767ff',

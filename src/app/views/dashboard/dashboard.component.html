@@ -1,7 +1,7 @@
 <div class="grid" *ngIf="!loading">
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Quantidade por Tipo de Produto</h3>
+      <h3>Quantity by Product Type</h3>
       <div class="chart">
         <p-chart
           type="pie"
@@ -13,7 +13,7 @@
   </div>
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Quantidade de Fornecedores por Estado</h3>
+      <h3>Amount of Suppliers by State</h3>
       <div class="chart">
         <p-chart
           type="doughnut"
@@ -25,7 +25,7 @@
   </div>
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Quantidade de Categorias do Fornecedor</h3>
+      <h3>Amount of Supplier Categories</h3>
       <div class="chart">
         <p-chart
           type="pie"
@@ -39,7 +39,7 @@
 <div class="grid">
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Valor por Produto</h3>
+      <h3>Value to Product</h3>
       <p-chart
         type="bar"
         [data]="dataGraphProductsValues"
@@ -49,7 +49,7 @@
   </div>
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Valor por Tipo de Produto</h3>
+      <h3>Value by Product Type</h3>
       <p-chart
         type="bar"
         [data]="dataGraphValuesByType"
@@ -59,7 +59,7 @@
   </div>
   <div class="xl:col-4 lg:col-12">
     <div class="card-dashboard">
-      <h3>Quantidade de Produtos por Fornecedor</h3>
+      <h3>Quantity of Products to Supplier</h3>
       <p-chart
         type="bar"
         [data]="dataGraphAmountByProduct"

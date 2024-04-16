@@ -198,7 +198,7 @@ export class ProductsComponent implements OnInit {
           severity: 'error',
           summary: 'Erro!',
           key: 'filterProduct',
-          detail: 'Este Produto não Existe!',
+          detail: 'This Product Does Not Exist!',
         });
       }
     );
@@ -218,7 +218,7 @@ export class ProductsComponent implements OnInit {
           severity: 'error',
           summary: 'Erro!',
           key: ' filterProductsByType',
-          detail: 'Não há Produtos com este Tipo!',
+          detail: 'There are no Products with this Type!',
         });
       }
     );
@@ -236,9 +236,9 @@ export class ProductsComponent implements OnInit {
           this.visibleFormProduct = false;
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'saveProduct',
-            detail: 'Produto Salvo!',
+            detail: 'Product Saved!',
           });
         },
       });
@@ -249,9 +249,9 @@ export class ProductsComponent implements OnInit {
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'saveProduct',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Salvar.',
+        detail: 'Fill in all Required Fields before Saving.',
       });
     }
   }
@@ -294,9 +294,9 @@ export class ProductsComponent implements OnInit {
               this.visibleEditFormProduct = false;
               this.messageService.add({
                 severity: 'success',
-                summary: 'Sucesso!',
+                summary: 'Success!',
                 key: 'updateProduct',
-                detail: updatedProduct.name + ' Editado!',
+                detail: updatedProduct.name + 'Edited!',
               });
               this.findAll();
             }
@@ -304,18 +304,18 @@ export class ProductsComponent implements OnInit {
           (error) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Erro!',
+              summary: 'Error!',
               key: 'updateProduct',
-              detail: 'Erro ao atualizar produto!',
+              detail: 'Error updating product!',
             });
           }
         );
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'updateProduct',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Atualizar.',
+        detail: 'Complete all Required Fields before Updating.',
       });
     }
   }
@@ -323,8 +323,8 @@ export class ProductsComponent implements OnInit {
   openDeleteProduct(product: any) {
     this.selectedProductDelete = product;
     this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir?',
-      header: 'Excluir',
+      message: 'Are you sure you want to delete?',
+      header: 'delete',
       icon: 'pi pi-info-circle',
       key: 'product',
     });
@@ -338,10 +338,10 @@ export class ProductsComponent implements OnInit {
         () => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'deleteProduct',
             detail:
-              'Produto ' + this.selectedProductDelete.name + ' Excluído...',
+              'Product ' + this.selectedProductDelete.name + ' Deleted...',
           });
 
           this.loadGridProducts();
@@ -349,18 +349,18 @@ export class ProductsComponent implements OnInit {
         (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'deleteProduct',
-            detail: 'Erro ao excluir produto!',
+            detail: 'Error deleting product!',
           });
         }
       );
     } else {
       this.messageService.add({
         severity: 'info',
-        summary: 'Cancelou...',
+        summary: 'Canceled...',
         key: 'deleteProduct',
-        detail: 'A Exclusão foi Cancelada!',
+        detail: 'Exclusion has been Cancelled!',
       });
       this.loadGridProducts();
     }
@@ -413,27 +413,27 @@ export class ProductsComponent implements OnInit {
           this.visibleFormType = false;
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'saveType',
-            detail: 'Tipo de Produto Salvo!',
+            detail: 'Product Type Saved!',
           });
           this.findAll();
         },
         error: (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'saveType',
-            detail: 'Erro ao salvar o tipo de produto!',
+            detail: 'Error saving product type!',
           });
         },
       });
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'saveType',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Salvar.',
+        detail: 'Fill in all Required Fields before Saving.',
       });
     }
   }
@@ -460,9 +460,9 @@ export class ProductsComponent implements OnInit {
             this.visibleEditFormType = false;
             this.messageService.add({
               severity: 'success',
-              summary: 'Sucesso!',
+              summary: 'Success!',
               key: 'updateType',
-              detail: updatedType.name + ' Editado!',
+              detail: updatedType.name + ' Edited!',
             });
             this.findAll();
           }
@@ -470,18 +470,18 @@ export class ProductsComponent implements OnInit {
         (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'updateType',
-            detail: 'Erro ao atualizar o Tipo!',
+            detail: 'Error updating Type!',
           });
         }
       );
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Erro!',
+        summary: 'Error!',
         key: 'updateType',
-        detail: 'Preencha todos os Campos Obrigatórios antes de Atualizar.',
+        detail: 'Complete all Required Fields before Updating.',
       });
     }
   }
@@ -490,7 +490,7 @@ export class ProductsComponent implements OnInit {
     this.selectedTypeDelete = type;
     this.confirmationService.confirm({
       message: 'Tem certeza que deseja excluir?',
-      header: 'Excluir',
+      header: 'Delete',
       icon: 'pi pi-info-circle',
       key: 'type',
     });
@@ -504,9 +504,9 @@ export class ProductsComponent implements OnInit {
         () => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Sucesso!',
+            summary: 'Success!',
             key: 'deleteType',
-            detail: this.selectedTypeDelete.name + ' ' + 'Excluído...',
+            detail: this.selectedTypeDelete.name + ' ' + 'Deleted...',
           });
           setTimeout(() => {
             this.findAll();
@@ -515,18 +515,18 @@ export class ProductsComponent implements OnInit {
         (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erro!',
+            summary: 'Error!',
             key: 'deleteType',
-            detail: 'Tipo em Uso!',
+            detail: 'type in use!',
           });
         }
       );
     } else {
       this.messageService.add({
         severity: 'info',
-        summary: 'Cancelou...',
+        summary: 'Canceled...',
         key: 'deleteType',
-        detail: 'A Exclusão foi Cancelada!',
+        detail: 'Deletion has been canceled!',
       });
     }
   }
